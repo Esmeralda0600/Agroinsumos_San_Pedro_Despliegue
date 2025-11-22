@@ -94,7 +94,15 @@ export async function login_Usuario(req, res) {
 export async function mostrar_categorias(req, res) {
   try {
     const data = await CategoriaMongo.find();
-    res.json(data);
+
+    // FRONTEND requiere { nombre, img }
+    const respuesta = data.map(c => ({
+      nombre: c.nombre_categoria,
+      img: c.direccion_img
+    }));
+
+    res.json(respuesta);
+
   } catch {
     res.status(500).json({ error: "Error al obtener categorías" });
   }
@@ -106,7 +114,14 @@ export async function mostrar_categorias(req, res) {
 export async function mostrar_marcas(req, res) {
   try {
     const data = await MarcaMongo.find();
-    res.json(data);
+
+    const respuesta = data.map(m => ({
+      nombre: m.nombre_marca,
+      img: m.direccion_img
+    }));
+
+    res.json(respuesta);
+
   } catch {
     res.status(500).json({ error: "Error al obtener marcas" });
   }
@@ -118,7 +133,14 @@ export async function mostrar_marcas(req, res) {
 export async function mostrar_ingredientes(req, res) {
   try {
     const data = await IngredienteMongo.find();
-    res.json(data);
+
+    const respuesta = data.map(i => ({
+      nombre: i.nombre_ingrediente,
+      img: i.direccion_img
+    }));
+
+    res.json(respuesta);
+
   } catch {
     res.status(500).json({ error: "Error al obtener ingredientes" });
   }
@@ -127,32 +149,4 @@ export async function mostrar_ingredientes(req, res) {
 // ============================================================
 // PRODUCTOS POR CATEGORÍA
 // ============================================================
-export async function mostrar_productos(req, res) {
-  try {
-    const { categoria } = req.body;
-
-    if (!categoria) return res.status(400).json({ error: "Falta categoría" });
-
-    // Normalizar categoría (MAYÚSCULAS → Capitalizado)
-    const categoriaNormalizada =
-      categoria.charAt(0).toUpperCase() + categoria.slice(1).toLowerCase();
-
-    const categoriaExistente = await CategoriaMongo.findOne({
-      nombre: categoriaNormalizada
-    });
-
-    if (!categoriaExistente) {
-      return res.status(404).json({ error: "Categoría no encontrada" });
-    }
-
-    // BUSCAR PRODUCTOS
-    const productos = await ProductoMongo.find({
-      categoria_producto: categoriaNormalizada
-    });
-
-    res.json(productos);
-
-  } catch (error) {
-    res.status(500).json({ error: "Error al obtener productos" });
-  }
-}
+expor
