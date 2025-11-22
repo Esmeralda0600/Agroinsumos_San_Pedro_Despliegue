@@ -23,6 +23,7 @@ function agregarAlCarrito(prod) {
     window.location.href = "carrito.html";
 }
 
+const API_URL = "https://agroinsumos-san-pedro-despliegue.onrender.com";
 
 function descripcion_producto() {
 
@@ -61,9 +62,8 @@ function descripcion_producto() {
         btn_carrito.innerText = "Agregar al carrito";
         btn_carrito.classList.add("btn");
         btn_carrito.addEventListener("click", () => {
-    agregarAlCarrito(producto);
-});
-
+            agregarAlCarrito(producto);
+        });
 
         const btn_fav = document.createElement("button");
         btn_fav.innerText = "Agregar a favoritos";
@@ -100,7 +100,7 @@ function descripcion_producto() {
         div_general.appendChild(div_info);
 
         // ============================================================
-        // ⭐ AGREGAR A FAVORITOS
+        // ⭐ AGREGAR A FAVORITOS (corregido)
         // ============================================================
         btn_fav.addEventListener("click", async () => {
 
@@ -113,12 +113,12 @@ function descripcion_producto() {
             }
 
             try {
-                const respuesta = await fetch("http://localhost:3000/favoritos", {
+                const respuesta = await fetch(`${API_URL}/favoritos`, {
                     method: "POST",
                     headers: { "Content-Type": "application/json" },
                     body: JSON.stringify({
                         usuarioId: usuarioId,
-                        productoId: producto.id_producto   // 🔥 ID correcto
+                        productoId: producto.id_producto
                     })
                 });
 
