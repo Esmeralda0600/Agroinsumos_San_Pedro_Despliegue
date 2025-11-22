@@ -10,73 +10,53 @@ import favoritoRoutes from "./routes/favoritoRoutes.js";
 import swaggerJSDoc from "swagger-jsdoc";
 import swaggerUi from "swagger-ui-express";
 
-const swaggerOptions = {
-    definition: {
-        openapi: "3.0.0",
-        info: {
-            title: "API de Agro_spa",
-            version: "1.0.0",
-            description: "API para gestionar Agro_spa en MongoDB",
-        },
-    },
-    apis: ["./controllers/*.js"],
-};
-
 dotenv.config();
 
 const app = express();
 
 // ==========================
-// 🔥 CONFIGURAR CORS CORRECTAMENTE
+// CORS FIX REAL ✔
 // ==========================
 const allowedOrigins = [
-  "http://localhost:5500", 
-  "http://127.0.0.1:5500",
   "http://localhost:3000",
-  "https://agroinsumos-san-pedro-despliegue-vl.vercel.app",  // ✔ tu frontend REAL
+  "https://agroinsumos-san-pedro-despliegue-vl.vercel.app",
+  "https://agroinsumos-san-pedro-despliegue.onrender.com"
 ];
 
 app.use(cors({
-  origin: (origin, callback) => {
-    // Permitir peticiones sin origin (Postman, móvil)
-    if (!origin) return callback(null, true);
+  origin: function (origin, callback) {
+    console.log("🌍 ORIGIN SOLICITANDO:", origin);
 
-    if (allowedOrigins.includes(origin)) {
-      return callback(null, true);
+    if (!origin || allowedOrigins.includes(origin)) {
+      callback(null, true);
     } else {
-      return callback(new Error("CORS bloqueado: Origin no permitido -> " + origin));
+      callback(new Error("CORS bloqueado por seguridad"));
     }
   },
-  credentials: true,
+  credentials: true
 }));
 
-// Middleware
 app.use(express.json());
 
 // Conexión a MongoDB
 await connectMongo();
 
-// Ruta raíz
-app.get("/", (req, res) => {
-    res.send(`
-    <h2> API corriendo correctamente</h2>
-    <p>Entorno: <b>${process.env.NODE_ENV }</b></p>
-    <p>Puerto: <b>${process.env.PORT}</b></p>`);
-});
-
 // Rutas API
 app.use("/usuarios", agro_spa_routes);
-app.use("/administratores", agro_spa_routes_admin)
+app.use("/administradores", agro_spa_routes_admin);
 app.use("/favoritos", favoritoRoutes);
 app.use("/productos", producto_routes);
 
 // Swagger
-const swaggerDocs = swaggerJSDoc(swaggerOptions);
+const swaggerDocs = swaggerJSDoc({
+  definition: {
+    openapi: "3.0.0",
+    info: { title: "API Agro SPA", version: "1.0.0" },
+  },
+  apis: ["./controllers/*.js"],
+});
+
 app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocs));
 
-// Iniciar servidor
-const PORT = process.env.PORT;
-app.listen(PORT, () => {
-    console.log(`Servidor escuchando en puerto ${PORT}`);
-    console.log(`http://localhost:${PORT}/`);
-});
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => console.log(`🔥 Servidor en puerto ${PORT}`));
