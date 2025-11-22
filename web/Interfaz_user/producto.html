@@ -125,10 +125,21 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 
     // Botón Comprar
-    document.getElementById("btn-comprar").addEventListener("click", () => {
-        agregarAlCarrito(producto);
-        window.location.href = "pago.html";
-    });
+    document.getElementById("btn-carrito").addEventListener("click", () => {
+
+    const usuarioId = localStorage.getItem("usuarioId");
+
+    // Validación antes de agregar al carrito
+    if (!usuarioId) {
+        alert("Debes iniciar sesión para agregar productos al carrito 🛒");
+        return window.location.href = "login.html";
+    }
+
+    // Si pasó la validación → agregar al carrito
+    agregarAlCarrito(producto);
+    window.location.href = "carrito.html";
+});
+
 
     // Botón Favoritos
     document.getElementById("btn-fav").addEventListener("click", async () => {
