@@ -1,8 +1,11 @@
 // ============================================================
-// Archivo: logica.js (versión corregida con favoritos + redirect)
+// Archivo: logica.js (versión producción con favoritos + redirect)
 // ============================================================
 
 const paginaActual = window.location.pathname;
+
+// URL DE LA API EN PRODUCCIÓN
+const API_URL = "https://agroinsumos-san-pedro-despliegue.onrender.com";
 
 // ============================================================
 // BOTONES LOGIN Y REGISTRO
@@ -25,7 +28,7 @@ if (radios.length != 0) cargarCategorias();
 
 async function cargarCategorias() {
     try {
-        const resp = await fetch("http://localhost:3000/usuarios/categorias");
+        const resp = await fetch(`${API_URL}/usuarios/categorias`);
         const data = await resp.json();
         if (!resp.ok) return alert("Error: " + data.error);
 
@@ -42,7 +45,7 @@ async function cargarCategorias() {
             if (e.target.value === "ingrediente") url = "ingrediente";
 
             try {
-                const resp = await fetch(`http://localhost:3000/usuarios/${url}`);
+                const resp = await fetch(`${API_URL}/usuarios/${url}`);
                 const data = await resp.json();
                 if (!resp.ok) return alert("Error: " + data.error);
 
@@ -68,7 +71,7 @@ async function registrar_usuario() {
     const password = document.getElementById("password").value.trim();
 
     try {
-        const resp = await fetch("http://localhost:3000/usuarios", {
+        const resp = await fetch(`${API_URL}/usuarios`, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ nombre_usuario, correo, password })
@@ -92,7 +95,7 @@ async function login() {
     const password = document.getElementById("password").value.trim();
 
     try {
-        const resp = await fetch("http://localhost:3000/usuarios/login", {
+        const resp = await fetch(`${API_URL}/usuarios/login`, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ correo, password })
@@ -134,7 +137,7 @@ async function mostrar_productos(categoria) {
     productos.classList.add("catalogo");
 
     try {
-        const resp = await fetch("http://localhost:3000/usuarios/productos", {
+        const resp = await fetch(`${API_URL}/usuarios/productos`, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ categoria })
@@ -168,8 +171,6 @@ async function mostrar_productos(categoria) {
             btnFav.classList.add("btn");
             btnFav.onclick = () => agregarAFavoritos(e.id_producto);
 
-
-
             const btnVer = document.createElement("button");
             btnVer.innerText = "Ver producto";
             btnVer.classList.add("btn", "comprar");
@@ -198,7 +199,7 @@ async function agregarAFavoritos(productoId) {
     }
 
     try {
-        const resp = await fetch("http://localhost:3000/favoritos", {
+        const resp = await fetch(`${API_URL}/favoritos`, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ usuarioId, productoId })
