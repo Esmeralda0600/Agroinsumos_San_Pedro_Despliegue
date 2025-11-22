@@ -64,97 +64,108 @@
     </footer>
 
     <!-- LÓGICA DEL PRODUCTO -->
-    <script>
-        document.addEventListener("DOMContentLoaded", () => {
+<script>
+document.addEventListener("DOMContentLoaded", () => {
 
-            const producto = JSON.parse(localStorage.getItem("productoSeleccionado"));
+    const producto = JSON.parse(localStorage.getItem("productoSeleccionado"));
 
-            if (!producto) {
-                alert("No se pudo cargar el producto.");
-                return window.location.href = "catalogo.html";
+    if (!producto) {
+        alert("No se pudo cargar el producto.");
+        return window.location.href = "catalogo.html";
+    }
+
+    // Insertar datos
+    document.getElementById("img-producto").src = producto.direccion_img || "imgs/ingrediente.png";
+    document.getElementById("nombre-producto").innerText = producto.nombre_producto;
+
+    document.getElementById("info-producto").innerHTML = `
+        <p>🌽 <strong>Descripción:</strong> ${producto.descripcion}</p>
+        <p>🧴 <strong>Presentación:</strong> ${producto.categoria_producto}</p>
+        <p>🚜 <strong>Ingrediente Activo:</strong> ${producto.ingrediente_activo}</p>
+        <p><strong>Cantidad disponible:</strong> ${producto.cantidad}</p>
+        <p><strong>Precio:</strong> $${producto.precio}</p>
+
+        <div class="acciones-producto">
+            <div class="botones-acciones">
+                <button id="btn-carrito" class="btn">Agregar al carrito</button>
+                <button id="btn-fav" class="btn">Agregar a favoritos</button>
+            </div>
+            <button id="btn-comprar" class="btn comprar">Comprar ahora</button>
+        </div>
+    `;
+
+    // Función para agregar al carrito
+    function agregarAlCarrito(prod) {
+        const usuarioId = localStorage.getItem("usuarioId");
+        let carrito = JSON.parse(localStorage.getItem(`carrito_${usuarioId}`)) || [];
+
+        const existe = carrito.find(p => p.id_producto === prod.id_producto);
+
+        if (existe) {
+            existe.cantidad++;
+        } else {
+            carrito.push({
+                id_producto: prod.id_producto,
+                nombre: prod.nombre_producto,
+                precio: prod.precio,
+                cantidad: 1,
+                imagen: prod.direccion_img || "imgs/ingrediente.png"
+            });
+        }
+
+        localStorage.setItem(`carrito_${usuarioId}`, JSON.stringify(carrito));
+    }
+
+    // Botón Agregar al carrito
+    document.getElementById("btn-carrito").addEventListener("click", () => {
+        agregarAlCarrito(producto);
+        window.location.href = "carrito.html";
+    });
+
+    // Botón Comprar
+    document.getElementById("btn-comprar").addEventListener("click", () => {
+        agregarAlCarrito(producto);
+        window.location.href = "pago.html";
+    });
+
+    // Botón Favoritos
+    document.getElementById("btn-fav").addEventListener("click", async () => {
+
+        const usuarioId = localStorage.getItem("usuarioId");
+        if (!usuarioId) {
+            alert("Inicia sesión para guardar favoritos.");
+            return window.location.href = "login.html";
+        }
+
+        try {
+            const resp = await fetch("https://agroinsumos-san-pedro-despliegue.onrender.com/favoritos", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
+                    usuarioId: usuarioId,
+                    productoId: producto.id_producto
+                })
+            });
+
+            const data = await resp.json();
+
+            if (resp.ok) {
+                alert("Producto agregado ❤️");
+                window.location.href = "favoritos.html";
+            } else {
+                alert("Error: " + data.error);
             }
 
-            // Insertar datos
-            document.getElementById("img-producto").src = producto.direccion_img || "imgs/ingrediente.png";
-            document.getElementById("nombre-producto").innerText = producto.nombre_producto;
+        } catch (err) {
+            console.error(err);
+            alert("Error conectando con el servidor");
+        }
 
-            document.getElementById("info-producto").innerHTML = `
-                <p>🌽 <strong>Descripción:</strong> ${producto.descripcion}</p>
-                <p>🧴 <strong>Presentación:</strong> ${producto.categoria_producto}</p>
-                <p>🚜 <strong>Ingrediente Activo:</strong> ${producto.ingrediente_activo}</p>
-                <p><strong>Cantidad disponible:</strong> ${producto.cantidad}</p>
-                <p><strong>Precio:</strong> $${producto.precio}</p>
+    });
 
-                <div class="acciones-producto">
-                    <div class="botones-acciones">
-                        <button id="btn-carrito" class="btn">Agregar al carrito</button>
-                        <button id="btn-fav" class="btn">Agregar a favoritos</button>
-                    </div>
-                    <button id="btn-comprar" class="btn comprar">Comprar ahora</button>
-                </div>
-            `;
+});
+</script>
 
-            // Función para agregar al carrito
-            function agregarAlCarrito(prod) {
-                const usuarioId = localStorage.getItem("usuarioId");
-                let carrito = JSON.parse(localStorage.getItem(`carrito_${usuarioId}`)) || [];
-
-                const existe = carrito.find(p => p.id_producto === prod.id_producto);
-
-                if (existe) {
-                    existe.cantidad++;
-                } else {
-                    carrito.push({
-                        id_producto: prod.id_producto,
-                        nombre: prod.nombre_producto,
-                        precio: prod.precio,
-                        cantidad: 1,
-                        imagen: prod.direccion_img || "imgs/ingrediente.png"
-                    });
-                }
-
-                localStorage.setItem(`carrito_${usuarioId}`, JSON.stringify(carrito));
-            }
-
-            // Botón Agregar al carrito
-            document.getElementById("btn-carrito").addEventListener("click", () => {
-                agregarAlCarrito(producto);
-                window.location.href = "carrito.html";
-            });
-
-            // Botón Comprar
-            document.getElementById("btn-comprar").addEventListener("click", () => {
-                agregarAlCarrito(producto);
-                window.location.href = "pago.html";
-            });
-
-            // Botón Favoritos
-            document.getElementById("btn-fav").addEventListener("click", async () => {
-
-                const usuarioId = localStorage.getItem("usuarioId");
-                if (!usuarioId) {
-                    alert("Inicia sesión para guardar favoritos.");
-                    return window.location.href = "login.html";
-                }
-
-                const resp = await fetch("https://agroinsumos-san-pedro-despliegue.onrender.com/usuarios/categorias")
-                    method: "POST",
-                    headers: { "Content-Type": "application/json" },
-                    body: JSON.stringify({ usuarioId, productoId: producto.id_producto })
-                });
-
-                const data = await resp.json();
-
-                if (resp.ok) {
-                    alert("Producto agregado ❤️");
-                    window.location.href = "favoritos.html";
-                } else {
-                    alert("Error: " + data.error);
-                }
-            });
-
-        });
-    </script>
 
 </body>
 </html>
