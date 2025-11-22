@@ -149,4 +149,30 @@ export async function mostrar_ingredientes(req, res) {
 // ============================================================
 // PRODUCTOS POR CATEGORÍA
 // ============================================================
-expor
+export async function mostrar_productos(req, res) {
+  try {
+    let { categoria } = req.body;
+
+    if (!categoria) return res.status(400).json({ error: "Falta categoría" });
+
+    // La BD guarda categorías EN MAYÚSCULAS
+    categoria = categoria.toUpperCase();
+
+    const existe = await CategoriaMongo.findOne({
+      nombre_categoria: categoria
+    });
+
+    if (!existe) {
+      return res.status(404).json({ error: "Categoría no encontrada" });
+    }
+
+    const productos = await ProductoMongo.find({
+      categoria_producto: categoria
+    });
+
+    res.json(productos);
+
+  } catch (error) {
+    res.status(500).json({ error: "Error al obtener productos" });
+  }
+}
