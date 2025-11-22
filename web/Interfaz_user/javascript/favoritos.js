@@ -3,13 +3,16 @@ document.addEventListener("DOMContentLoaded", async () => {
     const lista = document.getElementById("lista-favoritos");
     const totalFavoritos = document.getElementById("total-favoritos");
 
+    // URL BASE DE PRODUCCIÓN
+    const API_URL = "https://agroinsumos-san-pedro-despliegue.onrender.com";
+
     if (!usuarioId) {
         lista.innerHTML = "<p>Debes iniciar sesión para ver tus favoritos.</p>";
         return;
     }
 
     try {
-        const resp = await fetch(`http://localhost:3000/favoritos/${usuarioId}`);
+        const resp = await fetch(`${API_URL}/favoritos/${usuarioId}`);
         const data = await resp.json();
 
         const favoritos = data.favoritos || [];
@@ -48,7 +51,7 @@ document.addEventListener("DOMContentLoaded", async () => {
             btn.addEventListener("click", async () => {
                 const id = btn.dataset.id;
 
-                await fetch(`http://localhost:3000/favoritos/${id}`, {
+                await fetch(`${API_URL}/favoritos/${id}`, {
                     method: "DELETE"
                 });
 
