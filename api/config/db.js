@@ -16,7 +16,7 @@ export async function connectMongo() {
 
   for (let i = 1; i <= MAX_RETRIES; i++) {
     try {
-      console.log(`🔌 Intento ${i}: Conectando a MongoDB...`);
+      console.log(`🔌 Intento ${i}: Conectando a MongoDB -> ${uri}`);
 
       await mongoose.connect(uri, {
         serverSelectionTimeoutMS: 5000,
@@ -27,17 +27,15 @@ export async function connectMongo() {
       return;
 
     } catch (error) {
-      console.error(
-        `❌ Error conectando a Mongo (intento ${i}): ${error.message}`
-      );
+      console.error(`❌ Error conectando a MongoDB (intento ${i}): ${error.message}`);
 
       if (i === MAX_RETRIES) {
         console.error("⚠️ No se pudo conectar a MongoDB después de varios intentos");
         process.exit(1);
       }
 
-      // Espera antes del próximo intento
-      await new Promise((res) => setTimeout(res, RETRY_DELAY));
+      // Esperar antes de reintentar
+      await new Promise(res => setTimeout(res, RETRY_DELAY));
     }
   }
 }
