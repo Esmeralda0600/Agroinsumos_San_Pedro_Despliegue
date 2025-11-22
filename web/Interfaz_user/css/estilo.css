@@ -1,0 +1,520 @@
+/* ============================================================
+ * AGROINSUMOS SAN PEDRO
+ * Archivo: estilo.css
+ * Descripción: Estilos principales del sitio web
+ * Cumple con el estándar de codificación HTML/CSS institucional
+ * ============================================================ */
+
+/* -----------------------------------------------------------------
+ * # BASE GLOBAL
+ * ----------------------------------------------------------------- */
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  color: #111;
+  background-image: url("imgs/fondo.jpg");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+}
+
+main {
+  flex: 1;
+}
+
+.fondo {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  z-index: -1;
+}
+
+
+/* -----------------------------------------------------------------
+ * # HEADER
+ * ----------------------------------------------------------------- */
+.header {
+  background-color: #f9f9f9;
+  color: #001f3f;
+  font-size: 1.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 40px;
+  height: 100px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+}
+
+.header__logo img {
+  height: 80px;
+  width: auto;
+  margin-right: 170px;
+}
+
+.header__acciones {
+  display: flex;
+  align-items: center;
+  gap: 25px;
+  margin-left: 80px;
+}
+
+/* -----------------------------------------------------------------
+ * # BOTONES DEL HEADER
+ * ----------------------------------------------------------------- */
+.acciones__btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  transition: transform 0.2s ease;
+}
+
+.acciones__icono {
+  width: 40px;
+  height: 40px;
+}
+
+.acciones__btn:hover {
+  transform: scale(1.1);
+}
+
+.acciones__btn--login,
+.acciones__btn--registro {
+  padding: 8px 15px;
+  border-radius: 5px;
+  border: none;
+  font-size: 1rem;
+  color: #fff;
+  background-color: #0f684b;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+  transition: background 0.3s, transform 0.2s ease;
+}
+
+.acciones__btn--login:hover,
+.acciones__btn--registro:hover {
+  background-color: #03484c;
+  transform: scale(1.1);
+}
+
+/* -----------------------------------------------------------------
+ * # BUSCADOR
+ * ----------------------------------------------------------------- */
+
+ 
+.buscador {
+  width: 100px;           
+  max-width: 100%;        
+  margin: 0;              
+  border-radius: 0; 
+}
+
+.buscador__contenedor {
+  display: flex;
+  width: 500px;
+  box-sizing: border-box; 
+  align-items: center ;
+  padding: 5px 10px;
+  height: 30px;
+  border-radius: 30px;
+  background-color: #fff;
+  border-radius: 15px;
+  box-shadow: 0 7px 10px rgba(0, 0, 0, 0.1);
+}
+
+.buscador__input {
+  flex: 1;
+  width: 100%;
+  border: none;
+  background: transparent;
+  font-size: 1rem;
+  color: #001f3f;
+  padding-right: 8px;
+  outline: none;
+}
+
+.buscador__input::placeholder {
+  color: rgba(0, 0, 128, 0.6);
+}
+
+.buscador__icono {
+  width: 22px;
+  height: 22px;
+  margin-left: 8px;
+  cursor: pointer;
+}
+
+/* -----------------------------------------------------------------
+ * # CARRUSEL
+ * ----------------------------------------------------------------- */
+.carrusel {
+  position: relative;
+  max-width: 100%;
+  overflow: hidden;
+}
+
+.carrusel__contenedor {
+  position: relative;
+}
+
+.carrusel__slide {
+  display: none;
+}
+
+.carrusel__imagen {
+  width: 100%;
+  height: 500px;
+  object-fit: cover;
+}
+
+.carrusel__control {
+  cursor: pointer;
+  position: absolute;
+  top: 50%;
+  padding: 16px;
+  color: #fff;
+  font-weight: bold;
+  font-size: 24px;
+  transition: 0.3s ease;
+  border-radius: 3px;
+  background-color: rgba(0, 0, 0, 0.3);
+  user-select: none;
+}
+
+.carrusel__control--next {
+  right: 0;
+}
+
+.carrusel__control:hover {
+  background-color: rgba(0, 0, 0, 0.6);
+}
+
+/* Animación */
+.fade {
+  animation: fade 1s;
+}
+
+@keyframes fade {
+  from { opacity: 0.4; }
+  to { opacity: 1; }
+}
+
+/* Puntos de navegación */
+.carrusel__puntos {
+  text-align: center;
+  margin-top: 15px;
+}
+
+.carrusel__dot {
+  cursor: pointer;
+  height: 12px;
+  width: 12px;
+  margin: 0 5px;
+  background-color: #bbb;
+  border-radius: 50%;
+  display: inline-block;
+  transition: background-color 0.6s ease;
+}
+
+.carrusel__dot:hover,
+.carrusel__dot--active {
+  background-color: #717171;
+}
+
+/* Botones centrales */
+.carrusel__botones {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 10;
+  display: flex;
+  gap: 20px;
+}
+
+.carrusel__botones button {
+  background-color: rgba(255, 255, 255, 0.8);
+  color: #333;
+  border: none;
+  padding: 12px 20px;
+  border-radius: 8px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.carrusel__botones button:hover {
+  background-color: #3c8c40;
+  color: #fff;
+  transform: scale(1.05);
+}
+
+/* -----------------------------------------------------------------
+ * # OFERTAS Y PROMOCIONES
+ * ----------------------------------------------------------------- */
+.ofertas {
+  background: linear-gradient(135deg, #e8f5e9 0%, #c8e6c9 100%);
+  padding: 60px 20px;
+  text-align: center;
+}
+
+.ofertas__titulo {
+  font-size: 2rem;
+  font-weight: 700;
+  color: #2e7d32;
+  margin-bottom: 40px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.ofertas__contenedor {
+  display: flex;
+  justify-content: center;
+  align-items: stretch;
+  gap: 30px;
+  flex-wrap: wrap;
+}
+
+.oferta {
+  background: #fff;
+  border-radius: 20px;
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15);
+  overflow: hidden;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  width: 300px;
+}
+
+.oferta:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.25);
+}
+
+.oferta__img {
+  width: 100%;
+  height: 200px;
+  object-fit: cover;
+}
+
+.oferta__info {
+  padding: 20px;
+}
+
+.oferta__titulo {
+  color: #1b5e20;
+  font-size: 1.3rem;
+  margin-bottom: 8px;
+}
+
+.oferta__desc {
+  color: #4caf50;
+  font-weight: 600;
+  margin-bottom: 15px;
+}
+
+.btn--comprar {
+  background-color: #4caf50;
+  color: #fff;
+  border: none;
+  border-radius: 25px;
+  padding: 10px 20px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+.btn--comprar:hover {
+  background-color: #2e7d32;
+}
+
+/* -----------------------------------------------------------------
+ * # SECCIÓN ABOUT (SOBRE NOSOTROS)
+ * ----------------------------------------------------------------- */
+.about {
+  padding: 5rem 2rem;
+  display: flex;
+  justify-content: center;
+}
+
+.about__contenedor {
+  display: flex;
+  align-items: center;
+  gap: 3rem;
+  max-width: 1200px;
+  width: 100%;
+}
+
+.about__texto {
+  flex: 1;
+}
+
+.about__titulo {
+  font-size: 2rem;
+  margin-bottom: 1rem;
+}
+
+.about__descripcion {
+  font-size: 1rem;
+  line-height: 1.6;
+  color: #333;
+}
+
+.about__imagen {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+}
+
+.about__img {
+  width: 100%;
+  max-width: 500px;
+  border-radius: 20% 80% 70% 30% / 30% 40% 60% 70%;
+  object-fit: cover;
+}
+
+/* -----------------------------------------------------------------
+ * # FOOTER
+ * ----------------------------------------------------------------- */
+.footer {
+  width: 100%;
+  background-color: #3b8952;
+  color: #fff;
+  text-align: center;
+  padding: 10px 0;
+}
+
+.footer__titulo {
+  margin-bottom: 10px;
+}
+
+.footer__texto {
+  margin: 5px 0;
+  font-size: 14px;
+}
+
+/* -----------------------------------------------------------------
+ * # BOTÓN DE CONTACTO
+ * ----------------------------------------------------------------- */
+.btn--contacto {
+  text-decoration: none;
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  background-color: #4caf50;
+  color: #fff;
+  border: none;
+  padding: 12px 20px;
+  border-radius: 8px;
+  font-size: 16px;
+  cursor: pointer;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+  transition: transform 0.2s, background-color 0.2s;
+}
+
+.btn--contacto:hover {
+  background-color: #45a049;
+  transform: scale(1.05);
+}
+
+/* -----------------------------------------------------------------
+ * # MEDIA QUERIES
+ * ----------------------------------------------------------------- */
+
+/* TABLET */
+@media (max-width: 1024px) {
+  .header {
+    flex-wrap: wrap;
+    justify-content: center;
+    height: auto;
+    padding: 20px;
+    text-align: center;
+  }
+
+  .header__logo img {
+    margin: 0 auto 15px;
+    height: 90px;
+  }
+
+  .buscador {
+    width: 80%;
+    margin-bottom: 15px;
+  }
+
+  .header__acciones {
+    margin-left: 0;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+
+  .carrusel {
+    height: 350px;
+    max-width: 95%;
+  }
+
+  .about__contenedor {
+    flex-direction: column;
+  }
+}
+
+/* MOBILE */
+@media (max-width: 768px) {
+  .header {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .header__logo img {
+    height: 80px;
+  }
+
+  .buscador {
+    width: 90%;
+    margin: 10px 0;
+  }
+
+  .acciones__btn--login,
+  .acciones__btn--registro {
+    font-size: 0.9rem;
+    padding: 6px 10px;
+  }
+
+  .carrusel {
+    height: 250px;
+    margin: 30px auto;
+  }
+
+  .about__contenedor {
+    flex-direction: column;
+    text-align: center;
+  }
+}
+
+/* SMALL DEVICES */
+@media (max-width: 480px) {
+  .acciones__btn--login,
+  .acciones__btn--registro {
+    padding: 5px 8px;
+    font-size: 0.8rem;
+  }
+
+  .buscador__icono {
+    width: 18px;
+    height: 18px;
+  }
+
+  .btn--contacto {
+    font-size: 14px;
+    padding: 10px 15px;
+  }
+
+  .carrusel {
+    height: 200px;
+  }
+
+  .ofertas__titulo {
+    font-size: 1.6rem;
+  }
+}

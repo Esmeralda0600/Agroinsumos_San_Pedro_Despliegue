@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <!-- ============================================================
+         Agroinsumos San Pedro
+         Archivo: catalogo.html
+         Descripción: Página del catálogo de productos con filtros
+         Autor: [Tu Nombre o Equipo 3]
+         Cumple con el estándar de codificación HTML institucional
+         ============================================================ -->
+
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Catálogo - Agroinsumos San Pedro</title>
+
+    <!-- Hoja de estilos principal -->
+    <link rel="stylesheet" href="css/estilocatalogo.css" />
+  </head>
+
+  <body>
+    <!-- ============================================================
+         ENCABEZADO PRINCIPAL
+         Contiene el logotipo, buscador y botones de navegación
+         ============================================================ -->
+    <header class="Header">
+      <!-- Logo -->
+      <div class="logo">
+        <img
+          src="imgs/logo.png"
+          alt="Logotipo de Agroinsumos San Pedro"
+          class="logo__img"
+        />
+      </div>
+
+      <!-- Buscador -->
+      <div class="Buscador">
+        <div class="input-con-imagen">
+          <input
+            type="text"
+            placeholder="Buscar productos..."
+            aria-label="Buscar productos"
+          />
+          <img
+            src="imgs/lupa.png"
+            alt="Icono de búsqueda"
+            class="icono-lupa"
+          />
+        </div>
+      </div>
+
+      <!-- Botones de navegación -->
+      <div class="botones-derecha">
+        <!-- Botón de Favoritos -->
+        <button
+          class="carrito-de-compras"
+          type="button"
+          onclick="window.location.href='favoritos.html'"
+          aria-label="Ir a favoritos"
+        >
+          <img src="imgs/favs.png" alt="Icono favoritos" />
+        </button>
+
+        <!-- Botón del Carrito -->
+        <button
+          class="carrito-de-compras"
+          type="button"
+          onclick="window.location.href='carrito.html'"
+          aria-label="Ir al carrito de compras"
+        >
+          <img src="imgs/carrito.png" alt="Icono carrito" />
+        </button>
+
+        <!-- Botón Iniciar sesión -->
+        <button
+          class="btn-login"
+          type="button"
+          onclick="window.location.href='login.html'"
+        >
+          Iniciar sesión
+        </button>
+
+        <!-- Botón Registrarse -->
+        <button
+          class="btn-registrarse"
+          type="button"
+          onclick="window.location.href='registro.html'"
+        >
+          Registrarse
+        </button>
+      </div>
+    </header>
+
+    <!-- ============================================================
+         FILTROS DE BÚSQUEDA
+         Permiten cambiar el tipo de catálogo mostrado
+         ============================================================ -->
+    <section class="barra-filtros-busqueda">
+      <label>
+        <input
+          type="radio"
+          name="tipo-busqueda"
+          value="producto"
+          checked
+        />
+        Producto
+      </label>
+
+      <label>
+        <input type="radio" name="tipo-busqueda" value="marca" />
+        Marca
+      </label>
+
+      <label>
+        <input type="radio" name="tipo-busqueda" value="ingrediente" />
+        Ingrediente Activo
+      </label>
+    </section>
+
+    <!-- ============================================================
+         CATÁLOGO DE PRODUCTOS
+         Las tarjetas se cargan dinámicamente con JavaScript
+         ============================================================ -->
+    <main class="catalogo">
+      <h2 id="titulo-catalogo">CATÁLOGO DE PRODUCTOS</h2>
+
+      <!-- Contenedor dinámico de tarjetas -->
+      <div class="productos-grid" id="contenedor-tarjetas"></div>
+    </main>
+
+    <!-- ============================================================
+         BOTÓN VOLVER AL INICIO
+         ============================================================ -->
+    <div class="volver">
+      <button
+        class="btn-volver"
+        type="button"
+        onclick="window.location.href='index.html'"
+      >
+        Volver
+      </button>
+    </div>
+
+    <!-- ============================================================
+         PIE DE PÁGINA
+         ============================================================ -->
+    <footer class="footer">
+      <div class="footer-contenido">
+        <h2>Agroinsumos San Pedro</h2>
+        <p>Todos los derechos reservados © 2025</p>
+      </div>
+    </footer>
+
+    <!-- ============================================================
+         SCRIPTS
+         Enlaza el archivo JavaScript del catálogo
+         ============================================================ -->
+    <!-- ⚠️ Corrección de nombre: "catalogo animaciones.js" → "catalogo-animaciones.js" -->
+    <!-- <script src="javascript/catalogo-animaciones.js"></script> -->
+    <script type="module" src="javascript/logica.js"></script>
+  </body>
+</html>

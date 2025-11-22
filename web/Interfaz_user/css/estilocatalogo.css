@@ -1,0 +1,690 @@
+/* ==================== ESTILOS BASE ==================== */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    color: #111;
+    background-image: url("../imgs/fondo.jpg");
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+}
+
+main {
+    flex: 1;
+}
+
+.fondo {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    z-index: -1;
+}
+
+/* ==================== HEADER ==================== */
+.Header {
+    background-color: #f9f9F9;
+    width: 100%;
+    margin: 0;
+    position: relative;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    /* 🔹 permite que los elementos bajen */
+    padding: 10px 20px;
+    box-sizing: border-box;
+}
+
+.logo img {
+    height: 100px;
+    width: auto;
+    margin-right: 30px;
+}
+
+.botones-derecha {
+    display: flex;
+    align-items: center;
+    justify-content: center; /* ✔ centrado */
+    gap: 15px;
+    width: 100%; /* ✔ que ocupen todo el ancho disponible */
+    margin: 0;   /* ✔ quitar el empuje */
+}
+
+/* Botones de íconos */
+.boton-favoritos,
+.carrito-de-compras {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+    transition: transform 0.2s ease;
+}
+
+.boton-favoritos img,
+.carrito-de-compras img {
+    width: 40px;
+    height: 40px;
+}
+
+.boton-favoritos:hover,
+.carrito-de-compras:hover {
+    transform: scale(1.1);
+}
+
+/* Buscador */
+.Buscador {
+    background: linear-gradient(180deg, #fff9f5 0%, #f3ecff 100%);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    width: 50%;
+    height: 40px;
+    border-radius: 30px;
+    margin: 10px auto;
+}
+
+.input-con-imagen {
+    display: flex;
+    align-items: center;
+    padding: 5px 10px;
+    border-radius: 15px;
+    height: 100%;
+    background-color: white;
+    box-shadow: 0 7px 10px rgba(0, 0, 0, 0.1);
+}
+
+.input-con-imagen input {
+    flex: 1;
+    border: none;
+    background: transparent;
+    font-size: 1rem;
+    color: navy;
+    padding-right: 8px;
+    outline: none;
+}
+
+.input-con-imagen input::placeholder {
+    color: rgba(0, 0, 128, 0.6);
+}
+
+.icono-lupa {
+    width: 22px;
+    height: 22px;
+    margin-left: 8px;
+    cursor: pointer;
+}
+
+/* ==================== BOTONES PRINCIPALES ==================== */
+.btn-login,
+.btn-registrarse {
+    padding: 8px 15px;
+    border-radius: 5px;
+    border: none;
+    cursor: pointer;
+    font-size: 1rem;
+    color: white;
+    background-color: #0f684b;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    transition: 0.3s;
+}
+
+.btn-login:hover,
+.btn-registrarse:hover {
+    background-color: #03484c;
+    transform: scale(1.1);
+}
+
+/* ==================== CARRUSEL ==================== */
+.carrusel {
+    height: 300px;
+    width: 90%;
+    max-width: 600px;
+    margin: 50px auto;
+    position: relative;
+    background-color: #eeeaf1;
+    padding: 20px;
+    border-radius: 15px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.contenedor-carrusel {
+    position: relative;
+    overflow: hidden;
+    border-radius: 10px;
+}
+
+.slide {
+    display: none;
+}
+
+.slide img {
+    width: 100%;
+    border-radius: 10px;
+}
+
+/* Navegación del carrusel */
+.prev,
+.next {
+    cursor: pointer;
+    position: absolute;
+    top: 50%;
+    padding: 10px;
+    color: white;
+    font-weight: bold;
+    font-size: 20px;
+    background-color: rgba(0, 0, 0, 0.4);
+    border-radius: 50%;
+    transform: translateY(-50%);
+    transition: 0.3s;
+}
+
+.next {
+    right: 10px;
+}
+
+.prev {
+    left: 10px;
+}
+
+.prev:hover,
+.next:hover {
+    background-color: rgba(0, 0, 0, 0.6);
+}
+
+/* Puntos */
+.puntos {
+    text-align: center;
+    margin-top: 15px;
+}
+
+.dot {
+    height: 12px;
+    width: 12px;
+    margin: 0 5px;
+    background-color: #bbb;
+    border-radius: 50%;
+    display: inline-block;
+    cursor: pointer;
+}
+
+.active,
+.dot:hover {
+    background-color: #717171;
+}
+
+/* ==================== PRODUCTOS ==================== */
+.catalogo {
+    background: linear-gradient(135deg, #e8f5e9 0%, #c8e6c9 100%);
+    text-align: center;
+    padding: 60px 20px;
+}
+
+.catalogo h2 {
+    font-size: 2rem;
+    color: #076504;
+    margin-bottom: 40px;
+    letter-spacing: 2px;
+}
+
+/* Cuadrícula adaptable */
+.productos-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 25px;
+    justify-items: center;
+    padding: 0 40px;
+}
+
+.tarjeta {
+    position: relative;
+    width: 100%;
+    max-width: 400px;
+    height: 250px;
+    background-size: cover;
+    background-position: center;
+    overflow: hidden;
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3);
+    transition: 0.3s;
+    cursor: pointer;
+}
+
+.tarjeta:hover {
+    transform: scale(1.05);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.4);
+}
+
+.overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.35);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background 0.3s ease;
+}
+
+.tarjeta:hover .overlay {
+    background: rgba(0, 0, 0, 0.55);
+}
+
+.overlay p {
+    color: white;
+    font-size: 1.6rem;
+    font-weight: bold;
+    text-shadow: 0 3px 6px rgba(0, 0, 0, 0.5);
+}
+
+/* ==================== FOOTER ==================== */
+.footer {
+    background-color: #3B8952;
+    color: white;
+    text-align: center;
+    padding: 15px 10px;
+}
+
+.footer-contenido h2 {
+    margin-bottom: 10px;
+}
+
+.footer-contenido p {
+    margin: 5px 0;
+    font-size: 14px;
+}
+
+/* ==================== BOTÓN CONTACTAR ==================== */
+.boton-contactar {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    padding: 12px 20px;
+    border-radius: 8px;
+    font-size: 16px;
+    cursor: pointer;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    transition: 0.2s;
+}
+
+.boton-contactar:hover {
+    background-color: #45a049;
+    transform: scale(1.05);
+}
+
+/* ==================== RESPONSIVIDAD ==================== */
+
+/* Tablets */
+@media (max-width: 992px) {
+    .Header {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+    }
+
+    .logo img {
+        height: 90px;
+        margin: 10px 0;
+    }
+
+    .Buscador {
+        width: 80%;
+    }
+
+    .productos-grid {
+        padding: 0 20px;
+        grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    }
+
+    .tarjeta {
+        height: 220px;
+    }
+}
+
+/* Celulares grandes */
+@media (max-width: 768px) {
+    .Header {
+        flex-direction: column;
+    }
+
+    .botones-derecha {
+        justify-content: center;
+        margin: 10px 0;
+    }
+
+    .Buscador {
+        width: 90%;
+    }
+
+    .carrusel {
+        width: 95%;
+        height: auto;
+        padding: 10px;
+    }
+
+    .tarjeta {
+        height: 200px;
+    }
+
+    .overlay p {
+        font-size: 1.2rem;
+    }
+
+    .boton-contactar {
+        padding: 10px 15px;
+        font-size: 14px;
+    }
+}
+
+/* Celulares pequeños */
+@media (max-width: 480px) {
+    .Header {
+        flex-direction: column;
+        text-align: center;
+    }
+
+    .logo img {
+        height: 70px;
+    }
+
+    .Buscador {
+        width: 100%;
+        margin: 10px 0;
+    }
+
+    .productos-grid {
+        grid-template-columns: 1fr;
+        padding: 0 10px;
+    }
+
+    .tarjeta {
+        height: 180px;
+    }
+
+    .overlay p {
+        font-size: 1rem;
+    }
+
+    .footer p {
+        font-size: 0.85rem;
+    }
+}
+
+.volver {
+    text-align: center;
+    margin-top: 20px;
+    margin-bottom: 120px;
+}
+
+.btn-volver {
+    display: block;
+    margin: 30px auto;
+    /* centrado horizontal */
+    padding: 12px 25px;
+    background-color: #2e7d32;
+    /* verde corporativo */
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.btn-volver:hover {
+    background-color: #114d30;
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+}
+
+.producto-detalle {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    gap: 60px;
+    padding: 60px;
+    /* ✅ Fondo general blanco */
+}
+
+/* 🔹 Barra de filtros */
+.barra-filtros-busqueda {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 1rem;
+    flex-wrap: wrap;
+    margin: 20px auto;
+    padding: 10px 20px;
+    background-color: #fff;
+    border-radius: 20px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+    max-width: 700px;
+}
+
+/* 🔹 Estilo general de las opciones */
+.barra-filtros-busqueda label {
+    cursor: pointer;
+    font-weight: 600;
+    color: #444;
+    padding: 10px 20px;
+    border: 2px solid #ccc;
+    border-radius: 25px;
+    transition: all 0.3s ease;
+    background-color: #f9f9f9;
+}
+
+/* 🔹 Efecto hover */
+.barra-filtros-busqueda label:hover {
+    background-color: #eaeaea;
+    border-color: #888;
+}
+
+/* 🔹 Ocultar los botones de radio nativos */
+.barra-filtros-busqueda input[type="radio"] {
+    display: none;
+}
+
+/* 🔹 Cuando uno está seleccionado */
+.barra-filtros-busqueda input[type="radio"]:checked+label,
+.barra-filtros-busqueda label:has(input[type="radio"]:checked) {
+    background-color: #4CAF50;
+    color: white;
+    border-color: #4CAF50;
+    box-shadow: 0 0 10px rgba(76, 175, 80, 0.4);
+}
+
+
+@media (max-width: 1024px) {
+    body {
+        background-size: cover;       /* asegúrate que cubra todo */
+        background-position: center;  /* centrado */
+        background-attachment: scroll; /* evita cortes en tablet/móvil */
+    }
+
+    .fondo {
+        width: 100vw;   /* toda la ventana horizontal */
+        height: 100vh;  /* toda la ventana vertical */
+        object-fit: cover;
+    }
+
+    .Header {
+        flex-direction: column;
+        height: auto;
+        padding: 20px;
+        width: 100%;
+    }
+
+    .producto-detalle {
+        gap: 30px;
+        padding: 40px;
+    }
+
+    .tarjeta-producto {
+        width: 70%;
+    }
+
+    .info-producto {
+        width: 80%;
+        font-size: 1.1rem;
+    }
+}
+
+
+/* Tablets pequeñas / móviles grandes hasta 768px */
+@media (max-width: 768px) {
+    .Header {
+        flex-direction: column;
+        height: auto;
+        padding: 15px;
+        text-align: center;
+    }
+
+    .logo img {
+        margin: 0;
+        height: 80px;
+    }
+
+    .Buscador {
+        width: 90%;
+        margin: 15px 0;
+    }
+
+    .botones-derecha {
+        margin: 10px 0 0;
+        flex-wrap: wrap;
+        gap: 15px;
+        justify-content: center;
+    }
+
+    .btn-login,
+    .btn-registrarse {
+        font-size: 0.9rem;
+        padding: 6px 12px;
+    }
+
+    .producto-detalle {
+        flex-direction: column;
+        align-items: center;
+        gap: 20px;
+        padding: 20px;
+    }
+
+    .tarjeta-producto,
+    .info-producto {
+        width: 90%;
+    }
+
+    .info-producto {
+        font-size: 1rem;
+        height: auto;
+    }
+
+    .acciones-producto,
+    .botones-acciones {
+        flex-direction: column;
+    }
+
+    .btn {
+        width: 100%;
+        padding: 10px;
+        font-size: 1rem;
+    }
+
+    .footer {
+        position: static;
+        padding: 10px;
+    }
+
+    .volver {
+        margin-bottom: 40px;
+    }
+
+    .boton-contactar {
+        right: 10px;
+        bottom: 10px;
+        padding: 10px 15px;
+        font-size: 14px;
+    }
+}
+
+/* Móviles pequeños hasta 480px */
+@media (max-width: 480px) {
+    .Header {
+        padding: 10px;
+    }
+
+    .logo img {
+        height: 60px;
+    }
+
+    .Buscador {
+        width: 95%;
+    }
+
+    .botones-derecha {
+        gap: 10px;
+    }
+
+    .producto-detalle {
+        padding: 10px;
+        gap: 15px;
+    }
+
+    .tarjeta-producto,
+    .info-producto {
+        width: 100%;
+    }
+
+    .info-producto {
+        font-size: 0.9rem;
+    }
+
+    .btn {
+        padding: 8px;
+        font-size: 0.9rem;
+    }
+
+    .boton-contactar {
+        right: 5px;
+        bottom: 5px;
+        padding: 8px 12px;
+        font-size: 12px;
+    }
+}
+
+/* Fondo completo entre 768px y 1024px */
+@media (min-width: 769px) and (max-width: 1024px) {
+    body {
+        background-size: cover;       /* asegura que cubra toda la pantalla */
+        background-position: center;  /* centrado */
+        background-attachment: scroll; /* evita que se corte en tablet */
+    }
+
+    .Header {
+        flex-direction: column;
+        height: auto;
+        padding: 20px;
+        width: 100%;
+    }
+
+    .producto-detalle {
+        gap: 30px;
+        padding: 40px;
+    }
+
+    .tarjeta-producto {
+        width: 70%;
+    }
+
+    .info-producto {
+        width: 80%;
+        font-size: 1.1rem;
+    }
+}

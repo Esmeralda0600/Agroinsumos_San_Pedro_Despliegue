@@ -1,0 +1,334 @@
+/* ==================== ESTILOS BASE ==================== */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    color: #111;
+    background-image: url("../imgs/fondo2.jpg");
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+}
+
+.fondo {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    z-index: -1;
+}
+
+/* ==================== HEADER ==================== */
+.Header {
+    background-color: #f9f9f9;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 15px 25px;
+    flex-wrap: wrap;
+    box-sizing: border-box;
+}
+
+.logo img {
+    height: 90px;
+    width: auto;
+    margin-right: 20px;
+}
+
+/* Buscador */
+.Buscador {
+    background: white;
+    border-radius: 30px;
+    width: 40%;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 5px 15px;
+    box-shadow: 0 3px 8px rgba(0,0,0,0.2);
+    margin: 10px 0;
+}
+
+.input-con-imagen {
+    display: flex;
+    align-items: center;
+    width: 100%;
+}
+
+.input-con-imagen input {
+    flex: 1;
+    border: none;
+    outline: none;
+    font-size: 1rem;
+    color: #2c3e50;
+}
+
+.icono-lupa {
+    width: 20px;
+    height: 20px;
+    cursor: pointer;
+}
+
+/* Botones superiores */
+.botones-derecha {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.carrito-de-compras {
+    background: none;
+    border: none;
+    cursor: pointer;
+    transition: transform 0.2s ease;
+}
+
+.carrito-de-compras img {
+    width: 40px;
+    height: 40px;
+}
+
+.carrito-de-compras:hover {
+    transform: scale(1.1);
+}
+
+/* Botones login y registro */
+.btn-login, .btn-registrarse {
+    background-color: #0f684b;
+    color: white;
+    border: none;
+    padding: 8px 15px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 0.95rem;
+    transition: 0.3s;
+}
+
+.btn-login:hover,
+.btn-registrarse:hover {
+    background-color: #03484c;
+    transform: scale(1.1);
+}
+
+/* ==================== CATÁLOGO ==================== */
+.catalogo {
+    padding: 50px 20px;
+    text-align: center;
+}
+
+.catalogo h2 {
+    color: white;
+    font-size: 2rem;
+    letter-spacing: 2px;
+    margin-bottom: 40px;
+}
+
+/* Tarjetas de productos */
+.productos-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 25px;
+    justify-items: center;
+    padding: 0 40px;
+    box-sizing: border-box;
+}
+
+.tarjeta {
+    background-color: rgba(255,255,255,0.95);
+    border-radius: 12px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+    overflow: hidden;
+    width: 100%;
+    max-width: 300px;
+    transition: transform 0.3s ease;
+    text-align: center;
+}
+
+.tarjeta:hover {
+    transform: translateY(-5px);
+}
+
+.tarjeta img {
+    width: 100%;
+    height: 180px;
+    object-fit: cover;
+}
+
+.tarjeta h3 {
+    margin: 10px 0 5px;
+    color: #2f5d3d;
+    font-size: 1.1rem;
+}
+
+.tarjeta p {
+    font-size: 1rem;
+    color: #333;
+    margin-bottom: 10px;
+}
+
+/* Botones dentro de tarjeta */
+.btn {
+    background-color: #3B8952;
+    border: none;
+    color: white;
+    padding: 8px 12px;
+    border-radius: 5px;
+    cursor: pointer;
+    margin: 5px;
+    font-size: 0.9rem;
+    transition: 0.3s;
+}
+
+.btn:hover {
+    background-color: #2e6b3f;
+    transform: scale(1.05);
+}
+
+.btn.comprar {
+    background-color: #0f684b;
+}
+
+.btn.comprar:hover {
+    background-color: #04523b;
+}
+
+/* ==================== BOTÓN VOLVER ==================== */
+.volver {
+    text-align: center;
+    margin: 30px 0 60px;
+}
+
+.btn-volver {
+    background-color: #3B8952;
+    border: none;
+    color: white;
+    padding: 12px 20px;
+    border-radius: 8px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.btn-volver:hover {
+    background-color: #2e6b3f;
+    transform: scale(1.05);
+}
+
+/* ==================== FOOTER ==================== */
+.footer {
+    background-color: #3B8952;
+    color: white;
+    text-align: center;
+    padding: 20px;
+}
+
+.footer h2 {
+    margin: 0;
+}
+
+.footer p {
+    font-size: 0.9rem;
+    margin-top: 5px;
+}
+
+/* ==================== RESPONSIVIDAD ==================== */
+
+/* Tablets */
+@media (max-width: 992px) {
+    .Header {
+        flex-direction: column;
+        text-align: center;
+        padding: 15px;
+    }
+
+    .logo img {
+        height: 80px;
+        margin-bottom: 10px;
+    }
+
+    .Buscador {
+        width: 80%;
+        margin: 10px auto;
+    }
+
+    .productos-grid {
+        grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    }
+
+    .tarjeta img {
+        height: 160px;
+    }
+}
+
+/* Celulares grandes */
+@media (max-width: 768px) {
+    .Header {
+        flex-direction: column;
+    }
+
+    .botones-derecha {
+        justify-content: center;
+        flex-wrap: wrap;
+    }
+
+    .Buscador {
+        width: 90%;
+    }
+
+    .tarjeta {
+        max-width: 100%;
+    }
+
+    .tarjeta img {
+        height: 150px;
+    }
+
+    .catalogo h2 {
+        font-size: 1.6rem;
+    }
+
+    .btn {
+        padding: 8px 10px;
+    }
+}
+
+/* Celulares pequeños */
+@media (max-width: 480px) {
+    .Header {
+        text-align: center;
+        flex-direction: column;
+    }
+
+    .logo img {
+        height: 70px;
+    }
+
+    .Buscador {
+        width: 100%;
+    }
+
+    .productos-grid {
+        grid-template-columns: 1fr;
+        padding: 0 10px;
+    }
+
+    .tarjeta {
+        width: 100%;
+        margin: 0 auto;
+    }
+
+    .tarjeta img {
+        height: 140px;
+    }
+
+    .btn-volver {
+        padding: 10px 15px;
+        font-size: 0.9rem;
+    }
+
+    .footer p {
+        font-size: 0.8rem;
+    }
+}
