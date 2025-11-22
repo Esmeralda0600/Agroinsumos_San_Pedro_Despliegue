@@ -1,17 +1,44 @@
 import express from "express";
-import { listarUsuarios, crearUsuario, login_Usuario,mostrar_categorias,mostrar_ingredientes,mostrar_marcas,mostrar_productos} from "../controllers/usuarioController.js";
+import {
+    listarUsuarios,
+    crearUsuario,
+    login_Usuario,
+    mostrar_categorias,
+    mostrar_ingredientes,
+    mostrar_marcas,
+    mostrar_productos
+} from "../controllers/usuarioController.js";
 
 const router = express.Router();
-router.get("/", listarUsuarios);
-router.post("/", crearUsuario);
-router.post("/login", login_Usuario);
 
-router.get("/categorias", mostrar_categorias);
+// ===============================
+// USUARIOS
+// ===============================
+router.get("/", listarUsuarios);          // Obtener lista de usuarios
+router.post("/", crearUsuario);           // Registrar nuevo usuario
+router.post("/login", login_Usuario);     // Login usuario
+
+// ===============================
+// CATÁLOGO BÁSICO
+// ===============================
+router.get("/categorias", mostrar_categorias);      
 router.get("/marcas", mostrar_marcas);
 router.get("/ingrediente", mostrar_ingredientes);
 
+// ===============================
+// PRODUCTOS
+// ===============================
+
+// 🔥 Mantener tu ruta original (POST)
 router.post("/productos", mostrar_productos);
 
-console.log("rutas ok");
+// 🔥 Agregar GET para mayor compatibilidad (opcional pero recomendado)
+router.get("/productos/:categoria?", (req, res) => {
+    const categoria = req.params.categoria || req.query.categoria;
+    req.body.categoria = categoria;  // adaptar GET → POST handler
+    mostrar_productos(req, res);
+});
+
+console.log("Rutas de usuarios cargadas correctamente ✔");
 
 export default router;
