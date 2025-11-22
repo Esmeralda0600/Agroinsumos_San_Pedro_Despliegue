@@ -27,16 +27,27 @@ dotenv.config();
 const app = express();
 
 // ==========================
-// 🔥 CONFIGURAR CORS AQUÍ
+// 🔥 CONFIGURAR CORS CORRECTAMENTE
 // ==========================
 const allowedOrigins = [
-  "http://localhost:3000",               // Desarrollo
-  "https://agroinsumos-san-pedro-despliegue-nj.vercel.app/", // Producción
+  "http://localhost:5500", 
+  "http://127.0.0.1:5500",
+  "http://localhost:3000",
+  "https://agroinsumos-san-pedro-despliegue-vl.vercel.app",  // ✔ tu frontend REAL
 ];
 
 app.use(cors({
-  origin: allowedOrigins,
-  credentials: true
+  origin: (origin, callback) => {
+    // Permitir peticiones sin origin (Postman, móvil)
+    if (!origin) return callback(null, true);
+
+    if (allowedOrigins.includes(origin)) {
+      return callback(null, true);
+    } else {
+      return callback(new Error("CORS bloqueado: Origin no permitido -> " + origin));
+    }
+  },
+  credentials: true,
 }));
 
 // Middleware
