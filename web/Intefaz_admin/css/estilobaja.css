@@ -1,0 +1,211 @@
+/* ===========================
+   RESET / GLOBAL
+=========================== */
+html, body {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    overflow-x: hidden;
+    font-family: Arial, sans-serif;
+    color: #111;
+}
+
+body {
+    background-image: url("/imgs/fondo.jpg");
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+}
+
+/* ===========================
+   NAVBAR
+=========================== */
+.navbar {
+    background-color: #3B8952 !important;
+    position: relative;
+    height: 120px;
+    display: flex;
+    align-items: center;
+    padding: 15px 30px !important;
+    box-shadow: 0px 2px 2px 4px rgba(149, 247, 104, 0.774);
+}
+
+/* CONTENEDOR INTERNO */
+.navbar .container-fluid {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    padding-left: 16px;
+    padding-right: 16px;
+}
+
+/* LOGO A LA IZQUIERDA */
+.navbar-brand {
+    grid-column: 1;
+}
+
+.navbar-brand img {
+    display: block;
+    height: 90px;
+    width: auto;
+}
+
+/* TÍTULO CENTRADO SIN ABSOLUTO */
+.navbar-title {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 28px;
+    font-weight: 600;
+    color: white;
+    text-align: center;
+    white-space: nowrap;
+    z-index: 15;
+    pointer-events: none;
+}
+
+/* ACCIONES A LA DERECHA */
+.navbar-actions,
+.navbar .d-flex.align-items-center {
+    grid-column: 3;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    justify-content: flex-end;
+}
+
+.navbar .d-flex.align-items-center button img {
+    width: 28px;
+    height: 28px;
+}
+
+/* ===========================
+   BOTONES VERDES
+=========================== */
+.btn-verde {
+    background-color: #0f684b !important;
+    color: white !important;
+    border: none;
+    padding: 7px 12px;
+    font-size: 0.95rem;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: transform .12s ease, background .12s ease;
+}
+
+.btn-verde:hover {
+    transform: translateY(-1px);
+    background-color: #03484c !important;
+}
+
+/* ===========================
+   RESPONSIVE
+=========================== */
+@media (max-width: 768px) {
+
+    .navbar {
+        height: auto;
+        padding: 12px 10px !important;
+    }
+
+    .navbar .container-fluid {
+        flex-direction: column;
+        gap: 8px;
+        align-items: center;
+    }
+
+    .navbar-brand img {
+        height: 64px;
+    }
+
+    .navbar-title {
+        position: static;
+        transform: none;
+        font-size: 18px;
+        pointer-events: auto;
+    }
+
+    .navbar-actions {
+        justify-content: center;
+        width: 100%;
+    }
+}
+
+/* ===========================
+   FOOTER
+=========================== */
+footer {
+    width: 100%;
+    background-color: #3B8952;
+    color: white;
+    text-align: center;
+    padding: 10px 0;
+    margin-top: 40px;
+}
+
+/* ===========================
+   CARD
+=========================== */
+.card[style] {
+    background-color: #ffffff !important;
+}
+
+.card.shadow-lg {
+    box-shadow: none !important;
+}
+
+.card {
+    background-color: #ffffff !important;
+    border-radius: 12px;
+    border: none;
+}
+
+.card-body {
+    color: #111 !important;
+}
+
+/* ===========================
+   PREVIEW IMAGE
+=========================== */
+#preview {
+    max-width: 220px;
+    border-radius: 10px;
+    box-shadow: 0 0 8px 10px rgba(80, 255, 80, 0.55);
+}
+
+html, body {
+    height: 100%;
+}
+
+body {
+    display: flex;
+    flex-direction: column;
+}
+
+main {
+    flex: 1;
+}
+
+.volver {
+    position: absolute;
+    /* se posiciona relativo a .contenido */
+    /*margin-top: -85.7px;*/
+    right: 20px;
+    /* alineado a la derecha */
+    padding: 10px 16px;
+    border: none;
+    background: #0f684b;
+    /* mismo color que guardar */
+    color: white;
+    font-size: 14px;
+    border-radius: 8px;
+    cursor: pointer;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.25);
+    transition: transform 0.2s ease, background 0.2s ease;
+}
+
+.volver:hover {
+    background-color: #03484c;
+    transform: scale(1.08);
+}

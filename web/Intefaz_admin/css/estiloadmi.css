@@ -1,0 +1,279 @@
+/* ===========================
+   ESTILOS GENERALES
+=========================== */
+html, body {
+    overflow-x: hidden;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    color: #111;
+}
+
+.fondo {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    z-index: -1;
+}
+
+/* ===========================
+   HEADER
+=========================== */
+.Header {
+    background-color: #3B8952;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 15px 30px;
+    flex-wrap: wrap;
+}
+
+.logo img {
+    height: 90px;
+    width: auto;
+}
+
+.Nombre {
+    font-size: 2rem;
+    text-align: center;
+    flex: 1;
+}
+
+.botones-derecha {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+/* botones */
+.campanita {
+    background: none;
+    border: none;
+    cursor: pointer;
+}
+
+.campanita img {
+    width: 40px;
+    height: 40px;
+    transition: transform 0.2s ease;
+}
+.campanita:hover img {
+    transform: scale(1.1);
+}
+
+.btn-close,
+.btn-start {
+    padding: 8px 15px;
+    border-radius: 5px;
+    border: none;
+    cursor: pointer;
+    color: white;
+    background-color: #0f684b;
+    transition: transform 0.2s ease, background 0.2s ease;
+}
+
+.btn-close:hover,
+.btn-start:hover {
+    background-color: #03484c;
+    transform: scale(1.1);
+}
+
+/* ===========================
+   BOTONES CENTRO
+=========================== */
+.botones-centro {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    margin-top: 40px;
+}
+
+.inventario,
+.historial {
+    flex: 1;
+    max-width: 250px;
+    height: 80px;
+    text-align: center;
+    background: rgba(255, 255, 255, 0.65);
+    color: #2e7d32;
+    border: none;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.35);
+    font-size: 1.4rem;
+    cursor: pointer;
+    transition: 0.2s ease;
+}
+
+.inventario:hover,
+.historial:hover {
+    background-color: white;
+    transform: scale(1.1);
+}
+
+/* ===========================
+   CARRUSEL
+=========================== */
+.carrusel {
+    margin: 40px auto;
+    max-width: 900px;
+    width: 100%;
+}
+
+.contenedor-carrusel {
+    position: relative;
+    overflow: hidden;
+    border-radius: 10px;
+}
+
+.slide {
+    display: none;
+}
+
+.slide img {
+    width: 100%;
+    height: 450px;
+    object-fit: cover;
+    border-radius: 10px;
+}
+
+/* botones prev/next */
+.prev,
+.next {
+    cursor: pointer;
+    position: absolute;
+    top: 50%;
+    padding: 10px;
+    font-size: 22px;
+    color: white;
+    background-color: rgba(0, 0, 0, 0.5);
+    border-radius: 50%;
+    transform: translateY(-50%);
+    transition: 0.3s;
+}
+
+.prev:hover,
+.next:hover {
+    background-color: rgba(0, 0, 0, 0.8);
+}
+
+.prev {
+    left: 10px;
+}
+.next {
+    right: 10px;
+}
+
+/* puntos */
+.puntos {
+    text-align: center;
+    margin-top: 15px;
+}
+
+.dot {
+    height: 14px;
+    width: 14px;
+    margin: 0 5px;
+    background-color: #bbb;
+    border-radius: 50%;
+    display: inline-block;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.dot.active,
+.dot:hover {
+    background-color: #2e7d32;
+}
+
+/* animación */
+.fade {
+    animation: fade 1s ease-in-out;
+}
+
+@keyframes fade {
+    from { opacity: 0.4; }
+    to { opacity: 1; }
+}
+
+/* ===========================
+   FOOTER
+=========================== */
+.footer {
+    bottom: 0;
+    width: 100%;
+    background-color: #3B8952;
+    color: white;
+    text-align: center;
+    padding: 10px 0;
+}
+
+
+/* ===========================
+   RESPONSIVE
+=========================== */
+
+/* tablets */
+@media (max-width: 992px) {
+    .Header {
+        flex-direction: column;
+        text-align: center;
+        gap: 15px;
+    }
+
+    .Nombre {
+        width: 100%;
+        font-size: 1.8rem;
+    }
+
+    .botones-derecha {
+        justify-content: center;
+    }
+
+    .slide img {
+        height: 300px;
+    }
+}
+
+/* teléfonos */
+@media (max-width: 600px) {
+
+    .logo img {
+        height: 70px;
+    }
+
+    .Nombre {
+        font-size: 1.4rem;
+    }
+
+    .btn-close,
+    .btn-start {
+        font-size: 0.9rem;
+        padding: 6px 12px;
+    }
+
+    .botones-centro {
+        flex-direction: column;
+        gap: 15px;
+    }
+
+    .inventario,
+    .historial {
+        max-width: 90%;
+        height: 70px;
+        font-size: 1.2rem;
+    }
+
+    .slide img {
+        height: 200px;
+    }
+
+    .footer {
+        font-size: 0.9rem;
+    }
+}
