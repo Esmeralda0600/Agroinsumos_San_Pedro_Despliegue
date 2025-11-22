@@ -1,6 +1,5 @@
 import express from "express";
 import cors from "cors";
-//import mongoose from "mongoose";
 import dotenv from "dotenv";
 import { connectMongo } from "./config/db.js";
 import agro_spa_routes from "./routes/agro_spa_routes.js";
@@ -10,6 +9,7 @@ import favoritoRoutes from "./routes/favoritoRoutes.js";
 
 import swaggerJSDoc from "swagger-jsdoc";
 import swaggerUi from "swagger-ui-express";
+
 const swaggerOptions = {
     definition: {
         openapi: "3.0.0",
@@ -19,21 +19,33 @@ const swaggerOptions = {
             description: "API para gestionar Agro_spa en MongoDB",
         },
     },
-    apis: ["./controllers/*.js"], // comentarios con formato @openapi
+    apis: ["./controllers/*.js"],
 };
 
-dotenv.config(); // Cargar variables de entorno
+dotenv.config();
 
 const app = express();
 
-// Middleware
-app.use(cors());
-app.use(express.json()); // para entender peticiones JSON
+// ==========================
+// 🔥 CONFIGURAR CORS AQUÍ
+// ==========================
+const allowedOrigins = [
+  "http://localhost:3000",               // Desarrollo
+  "https://agroinsumos-san-pedro-despliegue-nj.vercel.app/", // Producción
+];
 
-// Conexiones a bases de datos //config db.js
+app.use(cors({
+  origin: allowedOrigins,
+  credentials: true
+}));
+
+// Middleware
+app.use(express.json());
+
+// Conexión a MongoDB
 await connectMongo();
 
-// Rutas
+// Ruta raíz
 app.get("/", (req, res) => {
     res.send(`
     <h2> API corriendo correctamente</h2>
@@ -41,16 +53,17 @@ app.get("/", (req, res) => {
     <p>Puerto: <b>${process.env.PORT}</b></p>`);
 });
 
-// Rutas 
+// Rutas API
 app.use("/usuarios", agro_spa_routes);
-app.use("/administratores",agro_spa_routes_admin)
-app.use("/favoritos", favoritoRoutes);  
+app.use("/administratores", agro_spa_routes_admin)
+app.use("/favoritos", favoritoRoutes);
 app.use("/productos", producto_routes);
-// instancia de swagger
+
+// Swagger
 const swaggerDocs = swaggerJSDoc(swaggerOptions);
 app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocs));
 
-// Inicio del servido
+// Iniciar servidor
 const PORT = process.env.PORT;
 app.listen(PORT, () => {
     console.log(`Servidor escuchando en puerto ${PORT}`);
