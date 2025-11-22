@@ -67,6 +67,8 @@
 <script>
 document.addEventListener("DOMContentLoaded", () => {
 
+    const API_URL = "https://agroinsumos-san-pedro-despliegue.onrender.com";
+
     const producto = JSON.parse(localStorage.getItem("productoSeleccionado"));
 
     if (!producto) {
@@ -74,7 +76,7 @@ document.addEventListener("DOMContentLoaded", () => {
         return window.location.href = "catalogo.html";
     }
 
-    // Insertar datos
+    // Insertar datos en la página
     document.getElementById("img-producto").src = producto.direccion_img || "imgs/ingrediente.png";
     document.getElementById("nombre-producto").innerText = producto.nombre_producto;
 
@@ -138,7 +140,7 @@ document.addEventListener("DOMContentLoaded", () => {
         }
 
         try {
-            const resp = await fetch("https://agroinsumos-san-pedro-despliegue.onrender.com/favoritos", {
+            const resp = await fetch(`${API_URL}/favoritos`, {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({
@@ -165,7 +167,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
 });
 </script>
-
 
 </body>
 </html>
