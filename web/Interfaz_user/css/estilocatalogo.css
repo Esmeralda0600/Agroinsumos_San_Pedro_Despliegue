@@ -33,8 +33,9 @@ main {
     margin: 0;
     position: relative;
     display: flex;
-    justify-content: space-between;
     align-items: center;
+    flex-direction: row;
+    ;justify-content: space-between;
     flex-wrap: wrap;
     /* 🔹 permite que los elementos bajen */
     padding: 10px 20px;
@@ -51,8 +52,7 @@ main {
     display: flex;
     align-items: center;
     justify-content: center; /* ✔ centrado */
-    gap: 15px;
-    width: 100%; /* ✔ que ocupen todo el ancho disponible */
+    gap: 15px; /* ✔ que ocupen todo el ancho disponible */
     margin: 0;   /* ✔ quitar el empuje */
 }
 
@@ -711,7 +711,7 @@ main {
     align-items: center;
     background: #ffffff;
     border-radius: 15px;
-    width: 1000px;
+    width: 700px;
     padding: 8px 15px;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
     height: 40px;
