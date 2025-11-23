@@ -17,7 +17,7 @@ html, body {
     background-repeat: no-repeat;
     background-attachment: fixed;
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
     min-height: 100vh; 
     overflow-x: hidden; 
 }
@@ -163,6 +163,7 @@ main {
     gap: 60px;
     padding: 60px;
     flex-wrap: wrap; 
+    flex-direction:row;
 }
 
 .tarjeta-producto {
