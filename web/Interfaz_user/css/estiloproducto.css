@@ -156,6 +156,7 @@ main {
  * # 3. PRODUCTO DETALLE (Expansión del Contenido)
  * ------------------------------------------------------------- */
 .producto-detalle {
+    /* Mantiene el layout lado a lado para pantallas grandes */
     display: flex;
     justify-content: center;
     align-items: flex-start;
@@ -169,8 +170,10 @@ main {
     border-radius: 15px;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.45); 
     padding: 30px;
-    min-width: 300px;
+    /* Ancho adaptativo pero no fijo para permitir el layout lado a lado */
+    width: 350px; 
     max-width: 400px; 
+    min-width: 300px; /* Asegura un tamaño mínimo en desktop */
     text-align: center;
     color: #114d30; 
 }
@@ -189,8 +192,10 @@ main {
 }
 
 .info-producto {
-    min-width: 400px;
-    max-width: 700px;
+    /* Permite que la información ocupe el espacio restante */
+    flex-grow: 1; 
+    max-width: 700px; /* Sigue limitando el ancho máximo */
+    min-width: 400px; /* Asegura que la descripción tenga un mínimo de espacio */
     color: #111;
     background-color: #ffffff;
     padding: 30px;
@@ -388,16 +393,19 @@ main {
     }
     
     .producto-detalle {
-        gap: 30px;
+        /* Se mantiene lado a lado, pero se reduce el espacio */
+        gap: 20px;
         padding: 40px 20px;
-        max-width: 95%; /* Asegura que el contenido use la mayoría del ancho */
+        max-width: 95%; 
     }
 
     .tarjeta-producto,
     .info-producto {
-        max-width: 450px;
-        width: 100%;
+        /* Permite que se distribuyan 50/50 o según el contenido */
+        max-width: none; 
+        width: 100%; /* Temporalmente 100% si se apilan, o usa flex-basis si es necesario */
         min-width: 0;
+        /* El flexbox del .producto-detalle manejará la distribución horizontal */
     }
     
     .info-producto {
@@ -447,6 +455,7 @@ main {
     }
 
     .producto-detalle {
+        /* CRÍTICO: FUERZA EL APILAMIENTO EN VERTICAL (móvil) */
         flex-direction: column; 
         align-items: center;
         gap: 20px;
@@ -456,9 +465,11 @@ main {
 
     .tarjeta-producto,
     .info-producto {
+        /* CRÍTICO: Usa el 100% del contenedor en móvil */
         width: 100%;
         padding: 20px;
-        min-width: 0; /* CRÍTICO: Anula el min-width en móvil */
+        min-width: 0; 
+        max-width: 100%; /* Limita el máximo en móvil para evitar desbordamiento */
     }
 
     .info-producto {
