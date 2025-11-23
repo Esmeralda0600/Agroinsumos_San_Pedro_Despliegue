@@ -11,7 +11,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
         if (usuario === "administrador" && contraseña === "agroinsumos_spa") {
             alert("Acceso permitido");
-            window.location.href = "index.html";
+            window.location.href = "principal.html";
         } else {
             alert("Usuario o contraseña incorrectos");
         }
