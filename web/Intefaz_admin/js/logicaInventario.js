@@ -1,5 +1,6 @@
-// URL de tu API (el backend en Node)
-const API_INVENTARIO_URL = "http://localhost:3000/productos/inventario";
+// URL de tu API (backend desplegado en Render)
+const API_URL = "https://agroinsumos-san-pedro-despliegue.onrender.com";
+const API_INVENTARIO_URL = `${API_URL}/productos/inventario`;
 
 // Cuando la página cargue, llamamos a la API
 document.addEventListener("DOMContentLoaded", () => {
@@ -24,29 +25,39 @@ async function cargarInventario() {
     productos.forEach(producto => {
       const tr = document.createElement("tr");
       tr.dataset.categoriaProducto = (producto.categoria_producto || "").toLowerCase();
+
       // Nombre del producto
       const tdNombre = document.createElement("td");
       tdNombre.innerHTML = `<span>${producto.nombre_producto || "-"}</span>`;
-      // Precio 
+
+      // Precio
       const tdPrecio = document.createElement("td");
       tdPrecio.innerHTML = `<span>$${producto.precio ?? 0}</span>`;
+
       // Ingrediente activo
       const tdIngrediente = document.createElement("td");
       tdIngrediente.innerHTML = `<span>${producto.ingrediente_activo || "-"}</span>`;
+
       // Marca
       const tdMarca = document.createElement("td");
       tdMarca.innerHTML = `<span>${producto.marca || "-"}</span>`;
+
       // Descripción
       const tdDescripcion = document.createElement("td");
       tdDescripcion.innerHTML = `<span>${producto.descripcion || "-"}</span>`;
+
+      // Cantidad
       const tdCantidad = document.createElement("td");
       tdCantidad.innerHTML = `<span>${producto.cantidad ?? "-"}</span>`;
+
       // Sucursal
       const tdSucursal = document.createElement("td");
       tdSucursal.innerHTML = `<span>${producto.id_sucursal || "-"}</span>`;
-      //categoria
+
+      // Categoría
       const tdCategoria = document.createElement("td");
       tdCategoria.innerHTML = `<span>${producto.categoria_producto || "-"}</span>`;
+
       // Botón de acción
       const tdAccion = document.createElement("td");
       const btn = document.createElement("button");
@@ -54,12 +65,10 @@ async function cargarInventario() {
       btn.type = "button";
       btn.textContent = "Modificar";
       btn.onclick = () => {
-        // Aquí luego puedes pasar el id_producto por query params
         window.location.href = `modificar.html?id=${producto.id_producto}`;
       };
       tdAccion.appendChild(btn);
 
-      // Agregamos las celdas a la fila
       tr.appendChild(tdNombre);
       tr.appendChild(tdPrecio);
       tr.appendChild(tdIngrediente);
@@ -70,7 +79,6 @@ async function cargarInventario() {
       tr.appendChild(tdCategoria);
       tr.appendChild(tdAccion);
 
-      // Agregamos la fila a la tabla
       tbody.appendChild(tr);
     });
 
@@ -83,6 +91,7 @@ async function cargarInventario() {
     alert("No se pudo cargar el inventario. Revisa la consola.");
   }
 }
+
 function filtrarTabla() {
   const inputBuscar = document.getElementById("buscar");
   const selectCategoria = document.getElementById("categoria");
@@ -94,27 +103,26 @@ function filtrarTabla() {
 
   for (let i = 0; i < filas.length; i++) {
     const fila = filas[i];
+
     // Nombre del producto
     const tdNombre = fila.getElementsByTagName("td")[0];
     const nombreTexto = tdNombre ? tdNombre.innerText.toLowerCase() : "";
-    // Categoría de la fila 
+
+    // Categoría de la fila
     const categoriaFila =
       (fila.dataset.categoriaProducto || fila.getElementsByTagName("td")[7]?.innerText || "")
         .toLowerCase();
-    // si el nombre NO contiene lo escrito -> ocultar
+
+    // Si coincide texto + categoría
     const coincideTexto = nombreTexto.includes(filtroTexto);
     const coincideCategoria =
       filtroCategoria === "todo" || categoriaFila === filtroCategoria;
 
-    if (coincideTexto && coincideCategoria) {
-      fila.style.display = "";
-    } else {
-      fila.style.display = "none";
-    }
+    fila.style.display = (coincideTexto && coincideCategoria) ? "" : "none";
   }
 }
 
-// Flitra lo escrito en la barra de búsqueda
+// Filtrar en tiempo real
 document.addEventListener("DOMContentLoaded", () => {
   const inputBuscar = document.getElementById("buscar");
   const selectCategoria = document.getElementById("categoria");
