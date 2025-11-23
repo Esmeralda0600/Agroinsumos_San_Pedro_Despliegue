@@ -40,8 +40,8 @@ app.use(cors({
   credentials: true
 }));
 
-// 🔥 NECESARIO PARA QUE FUNCIONE POST DESDE VERCE + ADMIN
-app.options("*", cors());
+// ❗ IMPORTANTE: QUITAR ESTO ❌
+// app.options("*", cors());
 
 app.use(express.json());
 
