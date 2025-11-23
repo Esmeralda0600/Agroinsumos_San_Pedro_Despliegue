@@ -20,31 +20,28 @@ const app = express();
 // =============================
 const allowedOrigins = [
   "http://localhost:3000",
-  "https://agroinsumos-san-pedro-despliegue-vl.vercel.app",
-  "https://agroinsumos-san-pedro-despliegue-ub.vercel.app",
+  "https://agroinsumos-san-pedro-despliegue-us-seven.vercel.app",
   "https://agroinsumos-san-pedro-despliegue-ad.vercel.app",
   "https://agroinsumos-san-pedro-despliegue.onrender.com"
 ];
 
-app.use(
-  cors({
-    origin: function (origin, callback) {
-      console.log("🌍 ORIGIN SOLICITANDO:", origin);
+app.use(cors({
+  origin: function (origin, callback) {
+    console.log("🌍 ORIGIN SOLICITANDO:", origin);
 
-      if (!origin || allowedOrigins.includes(origin)) {
-        callback(null, true);
-      } else {
-        callback(new Error("CORS bloqueado por seguridad"));
-      }
-    },
-    methods: ["GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"],
-    allowedHeaders: ["Content-Type", "Authorization"],
-    credentials: true,
-  })
-);
+    if (!origin || allowedOrigins.includes(origin)) {
+      callback(null, true);
+    } else {
+      callback(new Error("CORS bloqueado por seguridad"));
+    }
+  },
+  methods: ["GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"],
+  allowedHeaders: ["Content-Type", "Authorization"],
+  credentials: true
+}));
 
-// ❗❗❗ ELIMINADO: rompe en Render
-// app.options("*", cors());
+// 🔥 NECESARIO PARA QUE FUNCIONE POST DESDE VERCE + ADMIN
+app.options("*", cors());
 
 app.use(express.json());
 
