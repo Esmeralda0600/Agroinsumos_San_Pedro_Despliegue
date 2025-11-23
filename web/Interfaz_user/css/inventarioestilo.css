@@ -112,6 +112,88 @@ body {
     transform: scale(1.1);
 }
 
+
+/* ============================
+   BUSCADOR DEL HEADER
+   ============================ */
+
+.header__buscador {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.buscador__form {
+    width: 100%;
+    max-width: 550px;
+}
+
+.buscador__contenedor {
+    display: flex;
+    align-items: center;
+    background: #ffffff;
+    border-radius: 15px;
+    padding: 8px 15px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+    height: 40px;
+    transition: all 0.25s ease;
+}
+
+.buscador__contenedor:hover {
+    transform: scale(1.02);
+}
+
+.buscador__input {
+    flex: 1;
+    border: none;
+    outline: none;
+    background: transparent;
+    font-size: 1rem;
+    color: #001f3f;
+}
+
+.buscador__input::placeholder {
+    color: rgba(0, 0, 128, 0.6);
+}
+
+.buscador__icono {
+    width: 22px;
+    height: 22px;
+    cursor: pointer;
+    transition: transform 0.2s ease;
+}
+
+.buscador__icono:hover {
+    transform: scale(1.1);
+}
+
+
+/* ============================
+   RESULTADO IA (Opcional)
+   ============================ */
+
+.buscador__resultado {
+    background: #ffffff;
+    width: 100%;
+    max-width: 550px;
+    margin: 10px auto;
+    padding: 15px;
+    border-radius: 12px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+    font-size: 1rem;
+    display: block;
+}
+
+.buscador__resultado ul {
+    padding-left: 20px;
+}
+
+.buscador__resultado li {
+    margin-bottom: 8px;
+    color: #114d30;
+}
+
 /* ==================== CATÁLOGO ==================== */
 .catalogo {
     padding: 50px 20px;
