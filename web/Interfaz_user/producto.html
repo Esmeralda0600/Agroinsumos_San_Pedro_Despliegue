@@ -137,7 +137,7 @@
                     return window.location.href = "login.html";
                 }
 
-                const resp = await fetch("http://localhost:3000/favoritos", {
+                const resp = await fetch("https://agroinsumos-san-pedro-despliegue-us-seven.vercel.app", {
                     method: "POST",
                     headers: { "Content-Type": "application/json" },
                     body: JSON.stringify({ usuarioId, productoId: producto.id_producto })
