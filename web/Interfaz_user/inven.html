@@ -11,6 +11,7 @@
     <link rel="stylesheet" href="css/inventarioestilo.css">
     <link rel="icon" type="image/png" href="imgs/logo.png">
 </head>
+
 <body>
     <!-- ==================== HEADER ==================== -->
     <header class="Header">
@@ -18,11 +19,12 @@
             <img src="imgs/logo.png" alt="Logotipo de Agroinsumos San Pedro" class="logo__img" />
         </a>
 
-        <div class="Buscador">
-            <div class="input-con-imagen">
-                <input type="text" placeholder="Buscar productos...">
-                <img src="imgs/lupa.png" alt="Icono de búsqueda" class="icono-lupa">
-            </div>
+        <div class="buscador__contenedor">
+            <input id="input-busqueda" type="text" placeholder="Te ayudamos a encontrar el producto ideal..."
+                class="buscador__input" />
+
+            <img id="btn-buscar-ia" src="imgs/lupa.png" alt="Buscar" class="buscador__icono">
+
         </div>
 
         <div class="botones-derecha">
