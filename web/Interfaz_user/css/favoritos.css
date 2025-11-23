@@ -18,13 +18,10 @@ body {
 
 /* Contenedor principal para que ocupe todo el espacio sobrante */
 main { 
-    display: flex;
-    flex-direction: row ;
     flex-grow: 1; /* Permite que el contenido principal empuje el footer hacia abajo */
     /* Aseguramos que el main no se desborde */
     width: 100%; 
     box-sizing: border-box;
-    
     /* Margin top para separarlo del header */
     margin-top: 20px; 
 }
@@ -397,5 +394,6 @@ main {
         font-size: 1rem;
         padding: 15px;
         margin: 15px auto;
+
     }
 }
