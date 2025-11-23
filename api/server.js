@@ -22,7 +22,8 @@ const allowedOrigins = [
   "http://localhost:3000",
   "https://agroinsumos-san-pedro-despliegue-us-tau.vercel.app",
   "https://agroinsumos-san-pedro-despliegue.vercel.app",
-  "https://agroinsumos-san-pedro-despliegue.onrender.com"
+  "https://agroinsumos-san-pedro-despliegue.onrender.com",
+  "https://agroinsumos-san-pedro-despliegue-kafy.onrender.com"
 ];
 
 app.use(cors({
