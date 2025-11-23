@@ -182,7 +182,7 @@ body {
     .busqueda-container input,
     .busqueda-container select {
         width: 100%;
-        max-width: 350px;
+        max-width: 300px;
     }
 }
 
