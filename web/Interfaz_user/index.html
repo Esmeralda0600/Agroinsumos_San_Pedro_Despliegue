@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -24,18 +25,18 @@
     <div class="header__buscador">
       <form class="buscador__form" action="#" method="get">
         <div class="buscador__contenedor">
-          <input 
-            type="text" 
-            placeholder="Te ayudamos a encontrar el producto ideal..." 
-            class="buscador__input"
-          >
-          <img src="imgs/lupa.png" alt="Buscar" class="buscador__icono">
+          <input id="input-busqueda" type="text" placeholder="Te ayudamos a encontrar el producto ideal..."
+            class="buscador__input" />
+
+          <img id="btn-buscar-ia" src="imgs/lupa.png" alt="Buscar" class="buscador__icono">
+
         </div>
       </form>
     </div>
 
     <div class="header__acciones">
-      <button class="acciones__btn acciones__btn--favoritos" type="button" onclick="window.location.href='favoritos.html'">
+      <button class="acciones__btn acciones__btn--favoritos" type="button"
+        onclick="window.location.href='favoritos.html'">
         <img src="imgs/favs.png" alt="Favoritos" class="acciones__icono">
       </button>
 
@@ -47,7 +48,8 @@
         Iniciar sesión
       </button>
 
-      <button class="acciones__btn acciones__btn--registro" type="button" onclick="window.location.href='registro.html'">
+      <button class="acciones__btn acciones__btn--registro" type="button"
+        onclick="window.location.href='registro.html'">
         Registrarse
       </button>
     </div>
@@ -173,4 +175,5 @@
 
   <script src="javascript/animaciones.js"></script>
 </body>
+
 </html>
