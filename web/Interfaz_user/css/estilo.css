@@ -17,6 +17,8 @@ body {
   background-position: center;
   background-repeat: no-repeat;
   background-attachment: fixed;
+  /* Asegura que no haya scroll horizontal no deseado por márgenes/padding */
+  overflow-x: hidden; 
 }
 
 main {
@@ -43,7 +45,8 @@ main {
   font-size: 1.5rem;
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  /* Espacio entre el logo, buscador y acciones */
+  justify-content: space-between; 
   padding: 0 40px;
   height: 100px;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
@@ -52,14 +55,14 @@ main {
 .header__logo img {
   height: 80px;
   width: auto;
-  margin-right: 170px;
+  /* Eliminado el margen fijo para mejor manejo con flexbox */
 }
 
 .header__acciones {
   display: flex;
   align-items: center;
   gap: 25px;
-  margin-left: 80px;
+  /* Eliminado el margen fijo para mejor manejo con flexbox */
 }
 
 /* -----------------------------------------------------------------
@@ -104,24 +107,24 @@ main {
  * # BUSCADOR
  * ----------------------------------------------------------------- */
 
- 
 .buscador {
-  width: 100px;           
-  max-width: 100%;        
-  margin: 0;              
+  width: auto;
+  max-width: none;
+  margin: 0 20px; /* Margen para separarse del logo y acciones */
   border-radius: 0; 
+  flex-grow: 1; /* Permite que el buscador ocupe el espacio disponible */
 }
 
 .buscador__contenedor {
   display: flex;
-  width: 500px;
+  max-width: 500px; /* Ancho máximo para escritorio */
+  width: 100%; /* Asegura que ocupe todo el ancho de su contenedor */
   box-sizing: border-box; 
   align-items: center ;
   padding: 5px 10px;
   height: 30px;
-  border-radius: 30px;
-  background-color: #fff;
   border-radius: 15px;
+  background-color: #fff;
   box-shadow: 0 7px 10px rgba(0, 0, 0, 0.1);
 }
 
@@ -152,8 +155,10 @@ main {
  * ----------------------------------------------------------------- */
 .carrusel {
   position: relative;
+  width: 100%; /* Ocupa todo el ancho */
   max-width: 100%;
   overflow: hidden;
+  margin-top: 20px; /* Espacio después del header */
 }
 
 .carrusel__contenedor {
@@ -182,6 +187,8 @@ main {
   border-radius: 3px;
   background-color: rgba(0, 0, 0, 0.3);
   user-select: none;
+  /* Corrección: Centrado vertical */
+  transform: translateY(-50%); 
 }
 
 .carrusel__control--next {
@@ -285,7 +292,7 @@ main {
   box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15);
   overflow: hidden;
   transition: transform 0.3s ease, box-shadow 0.3s ease;
-  width: 300px;
+  width: 300px; /* Ancho fijo para escritorio */
 }
 
 .oferta:hover {
@@ -412,6 +419,7 @@ main {
   cursor: pointer;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
   transition: transform 0.2s, background-color 0.2s;
+  z-index: 100;
 }
 
 .btn--contacto:hover {
@@ -420,59 +428,91 @@ main {
 }
 
 /* -----------------------------------------------------------------
- * # MEDIA QUERIES
+ * # MEDIA QUERIES (BREAKPOINTS OPTIMIZADOS)
  * ----------------------------------------------------------------- */
 
-/* TABLET */
+/* TABLET (max-width: 1024px) */
 @media (max-width: 1024px) {
+  /* El header se convierte en un diseño flexible de dos filas */
   .header {
     flex-wrap: wrap;
-    justify-content: center;
+    justify-content: space-between; /* Distribución inicial de los elementos */
     height: auto;
     padding: 20px;
-    text-align: center;
+    align-items: center;
+  }
+  
+  .header__logo {
+    order: 1; 
   }
 
   .header__logo img {
-    margin: 0 auto 15px;
-    height: 90px;
+    height: 70px; /* Tamaño ligeramente menor en tablet */
+  }
+  
+  /* El buscador se mueve a una nueva línea central */
+  .buscador {
+    order: 3; /* Se mueve a la parte de abajo */
+    width: 100%; /* Ocupa todo el ancho */
+    margin: 15px 0 0; /* Espacio superior para separarse de los elementos de arriba */
+    text-align: center;
   }
 
-  .buscador {
-    width: 80%;
-    margin-bottom: 15px;
+  .buscador__contenedor {
+    width: 80%; /* Reduce el ancho del contenedor en sí, manteniendo el centrado */
+    margin: 0 auto; /* Centra el buscador horizontalmente */
+    max-width: 450px;
   }
 
   .header__acciones {
+    order: 2; 
     margin-left: 0;
-    justify-content: center;
-    flex-wrap: wrap;
+    gap: 15px;
   }
 
-  .carrusel {
-    height: 350px;
-    max-width: 95%;
+  .carrusel__imagen {
+    height: 350px; 
+  }
+
+  .about {
+    padding: 3rem 1rem;
   }
 
   .about__contenedor {
     flex-direction: column;
+    text-align: center;
+  }
+
+  .about__img {
+    max-width: 400px;
   }
 }
 
-/* MOBILE */
+/* MOBILE (max-width: 768px) */
 @media (max-width: 768px) {
+  /* Header se convierte en una columna (logo, acciones, buscador) */
   .header {
     flex-direction: column;
-    align-items: center;
+    height: auto;
+    padding: 15px 10px; /* Padding reducido */
+    text-align: center;
+  }
+
+  .header__logo {
+    order: 1;
+    margin-bottom: 10px;
   }
 
   .header__logo img {
-    height: 80px;
+    height: 65px;
   }
 
-  .buscador {
-    width: 90%;
-    margin: 10px 0;
+  /* Acciones primero, luego buscador, para mejor visibilidad */
+  .header__acciones {
+    order: 2;
+    width: 100%;
+    justify-content: space-around; 
+    margin-top: 5px;
   }
 
   .acciones__btn--login,
@@ -481,40 +521,87 @@ main {
     padding: 6px 10px;
   }
 
-  .carrusel {
-    height: 250px;
-    margin: 30px auto;
+  .buscador {
+    order: 3;
+    width: 100%;
+    margin: 10px 0 0;
   }
 
-  .about__contenedor {
+  .buscador__contenedor {
+    width: 95%; /* Ocupa casi todo el ancho */
+    margin: 0 auto;
+    height: 35px;
+  }
+
+  .carrusel {
+    margin-top: 10px;
+  }
+
+  .carrusel__imagen {
+    height: 250px;
+  }
+
+  .carrusel__botones {
     flex-direction: column;
-    text-align: center;
+    gap: 10px;
+  }
+
+  .oferta {
+    width: 90%; /* Ocupa el ancho completo */
+    max-width: 350px;
   }
 }
 
-/* SMALL DEVICES */
+/* SMALL DEVICES (max-width: 480px) */
 @media (max-width: 480px) {
+  .header {
+    padding: 10px 5px;
+  }
+  
+  .header__logo img {
+    height: 60px;
+  }
+
+  .acciones__btn {
+    /* Oculta los iconos de carrito y perfil para dar espacio a los botones de login/registro */
+    display: none; 
+  }
+  
   .acciones__btn--login,
   .acciones__btn--registro {
     padding: 5px 8px;
     font-size: 0.8rem;
+    display: block; /* Asegura que los botones login/registro se muestren */
   }
 
+  .buscador__input {
+    font-size: 0.85rem;
+  }
+  
   .buscador__icono {
     width: 18px;
     height: 18px;
   }
 
-  .btn--contacto {
-    font-size: 14px;
-    padding: 10px 15px;
+  .carrusel__imagen {
+    height: 180px;
   }
 
-  .carrusel {
-    height: 200px;
+  .carrusel__botones button {
+    font-size: 14px;
+    padding: 8px 15px;
   }
 
   .ofertas__titulo {
-    font-size: 1.6rem;
+    font-size: 1.4rem;
+  }
+  
+  .about {
+    padding: 2rem 0.5rem;
+  }
+
+  .btn--contacto {
+    font-size: 13px;
+    padding: 8px 12px;
   }
 }
