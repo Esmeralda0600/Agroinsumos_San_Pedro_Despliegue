@@ -7,7 +7,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     const API_URL = "https://agroinsumos-san-pedro-despliegue.onrender.com";
 
     if (!usuarioId) {
-        lista.innerHTML = "<p>Debes iniciar sesión para ver tus favoritos.</p>";
+        lista.innerHTML = '<p class="sin-sesion">Debes iniciar sesión para ver tus favoritos.</p>';
         return;
     }
 
@@ -67,3 +67,4 @@ document.addEventListener("DOMContentLoaded", async () => {
         lista.innerHTML = "<p>Error al cargar tus favoritos.</p>";
     }
 });
+
