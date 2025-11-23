@@ -26,23 +26,25 @@ const allowedOrigins = [
   "https://agroinsumos-san-pedro-despliegue.onrender.com"
 ];
 
-app.use(cors({
-  origin: function (origin, callback) {
-    console.log("🌍 ORIGIN SOLICITANDO:", origin);
+app.use(
+  cors({
+    origin: function (origin, callback) {
+      console.log("🌍 ORIGIN SOLICITANDO:", origin);
 
-    if (!origin || allowedOrigins.includes(origin)) {
-      callback(null, true);
-    } else {
-      callback(new Error("CORS bloqueado por seguridad"));
-    }
-  },
-  methods: ["GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"],
-  allowedHeaders: ["Content-Type", "Authorization"],
-  credentials: true
-}));
+      if (!origin || allowedOrigins.includes(origin)) {
+        callback(null, true);
+      } else {
+        callback(new Error("CORS bloqueado por seguridad"));
+      }
+    },
+    methods: ["GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"],
+    allowedHeaders: ["Content-Type", "Authorization"],
+    credentials: true,
+  })
+);
 
-// 🔥 NECESARIO PARA QUE FUNCIONE POST DESDE VERCE + ADMIN
-app.options("*", cors());
+// ❗❗❗ ELIMINADO: rompe en Render
+// app.options("*", cors());
 
 app.use(express.json());
 
