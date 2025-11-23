@@ -106,37 +106,46 @@ main {
 /* -----------------------------------------------------------------
  * # BUSCADOR
  * ----------------------------------------------------------------- */
+/* -----------------------------------------------------------------
+ * # BUSCADOR — VERSION MEJORADA
+ * ----------------------------------------------------------------- */
 
-.buscador {
-  width: auto;
-  max-width: none;
-  margin: 0 20px; /* Margen para separarse del logo y acciones */
-  border-radius: 0; 
-  flex-grow: 1; /* Permite que el buscador ocupe el espacio disponible */
+.header__buscador {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 0 20px;
+}
+
+.buscador__form {
+  width: 100%;
+  max-width: 1000px; /* Igual al contenedor */
 }
 
 .buscador__contenedor {
   display: flex;
-  max-width: 500px; /* Ancho máximo para escritorio */
-  width: 100%; /* Asegura que ocupe todo el ancho de su contenedor */
-  box-sizing: border-box; 
-  align-items: center ;
-  padding: 5px 10px;
-  height: 30px;
+  align-items: center;
+  background: #ffffff;
   border-radius: 15px;
-  background-color: #fff;
-  box-shadow: 0 7px 10px rgba(0, 0, 0, 0.1);
+  width: 95%;
+  padding: 8px 15px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+  height: 40px;
+  transition: all 0.25s ease;
+}
+
+.buscador__contenedor:hover {
+  transform: scale(1.02);
 }
 
 .buscador__input {
   flex: 1;
-  width: 100%;
   border: none;
+  outline: none;
   background: transparent;
   font-size: 1rem;
   color: #001f3f;
-  padding-right: 8px;
-  outline: none;
 }
 
 .buscador__input::placeholder {
@@ -146,9 +155,37 @@ main {
 .buscador__icono {
   width: 22px;
   height: 22px;
-  margin-left: 8px;
   cursor: pointer;
+  transition: transform 0.2s ease;
 }
+
+.buscador__icono:hover {
+  transform: scale(1.1);
+}
+
+
+/* ----- RESULTADOS DE IA (SI LOS USAS) ----- */
+.buscador__resultado {
+  background: #ffffff;
+  width: 100%;
+  max-width: 1000px;
+  margin: 10px auto;
+  padding: 15px;
+  border-radius: 12px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+  font-size: 1rem;
+  display: block;
+}
+
+.buscador__resultado ul {
+  padding-left: 20px;
+}
+
+.buscador__resultado li {
+  margin-bottom: 8px;
+  color: #114d30;
+}
+
 
 /* -----------------------------------------------------------------
  * # CARRUSEL
