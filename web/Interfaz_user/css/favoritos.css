@@ -60,6 +60,35 @@ main {
 }
 
 /* ==================== ESTILOS PARA MENSAJES DE ESTADO ==================== */
+
+.sin-sesion {
+    color: #03484c; 
+    font-size: 1.5rem; 
+    font-weight: bold;
+    text-align: center;
+    margin: 40px auto; 
+    padding: 30px;
+    background: #e9f7ef; 
+    border: 2px solid #3c8c40; 
+    border-radius: 15px;
+    max-width: 600px; 
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
+    width: 90%; 
+    box-sizing: border-box;
+}
+
+.sin-sesion a {
+    color: #0f684b;
+    text-decoration: none;
+    font-weight: 700;
+    border-bottom: 2px solid #0f684b;
+    transition: color 0.3s;
+}
+
+.sin-sesion a:hover {
+    color: #03484c;
+    border-bottom-color: #03484c;
+}
 .sin-favoritos {
     color: #03484c; 
     font-size: 1.5rem; 
