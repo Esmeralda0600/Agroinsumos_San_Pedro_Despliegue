@@ -85,6 +85,20 @@ body {
     transform: scale(1.1);
 }
 
+.campanita {
+    background: none;
+}
+
+.campanita img {
+    width: 40px;
+    height: 40px;
+    transition: transform 0.2s ease;
+}
+
+.campanita:hover img {
+    transform: scale(1.1);
+}
+
 /* ===========================
    BOTONES CENTRO
 =========================== */
@@ -189,13 +203,13 @@ body {
 
 /* Botón volver alineado a la izquierda */
 .volver {
-    position: absolute;  /* se posiciona relativo a .contenido */
-    margin-top: -30px;
-    right: 20px;         /* alineado a la derecha */
+    position: relative;
+    align-self: flex-start;
+    margin-top: 10px;
     padding: 10px 16px;
-    border: none;
-    background:  #0f684b; /* mismo color que guardar */
+    background: #0f684b;
     color: white;
+    border: none;
     font-size: 14px;
     border-radius: 8px;
     cursor: pointer;
@@ -205,7 +219,7 @@ body {
 
 .volver:hover {
     background-color: #03484c;
-    transform: scale(1.08);
+    transform: scale(1.05);
 }
 
 /* ========================== CONTENEDORES MODIFICAR PRODUCTO ========================== */
@@ -391,6 +405,7 @@ body {
 
     .contenedor-modificar {
         padding: 15px;
+        width: 85%;
     }
 
     #nuevaCantidad {
