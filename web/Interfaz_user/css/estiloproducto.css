@@ -17,7 +17,7 @@ html, body {
     background-repeat: no-repeat;
     background-attachment: fixed;
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
     min-height: 100vh; 
     overflow-x: hidden; 
 }
