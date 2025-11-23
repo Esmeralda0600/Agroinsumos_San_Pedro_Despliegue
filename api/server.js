@@ -2,6 +2,7 @@ import express from "express";
 import cors from "cors";
 import dotenv from "dotenv";
 import { connectMongo } from "./config/db.js";
+
 import agro_spa_routes from "./routes/agro_spa_routes.js";
 import agro_spa_routes_admin from "./routes/agro_spa_routes_admin.js";
 import producto_routes from "./routes/producto_routes.js";
@@ -14,12 +15,13 @@ dotenv.config();
 
 const app = express();
 
-// ==========================
-// CORS FIX REAL ✔
-// ==========================
+// =============================
+// 🎯 CORS CONFIG
+// =============================
 const allowedOrigins = [
   "http://localhost:3000",
-  "https://agroinsumos-san-pedro-despliegue-us-seven.vercel.app",
+  "https://agroinsumos-san-pedro-despliegue-vl.vercel.app",
+  "https://agroinsumos-san-pedro-despliegue-ub.vercel.app",
   "https://agroinsumos-san-pedro-despliegue-ad.vercel.app",
   "https://agroinsumos-san-pedro-despliegue.onrender.com"
 ];
@@ -34,12 +36,17 @@ app.use(cors({
       callback(new Error("CORS bloqueado por seguridad"));
     }
   },
+  methods: ["GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"],
+  allowedHeaders: ["Content-Type", "Authorization"],
   credentials: true
 }));
 
+// 🔥 NECESARIO PARA QUE FUNCIONE POST DESDE VERCE + ADMIN
+app.options("*", cors());
+
 app.use(express.json());
 
-// Conexión a MongoDB
+// Conexión
 await connectMongo();
 
 // Rutas API
