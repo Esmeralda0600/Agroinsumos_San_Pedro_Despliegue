@@ -1,5 +1,6 @@
-const API_BUSCAR_PRODUCTO = "http://localhost:3000/productos/buscar";
-const API_PRODUCTOS_BASE = "http://localhost:3000/productos";
+const API_URL = "https://agroinsumos-san-pedro-despliegue.onrender.com";
+const API_BUSCAR_PRODUCTO = `${API_URL}/productos/buscar`;
+const API_PRODUCTOS_BASE = `${API_URL}/productos`;
 
 document.addEventListener("DOMContentLoaded", () => {
   console.log("[DEBUG] logicaBaja.js cargado");
@@ -25,7 +26,6 @@ document.addEventListener("DOMContentLoaded", () => {
       return;
     }
 
-    // Si parece un id (empieza con P-), buscamos por id_producto
     let url = "";
     if (valor.startsWith("P-")) {
       url = `${API_BUSCAR_PRODUCTO}?id_producto=${encodeURIComponent(valor)}`;
