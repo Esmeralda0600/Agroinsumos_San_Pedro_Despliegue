@@ -20,4 +20,4 @@ EXPOSE ${PORT}
 # Comando por defecto
 # CMD ["node", "server.js"]
 # CMD ["npm", "start"]
-CMD ["npm", "dev"]
+CMD ["npm", "run" ,"dev"]
