@@ -21,7 +21,7 @@ const allowedOrigins = [
   "http://localhost:3000",
   "https://agroinsumos-san-pedro-despliegue-vl.vercel.app",
   "https://agroinsumos-san-pedro-despliegue-mq.vercel.app",
-  "https://agroinsumos-san-pedro-despliegue-ub.vercel.app",
+  "https://agroinsumos-san-pedro-despliegue-us-seven.vercel.app",
   "https://agroinsumos-san-pedro-despliegue.onrender.com"
 ];
 
