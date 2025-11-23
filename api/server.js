@@ -20,7 +20,7 @@ const app = express();
 // =============================
 const allowedOrigins = [
   "http://localhost:3000",
-  "https://agroinsumos-san-pedro-despliegue-us-seven.vercel.app",
+  "https://agroinsumos-san-pedro-despliegue-us-tau.vercel.app",
   "https://agroinsumos-san-pedro-despliegue-ad.vercel.app",
   "https://agroinsumos-san-pedro-despliegue.onrender.com"
 ];
