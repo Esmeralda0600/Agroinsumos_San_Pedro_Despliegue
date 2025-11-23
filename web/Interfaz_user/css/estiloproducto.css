@@ -422,6 +422,9 @@ main {
 
 /* MÓVILES GRANDES Y TABLETS PEQUEÑAS (max-width: 768px) */
 @media (max-width: 768px) {
+    main{
+        margin-right: 10 px;
+    }
     .Header {
         flex-direction: column; 
         height: auto;
@@ -461,6 +464,7 @@ main {
         flex-direction: column; 
         align-items: center;
         gap: 20px;
+        margin-right: 10 px;
         padding: 20px 10px;
         max-width: 100%;
     }
