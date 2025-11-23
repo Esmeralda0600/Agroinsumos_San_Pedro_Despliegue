@@ -162,8 +162,8 @@ main {
     align-items: flex-start;
     gap: 60px;
     padding: 60px;
-    flex-wrap: wrap; 
-    flex-direction:row;
+   /* flex-wrap: wrap; */
+    flex-direction: row;
 }
 
 .tarjeta-producto {
