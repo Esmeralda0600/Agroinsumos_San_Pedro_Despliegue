@@ -552,7 +552,6 @@ main {
   }
 }
 
-/* SMALL DEVICES (max-width: 480px) */
 @media (max-width: 480px) {
   .header {
     padding: 10px 5px;
@@ -562,16 +561,28 @@ main {
     height: 60px;
   }
 
+  /* REPARACIÓN CLAVE: Aseguramos que todos los botones de acción sean visibles */
   .acciones__btn {
-    /* Oculta los iconos de carrito y perfil para dar espacio a los botones de login/registro */
-    display: none; 
+    display: block; /* Muestra todos los botones de acción, incluyendo carrito y favs */
+    padding: 0;
+  }
+  
+  .acciones__icono {
+    /* Reducimos el tamaño de los íconos para ahorrar espacio */
+    width: 25px; 
+    height: 25px;
   }
   
   .acciones__btn--login,
   .acciones__btn--registro {
     padding: 5px 8px;
     font-size: 0.8rem;
-    display: block; /* Asegura que los botones login/registro se muestren */
+    display: block; 
+  }
+
+  /* Ajustamos el contenedor de acciones para que quepan todos */
+  .header__acciones {
+    gap: 8px; /* Reducimos el espacio entre los botones */
   }
 
   .buscador__input {
