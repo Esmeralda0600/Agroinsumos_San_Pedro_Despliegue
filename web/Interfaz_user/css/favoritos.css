@@ -8,8 +8,29 @@ body {
     background-size: cover;
     background-position: center;
     background-attachment: fixed;
+    overflow-x: hidden; 
+    
+    /* --- CORRECCIÓN FOOTER ABAJO (Sticky Footer) --- */
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh; 
 }
 
+/* Contenedor principal para que ocupe todo el espacio sobrante */
+main { 
+    display: flex;
+    flex-direction: row ;
+    flex-grow: 1; /* Permite que el contenido principal empuje el footer hacia abajo */
+    /* Aseguramos que el main no se desborde */
+    width: 100%; 
+    box-sizing: border-box;
+    
+    /* Margin top para separarlo del header */
+    margin-top: 20px; 
+}
+
+/* CORRECCIÓN: Eliminamos la clase .fondo que creaba la doble imagen */
+/*
 .fondo {
     position: absolute;
     top: 0;
@@ -19,6 +40,7 @@ body {
     object-fit: cover;
     z-index: -1;
 }
+*/
 
 /* ==================== HEADER ==================== */
 .Header {
@@ -26,11 +48,12 @@ body {
     width: 100%;
     display: flex;
     align-items: center;
-    padding: 15px 20px;
+    padding: 15px 20px; 
     box-sizing: border-box;
     flex-wrap: wrap;
     justify-content: center;
     text-align: center;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); 
 }
 
 .logo img {
@@ -39,31 +62,55 @@ body {
     margin-right: 20px;
 }
 
-
+/* ==================== ESTILOS PARA MENSAJES DE ESTADO ==================== */
 .sin-favoritos {
-    color: #444;
-    font-size: 1.2rem;
+    color: #03484c; 
+    font-size: 1.5rem; 
+    font-weight: bold;
     text-align: center;
-    margin-top: 20px;
-    padding: 15px;
-    background: #f1f1f1;
-    border-radius: 10px;
+    margin: 40px auto; 
+    padding: 30px;
+    background: #e9f7ef; 
+    border: 2px solid #3c8c40; 
+    border-radius: 15px;
+    max-width: 600px; 
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
+    width: 90%; 
+    box-sizing: border-box;
 }
+
+.sin-favoritos a {
+    color: #0f684b;
+    text-decoration: none;
+    font-weight: 700;
+    border-bottom: 2px solid #0f684b;
+    transition: color 0.3s;
+}
+
+.sin-favoritos a:hover {
+    color: #03484c;
+    border-bottom-color: #03484c;
+}
+
 
 /* ==================== SECCIÓN PRINCIPAL ==================== */
 .carrito-container {
     display: flex;
-    justify-content: space-between;
+    justify-content: center; 
     align-items: flex-start;
     flex-wrap: wrap;
     gap: 30px;
     padding: 40px 60px;
+    max-width: 1400px; 
+    margin: 0 auto; 
+    width: 100%; 
     box-sizing: border-box;
 }
 
 /* Lista de productos */
 .carrito-productos {
     flex: 2;
+    min-width: 300px; 
     display: flex;
     flex-direction: column;
     gap: 20px;
@@ -82,10 +129,11 @@ body {
 }
 
 .item-carrito:hover {
-    transform: scale(1.02);
+    transform: scale(1.01); 
 }
 
 .item-carrito img {
+    min-width: 100px; 
     width: 130px;
     height: 130px;
     border-radius: 10px;
@@ -112,9 +160,10 @@ body {
     display: flex;
     flex-direction: column;
     gap: 10px;
+    min-width: 100px; 
 }
 
-/* Botones */
+/* Botones (sin cambios) */
 .btn-eliminar, .btn-comprar {
     border: none;
     border-radius: 5px;
@@ -152,6 +201,7 @@ body {
     max-width: 400px;
 }
 
+/* ... (Resto de estilos de resumen sin cambios) ... */
 .resumen-compra h3 {
     color: #2f5d3d;
     text-align: center;
@@ -195,110 +245,157 @@ body {
 
 /* ==================== FOOTER ==================== */
 .footer {
+    width: 100%; 
     background-color: #3B8952;
     color: white;
     text-align: center;
     padding: 20px;
-    margin-top: 40px;
+    box-shadow: 0 -4px 8px rgba(0, 0, 0, 0.1); 
+    margin-top: auto; /* CRÍTICO: Asegura que el footer se pegue al fondo usando flexbox */
 }
 
 .footer-contenido h2 {
     margin-bottom: 5px;
 }
 
-/* ==================== RESPONSIVIDAD ==================== */
+/* ==================== RESPONSIVIDAD OPTIMIZADA ==================== */
 
-/* Tablets */
+/* Tablets (max-width: 992px) */
 @media (max-width: 992px) {
     .carrito-container {
-        flex-direction: column;
+        flex-direction: column; 
         align-items: center;
-        padding: 30px;
+        padding: 30px 20px;
+        gap: 25px;
     }
 
     .carrito-productos {
-        width: 100%;
+        width: 100%; 
+        max-width: 600px; 
     }
 
     .resumen-compra {
         width: 100%;
-        max-width: 600px;
+        max-width: 500px; 
         margin-top: 20px;
     }
 
-    .item-carrito {
-        flex-direction: row;
-    }
-
     .item-carrito img {
-        width: 110px;
-        height: 110px;
+        width: 90px;
+        height: 90px;
     }
 }
 
-/* Celulares grandes */
+/* Celulares grandes (max-width: 768px) */
 @media (max-width: 768px) {
     .Header {
         flex-direction: column;
+        padding: 10px;
     }
 
     .logo img {
-        height: 70px;
+        height: 60px;
         margin: 10px 0;
     }
 
     .carrito-container {
-        padding: 20px;
+        padding: 15px;
+        gap: 20px;
+    }
+    
+    .carrito-productos {
+        width: 100%; 
+        max-width: 100%;
     }
 
     .item-carrito {
-        flex-direction: column;
+        flex-direction: column; 
+        align-items: center;
         text-align: center;
+        padding: 15px 10px;
+        gap: 10px; /* Reducimos el espacio entre elementos */
     }
 
     .item-carrito img {
-        width: 100%;
-        height: 180px;
+        width: 95%; /* Ligeramente más ancho */
+        max-width: 300px; /* Un poco más de ancho */
+        height: 160px;
+        margin-bottom: 5px;
     }
 
     .info-producto-carrito {
         text-align: center;
+        margin-bottom: 10px; 
     }
 
     .acciones-item {
-        flex-direction: row;
-        justify-content: center;
-        gap: 15px;
+        flex-direction: row; 
+        justify-content: space-around; /* Usamos space-around para mejor distribución */
+        width: 100%;
+        gap: 5px; /* Reducimos el gap */
+    }
+
+    .btn-eliminar, .btn-comprar {
+        flex: 1; 
+        max-width: 150px;
     }
 
     .resumen-compra {
         width: 100%;
+        min-width: auto;
+    }
+    
+    .sin-favoritos {
+        width: 95%; /* Asegura que no haya desbordamiento */
     }
 }
 
-/* Celulares pequeños */
+/* Celulares pequeños (max-width: 480px) */
 @media (max-width: 480px) {
     .Header h2 {
         font-size: 1.2rem;
         margin: 10px 0;
     }
-
-    .item-carrito img {
-        height: 150px;
+    
+    .logo img {
+        height: 50px;
     }
-
+    
+    .carrito-container {
+        padding: 10px 5px; /* Menor padding para ganar espacio */
+    }
+    
+    .item-carrito {
+        padding: 10px; /* Reducimos el padding de la tarjeta */
+    }
+    
+    .item-carrito img {
+        height: 120px; 
+    }
+    
+    .info-producto-carrito h3 {
+        font-size: 1.1rem;
+    }
+    
+    /* Botones más compactos */
     .btn-eliminar,
     .btn-comprar {
+        padding: 6px 8px; /* Reducimos el padding de los botones */
+        font-size: 0.75rem; /* Fuente más pequeña */
+    }
+
+    .btn-volver {
         padding: 8px 12px;
         font-size: 0.85rem;
     }
 
-    .btn-volver {
-        padding: 10px 15px;
-        font-size: 0.9rem;
+    .resumen-compra {
+        padding: 15px;
     }
-
-    .resumen-compra h3 {
+    
+    .sin-favoritos {
         font-size: 1rem;
+        padding: 15px;
+        margin: 15px auto;
     }
 }
