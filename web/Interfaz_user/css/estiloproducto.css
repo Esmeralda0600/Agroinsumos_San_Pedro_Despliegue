@@ -162,6 +162,7 @@ main {
     align-items: flex-start;
     gap: 60px;
     padding: 60px;
+    margin-
    /* flex-wrap: wrap; */
     flex-direction: row;
 }
@@ -522,6 +523,7 @@ main {
     
     .producto-detalle {
         padding: 10px 5px;
+        margin-left: 10 px;
     }
 
     .tarjeta-producto,
