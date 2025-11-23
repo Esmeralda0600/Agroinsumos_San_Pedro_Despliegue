@@ -1,4 +1,5 @@
-const API_PRODUCTOS_BASE = "http://localhost:3000/productos";
+const API_URL = "https://agroinsumos-san-pedro-despliegue.onrender.com";
+const API_PRODUCTOS_BASE = `${API_URL}/productos`;
 
 let cantidadActual = 0;
 let precioActual = 0;
@@ -49,8 +50,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         precioActualEl.textContent = `$${precioActual.toFixed(2)}`;
         nuevoPrecioInput.value = precioActual.toFixed(2);
 
-        if (producto.imagen) {
-            // las imagenes deben de estar en /web/Intefaz_admin/imgs/
+        if (producto.direccion_img) {
             imgProductoEl.src = `imgs/${producto.direccion_img}`;
         } else {
             imgProductoEl.src = "imgs/agrex_abc.png";
@@ -62,7 +62,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         return;
     }
 
-    // 3) Botones + y - para campo de cantidad a modificar
+    // 3) Botones + y - para campo de cantidad
     document.querySelector(".btn-mas").onclick = () => {
         const valor = Number(inputCantidad.value) || 0;
         inputCantidad.value = valor + 1;
@@ -88,6 +88,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         resultado.textContent = nuevo;
     };
 
+    // Guardar cambios
     document.querySelector(".guardar").onclick = async () => {
         const cantidadFinal = Number(resultado.textContent);
         if (isNaN(cantidadFinal) || cantidadFinal < 0) {
