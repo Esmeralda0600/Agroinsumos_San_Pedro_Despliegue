@@ -270,3 +270,93 @@ function agregarAlCarrito(producto) {
     localStorage.setItem("carrito", JSON.stringify(carrito));
     alert("Producto agregado al carrito 🛒");
 }
+
+
+/* ============================================================
+   BUSCADOR INTELIGENTE CON IA PARA REDIRECCIÓN DE CATEGORÍAS
+   ============================================================ */
+
+const API_KEY = "AIzaSyBysGS4NIAyd6Wvk2E42QRgcsDEgge71iw";
+const MODEL = "gemini-2.0-flash";
+
+const URL_GEMINI = `https://generativelanguage.googleapis.com/v1beta/models/${MODEL}:generateContent?key=${API_KEY}`;
+
+document.getElementById("btn-buscar-ia").addEventListener("click", interpretarBusqueda);
+document.getElementById("input-busqueda").addEventListener("keypress", e => {
+  if (e.key === "Enter") interpretarBusqueda();
+});
+
+async function interpretarBusqueda() {
+  const texto = document.getElementById("input-busqueda").value.trim();
+
+  if (!texto) {
+    alert("Por favor escribe lo que deseas buscar.");
+    return;
+  }
+
+  // Muestra estado opcional
+  console.log("Consultando IA para:", texto);
+
+  const prompt = `
+    Eres un sistema de búsqueda de una tienda de agroinsumos.
+    El usuario escribió: "${texto}".
+
+    Tu trabajo es identificar a qué categoría pertenece.
+
+    Las únicas categorías válidas son exactamente estas:
+    - SEMILLAS
+    - FERTILIZANTES
+    - PLAGUICIDAS
+    - HERBICIDAS
+    - FUNGICIDAS
+
+    Devuelve SOLO un objeto JSON con este formato exacto:
+
+    {
+      "categoria": "..."
+    }
+
+    Donde "categoria" debe ser una de las categorías listadas arriba.
+    No devuelvas explicaciones, no devuelvas texto extra.
+  `;
+
+  try {
+    const response = await fetch(URL_GEMINI, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        contents: [{ parts: [{ text: prompt }] }],
+        generationConfig: {
+          temperature: 0.2,
+          responseMimeType: "application/json"
+        }
+      })
+    });
+
+    const data = await response.json();
+    console.log("Respuesta IA:", data);
+
+    const textResult = data?.candidates?.[0]?.content?.parts?.[0]?.text;
+
+    const json = JSON.parse(textResult);
+
+    const categoria = json.categoria;
+
+    if (!categoria) {
+      alert("No se pudo identificar la categoría.");
+      return;
+    }
+
+    // URL de tu catálogo (PROYECTO DEPLOYADO EN VERCEL)
+    const URL_BASE = "https://agroinsumos-san-pedro-despliegue-us-tau.vercel.app";
+
+    const destino = `${URL_BASE}/inven.html?categoria=${categoria}`;
+
+    console.log("Redirigiendo a:", destino);
+    window.location.href = destino;
+
+  } catch (error) {
+    console.error("Error con IA:", error);
+    alert("Ocurrió un error al procesar la búsqueda.");
+  }
+}
