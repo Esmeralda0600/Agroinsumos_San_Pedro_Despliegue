@@ -25,7 +25,13 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     }
 
-    const API_CREAR_PRODUCTO_URL = "http://localhost:3000/productos";
+    // ============================
+    //   URL API GLOBAL (Render)
+    // ============================
+    const API_URL = "https://agroinsumos-san-pedro-despliegue.onrender.com";
+
+    // Endpoint final
+    const API_CREAR_PRODUCTO_URL = `${API_URL}/productos`;
 
     //  SUBMIT
     form.addEventListener("submit", async (e) => {
@@ -38,7 +44,7 @@ document.addEventListener("DOMContentLoaded", () => {
         const ingrediente_activo = document.getElementById("ingrediente_activo").value.trim();
         const descripcion = document.getElementById("descripcion").value.trim();
         const sucursal = document.getElementById("sucursal").value.trim();
-        const categoria_producto = document.getElementById("categoria")?.value.trim().toUpperCase(); // del <select>
+        const categoria_producto = document.getElementById("categoria")?.value.trim().toUpperCase();
 
         const precioValor = document.getElementById("precio").value;
         const precio = parseFloat(precioValor);
@@ -48,7 +54,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
         const archivo = fotoInput?.files[0];
 
-        // Validación básica
         if (
             !nombre ||
             !marca ||
@@ -63,16 +68,14 @@ document.addEventListener("DOMContentLoaded", () => {
             return;
         }
 
-        //  Generar id_producto único
+        // Generar id único
         const id_producto = `P-${Date.now()}`;
 
-        //  Imagen: solo guardamos el nombre del archivo
         let direccion_img = "default.png";
         if (archivo) {
             direccion_img = archivo.name;
         }
 
-        // Objeto que espera tu backend (modelo ProductoMongo)
         const nuevoProducto = {
             id_producto,
             nombre_producto: nombre,
@@ -120,7 +123,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
         } catch (error) {
             console.error("[ERROR] Error de red al crear producto:", error);
-            alert("No se pudo conectar con el servidor. Verifica que el backend esté levantado.");
+            alert("No se pudo conectar con el servidor. Verifica que el backend esté activo.");
         }
     });
+
 });
