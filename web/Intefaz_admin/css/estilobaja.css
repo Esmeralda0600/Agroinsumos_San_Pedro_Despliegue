@@ -17,7 +17,11 @@ body {
     background-repeat: no-repeat;
     background-attachment: fixed;
 }
-
+.logo img {
+    height: 90px;
+    width: auto;
+    margin-right: 20px;
+}
 /* ===========================
    NAVBAR
 =========================== */
