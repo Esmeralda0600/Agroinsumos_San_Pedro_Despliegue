@@ -2,7 +2,7 @@
 FROM node:18-alpine
 
 # DOCKER NO CACHE
-ARG CACHEBUST=1
+ARG CACHEBUST=2
 
 # Directorio de trabajo dentro del contenedor
 WORKDIR /usr/src/app
