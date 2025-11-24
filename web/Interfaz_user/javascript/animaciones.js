@@ -15,49 +15,29 @@ mostrarSlides(indiceSlide);
  * # FUNCIONES DE CONTROL DE SLIDES
  * ----------------------------------------------------------------- */
 
-/**
- * Cambia de slide hacia adelante o atrás.
- * @param {number} n - Número de posición relativa (1 siguiente, -1 anterior)
- */
 function cambiarSlide(n) {
   mostrarSlides(indiceSlide += n);
 }
 
-/**
- * Muestra el slide correspondiente al número indicado.
- * @param {number} n - Índice del slide a mostrar
- */
 function irASlide(n) {
   mostrarSlides(indiceSlide = n);
 }
 
-/**
- * Función principal que muestra el slide activo y oculta los demás.
- * @param {number} n - Índice actual de slide
- */
 function mostrarSlides(n) {
   const slides = document.getElementsByClassName('carrusel__slide');
   const dots = document.getElementsByClassName('carrusel__dot');
 
-  // Reinicia índice si supera límites
-  if (n > slides.length) {
-    indiceSlide = 1;
-  }
-  if (n < 1) {
-    indiceSlide = slides.length;
-  }
+  if (n > slides.length) indiceSlide = 1;
+  if (n < 1) indiceSlide = slides.length;
 
-  // Oculta todos los slides
   for (let i = 0; i < slides.length; i++) {
     slides[i].style.display = 'none';
   }
 
-  // Quita la clase activa de los puntos
   for (let i = 0; i < dots.length; i++) {
     dots[i].className = dots[i].className.replace(' carrusel__dot--active', '');
   }
 
-  // Muestra el slide activo y activa el punto correspondiente
   slides[indiceSlide - 1].style.display = 'block';
   dots[indiceSlide - 1].className += ' carrusel__dot--active';
 }
@@ -66,7 +46,6 @@ function mostrarSlides(n) {
  * # AUTO-REPRODUCCIÓN DEL CARRUSEL
  * ----------------------------------------------------------------- */
 
-// Cambia automáticamente de slide cada 5 segundos
 setInterval(() => {
   cambiarSlide(1);
 }, 5000);
@@ -76,6 +55,9 @@ setInterval(() => {
    BUSCADOR INTELIGENTE CON IA PARA REDIRECCIÓN DE CATEGORÍAS
    ============================================================ */
 
+// 👉 IMPORTANT: PON AQUÍ TU BACKEND EN RENDER
+const URL_BACKEND_IA = "https://agroinsumos-san-pedro-despliegue.onrender.com
+";
 
 document.getElementById("btn-buscar-ia").addEventListener("click", interpretarBusqueda);
 document.getElementById("input-busqueda").addEventListener("keypress", e => {
@@ -90,62 +72,27 @@ async function interpretarBusqueda() {
     return;
   }
 
-  // Muestra estado opcional
   console.log("Consultando IA para:", texto);
 
-  const prompt = `
-    Eres un sistema de búsqueda de una tienda de agroinsumos.
-    El usuario escribió: "${texto}".
-
-    Tu trabajo es identificar a qué categoría pertenece.
-
-    Las únicas categorías válidas son exactamente estas:
-    - SEMILLAS
-    - FERTILIZANTES
-    - PLAGUICIDAS
-    - HERBICIDAS
-    - FUNGICIDAS
-
-    Devuelve SOLO un objeto JSON con este formato exacto:
-
-    {
-      "categoria": "..."
-    }
-
-    Donde "categoria" debe ser una de las categorías listadas arriba.
-    No devuelvas explicaciones, no devuelvas texto extra.
-  `;
-
   try {
-    const response = await fetch(URL_GEMINI, {
+    const response = await fetch(URL_BACKEND_IA, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        contents: [{ parts: [{ text: prompt }] }],
-        generationConfig: {
-          temperature: 0.2,
-          responseMimeType: "application/json"
-        }
-      })
+      body: JSON.stringify({ texto })
     });
 
     const data = await response.json();
     console.log("Respuesta IA:", data);
 
-    const textResult = data?.candidates?.[0]?.content?.parts?.[0]?.text;
-
-    const json = JSON.parse(textResult);
-
-    const categoria = json.categoria;
+    const categoria = data.categoria;
 
     if (!categoria) {
       alert("No se pudo identificar la categoría.");
       return;
     }
 
-    // URL de tu catálogo (PROYECTO DEPLOYADO EN VERCEL)
+    // URL del catálogo en Vercel
     const URL_BASE = "https://agroinsumos-san-pedro-despliegue-us-tau.vercel.app";
-
     const destino = `${URL_BASE}/inven.html?categoria=${categoria}`;
 
     console.log("Redirigiendo a:", destino);
