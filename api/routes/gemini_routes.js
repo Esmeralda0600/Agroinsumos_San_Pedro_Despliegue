@@ -34,20 +34,16 @@ router.post("/interpretar", async (req, res) => {
       }
     `;
 
-    // === Petición a Gemini ===
+    // === Nueva forma correcta de leer ===
     const result = await model.generateContent(prompt);
-    const rawText =
-      result.response.candidates?.[0]?.content?.parts?.[0]?.text || "";
+    const rawText = result.response.text();  // 👈 ESTA ES LA FORMA CORRECTA
 
     console.log("🔍 Respuesta cruda IA:", rawText);
 
     // === LIMPIEZA ===
     const clean = rawText.trim();
-
-    // Elimina Markdown ```json ```
     const withoutTicks = clean.replace(/```json/g, "").replace(/```/g, "");
 
-    // Extrae SOLO el JSON del texto
     const first = withoutTicks.indexOf("{");
     const last = withoutTicks.lastIndexOf("}");
 
@@ -62,7 +58,6 @@ router.post("/interpretar", async (req, res) => {
 
     const data = JSON.parse(jsonString);
 
-    // Enviar categoría al frontend
     return res.json({ categoria: data.categoria });
 
   } catch (error) {
