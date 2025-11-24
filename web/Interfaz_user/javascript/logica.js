@@ -5,7 +5,8 @@
 const paginaActual = window.location.pathname;
 
 // URL DE LA API EN PRODUCCIÓN
-const API_URL = "https://agroinsumos-san-pedro-despliegue-kafy.onrender.com";
+const API_URL = "https://agroinsumos-san-pedro-despliegue.onrender.com";
+
 
 // ============================================================
 // BOTONES LOGIN Y REGISTRO
