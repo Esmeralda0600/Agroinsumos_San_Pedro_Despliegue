@@ -39,13 +39,8 @@ function mostrarSlides(n) {
   const slides = document.getElementsByClassName('carrusel__slide');
   const dots = document.getElementsByClassName('carrusel__dot');
 
-  // Reinicia índice si supera límites
-  if (n > slides.length) {
-    indiceSlide = 1;
-  }
-  if (n < 1) {
-    indiceSlide = slides.length;
-  }
+  if (n > slides.length) indiceSlide = 1;
+  if (n < 1) indiceSlide = slides.length;
 
   // Oculta todos los slides
   for (let i = 0; i < slides.length; i++) {
@@ -76,16 +71,19 @@ setInterval(() => {
    BUSCADOR INTELIGENTE CON IA PARA REDIRECCIÓN DE CATEGORÍAS
    ============================================================ */
 
-const API_KEY = "AIzaSyBysGS4NIAyd6Wvk2E42QRgcsDEgge71iw";
-const MODEL = "gemini-2.0-flash";
+// ⚠️ EDITA ESTA LÍNEA — TU BACKEND EN RENDER
+const URL_BACKEND_IA = "https://agroinsumos-san-pedro-despliegue.onrender.com/api/ia/interpretar"; 
+// Ejemplo real: https://agroinsumos-san-pedro-despliegue.onrender.com/api/ia/interpretar
 
-const URL_GEMINI = `https://generativelanguage.googleapis.com/v1beta/models/${MODEL}:generateContent?key=${API_KEY}`;
-
+// Eventos del buscador
 document.getElementById("btn-buscar-ia").addEventListener("click", interpretarBusqueda);
 document.getElementById("input-busqueda").addEventListener("keypress", e => {
   if (e.key === "Enter") interpretarBusqueda();
 });
 
+/**
+ * Ejecuta la búsqueda inteligente con IA
+ */
 async function interpretarBusqueda() {
   const texto = document.getElementById("input-busqueda").value.trim();
 
@@ -94,62 +92,27 @@ async function interpretarBusqueda() {
     return;
   }
 
-  // Muestra estado opcional
   console.log("Consultando IA para:", texto);
 
-  const prompt = `
-    Eres un sistema de búsqueda de una tienda de agroinsumos.
-    El usuario escribió: "${texto}".
-
-    Tu trabajo es identificar a qué categoría pertenece.
-
-    Las únicas categorías válidas son exactamente estas:
-    - SEMILLAS
-    - FERTILIZANTES
-    - PLAGUICIDAS
-    - HERBICIDAS
-    - FUNGICIDAS
-
-    Devuelve SOLO un objeto JSON con este formato exacto:
-
-    {
-      "categoria": "..."
-    }
-
-    Donde "categoria" debe ser una de las categorías listadas arriba.
-    No devuelvas explicaciones, no devuelvas texto extra.
-  `;
-
   try {
-    const response = await fetch(URL_GEMINI, {
+    const response = await fetch(URL_BACKEND_IA, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        contents: [{ parts: [{ text: prompt }] }],
-        generationConfig: {
-          temperature: 0.2,
-          responseMimeType: "application/json"
-        }
-      })
+      body: JSON.stringify({ texto })
     });
 
     const data = await response.json();
     console.log("Respuesta IA:", data);
 
-    const textResult = data?.candidates?.[0]?.content?.parts?.[0]?.text;
-
-    const json = JSON.parse(textResult);
-
-    const categoria = json.categoria;
+    const categoria = data.categoria;
 
     if (!categoria) {
       alert("No se pudo identificar la categoría.");
       return;
     }
 
-    // URL de tu catálogo (PROYECTO DEPLOYADO EN VERCEL)
+    // URL del catálogo desplegado
     const URL_BASE = "https://agroinsumos-san-pedro-despliegue-us-tau.vercel.app";
-
     const destino = `${URL_BASE}/inven.html?categoria=${categoria}`;
 
     console.log("Redirigiendo a:", destino);
