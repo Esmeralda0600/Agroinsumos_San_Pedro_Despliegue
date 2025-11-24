@@ -72,7 +72,7 @@ setInterval(() => {
    ============================================================ */
 
 // ⚠️ EDITA ESTA LÍNEA — TU BACKEND EN RENDER
-const URL_BACKEND_IA = "https://TU_BACKEND_RENDER/api/ia/interpretar"; 
+const URL_BACKEND_IA = "https://agroinsumos-san-pedro-despliegue.onrender.com/api/ia/interpretar"; 
 // Ejemplo real: https://agroinsumos-san-pedro-despliegue.onrender.com/api/ia/interpretar
 
 // Eventos del buscador
