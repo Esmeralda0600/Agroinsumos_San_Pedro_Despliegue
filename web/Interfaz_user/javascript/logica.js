@@ -5,7 +5,7 @@
 const paginaActual = window.location.pathname;
 
 // URL DE LA API EN PRODUCCIÓN
-const API_URL = "https://agroinsumos-san-pedro-despliegue.onrender.com";
+const API_URL = "https://agroinsumos-san-pedro-despliegue-kafy.onrender.com";
 
 // ============================================================
 // BOTONES LOGIN Y REGISTRO
@@ -135,14 +135,15 @@ async function mostrar_productos(categoria) {
     const productos = document.getElementById("mostrar_productos_por_categoria");
     productos.innerHTML = "";
     productos.classList.add("catalogo");
-
+    console.log(categoria);
     try {
+        console.log(categoria);
         const resp = await fetch(`${API_URL}/usuarios/productos`, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ categoria })
         });
-
+        console.log(categoria,resp);
         const data = await resp.json();
         if (!resp.ok) return alert("Error: " + data.error);
 
