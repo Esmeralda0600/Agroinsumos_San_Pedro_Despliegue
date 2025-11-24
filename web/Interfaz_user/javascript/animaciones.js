@@ -76,10 +76,6 @@ setInterval(() => {
    BUSCADOR INTELIGENTE CON IA PARA REDIRECCIÓN DE CATEGORÍAS
    ============================================================ */
 
-const API_KEY = "AIzaSyBysGS4NIAyd6Wvk2E42QRgcsDEgge71iw";
-const MODEL = "gemini-2.0-flash";
-
-const URL_GEMINI = `https://generativelanguage.googleapis.com/v1beta/models/${MODEL}:generateContent?key=${API_KEY}`;
 
 document.getElementById("btn-buscar-ia").addEventListener("click", interpretarBusqueda);
 document.getElementById("input-busqueda").addEventListener("keypress", e => {
