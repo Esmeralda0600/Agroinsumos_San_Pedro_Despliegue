@@ -11,6 +11,10 @@ import favoritoRoutes from "./routes/favoritoRoutes.js";
 import swaggerJSDoc from "swagger-jsdoc";
 import swaggerUi from "swagger-ui-express";
 
+import geminiRoutes from "./routes/gemini_routes.js";
+
+
+
 dotenv.config();
 
 const app = express();
@@ -53,7 +57,7 @@ app.use("/usuarios", agro_spa_routes);
 app.use("/administradores", agro_spa_routes_admin);
 app.use("/favoritos", favoritoRoutes);
 app.use("/productos", producto_routes);
-
+app.use("/api/ia", geminiRoutes);
 // Swagger
 const swaggerDocs = swaggerJSDoc({
   definition: {
