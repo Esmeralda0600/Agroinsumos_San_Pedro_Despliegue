@@ -34,13 +34,39 @@ router.post("/interpretar", async (req, res) => {
       }
     `;
 
+    // === Petición a Gemini ===
     const result = await model.generateContent(prompt);
-    const respuesta = result.response.text();
+    const rawText =
+      result.response.candidates?.[0]?.content?.parts?.[0]?.text || "";
 
-    return res.json(JSON.parse(respuesta));
+    console.log("🔍 Respuesta cruda IA:", rawText);
+
+    // === LIMPIEZA ===
+    const clean = rawText.trim();
+
+    // Elimina Markdown ```json ```
+    const withoutTicks = clean.replace(/```json/g, "").replace(/```/g, "");
+
+    // Extrae SOLO el JSON del texto
+    const first = withoutTicks.indexOf("{");
+    const last = withoutTicks.lastIndexOf("}");
+
+    if (first === -1 || last === -1) {
+      console.error("❌ No se encontró JSON válido en la respuesta.");
+      return res.status(500).json({ error: "Respuesta IA inválida." });
+    }
+
+    const jsonString = withoutTicks.substring(first, last + 1);
+
+    console.log("🧪 JSON detectado:", jsonString);
+
+    const data = JSON.parse(jsonString);
+
+    // Enviar categoría al frontend
+    return res.json({ categoria: data.categoria });
 
   } catch (error) {
-    console.error("Error IA:", error);
+    console.error("❌ Error IA:", error);
     return res.status(500).json({ error: "Fallo IA" });
   }
 });
