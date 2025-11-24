@@ -1,23 +1,23 @@
 # Imagen base oficial de Node.js
 FROM node:18-alpine
 
+# DOCKER NO CACHE
+ARG CACHEBUST=1
+
 # Directorio de trabajo dentro del contenedor
 WORKDIR /usr/src/app
 
-# Copiar archivos de configuración
-COPY package*.json ./
+# Copiar package.json (y opcionalmente package-lock.json si existiera)
+COPY package.json ./
 
-# Instalar dependencias
-RUN npm install 
-#RUN npm install --save-dev nodemon
+# Instalar dependencias **RECIÉN COPIADAS**
+RUN npm install
 
-# Copiar el resto del proyecto
+# Copiar todo el proyecto
 COPY . .
 
-# Exponer el puerto
-EXPOSE ${PORT}
+# Exponer puerto definido en Render
+EXPOSE 3000
 
-# Comando por defecto
-# CMD ["node", "server.js"]
-# CMD ["npm", "start"]
-CMD ["npm", "dev"]
+# Comando para ejecutar el servidor
+CMD ["npm", "start"]
