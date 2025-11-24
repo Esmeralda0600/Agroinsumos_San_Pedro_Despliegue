@@ -19,7 +19,6 @@ router.get("/categorias", mostrar_categorias);
 router.get("/marcas", mostrar_marcas);
 router.get("/ingrediente", mostrar_ingredientes);
 
-// ❗ ESTA ES LA RUTA CORRECTA
 router.post("/productos", mostrar_productos);
 
 export default router;

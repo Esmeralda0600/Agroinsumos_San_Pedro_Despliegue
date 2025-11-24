@@ -1,0 +1,20 @@
+services:
+  web_users:
+    image: php:8.3-apache
+    container_name: web_users_srv
+    volumes:
+      - ./web/Interfaz_user:/var/www/html
+    ports:
+      - "3000:80"
+
+  web_admin:
+    image: php:8.3-apache
+    container_name: web_admin_srv
+    volumes:
+      - ./web/Intefaz_admin:/var/www/html
+    ports:
+      - "8182:80"
+
+networks:
+  services_net:
+    driver: bridge

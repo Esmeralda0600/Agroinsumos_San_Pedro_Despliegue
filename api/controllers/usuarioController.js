@@ -158,17 +158,36 @@ export async function mostrar_productos(req, res) {
     // La BD guarda categorías EN MAYÚSCULAS
     categoria = categoria.toUpperCase();
 
-    const existe = await CategoriaMongo.findOne({
+    const existe_categoria = await CategoriaMongo.findOne({
       nombre_categoria: categoria
     });
-
-    if (!existe) {
-      return res.status(404).json({ error: "Categoría no encontrada" });
-    }
-
-    const productos = await ProductoMongo.find({
-      categoria_producto: categoria
+    const existe_marca = await MarcaMongo.findOne({
+      nombre_marca: categoria
     });
+    const existe_ingrediente = await IngredienteMongo.findOne({
+      nombre_ingrediente: categoria
+    });
+    console.log("problema",existe_categoria);
+    console.log(existe_marca);
+    console.log(existe_ingrediente);
+    if (!existe_categoria && !existe_marca && !existe_ingrediente) {
+      return res.status(404).json({ error: "Categoría no encontrada" });
+    };
+    let productos= 0;
+    if (existe_categoria){
+      productos = await ProductoMongo.find({
+        categoria_producto: categoria
+      });
+    }else if (existe_marca){
+      productos = await ProductoMongo.find({
+        marca: categoria
+      });
+    }else if (existe_ingrediente){
+      productos = await ProductoMongo.find({
+        ingrediente_activo: categoria
+      });
+    };
+    
 
     res.json(productos);
 
