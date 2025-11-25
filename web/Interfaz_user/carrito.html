@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Carrito de Compras - Agroinsumos San Pedro</title>
+    <link rel="stylesheet" href="css/carrito.css">
+    <style>
+        
+    </style>
+</head>
+<body>
+    <img src="imgs/fondo2.jpg" class="fondo">
+
+    <!-- HEADER -->
+    <header class="Header">
+        <div class="logo">
+            <img src="imgs/logo.png" alt="Agroinsumos San Pedro">
+        </div>
+        <h2 style="color:rgb(0, 0, 0); margin-left:30px;">🛒 Carrito de Compras</h2>
+    </header>
+
+    <!-- SECCIÓN DEL CARRITO -->
+    <main class="carrito-container">
+        <section class="carrito-productos" id="contenedor-carrito">
+            <!-- Productos se cargarán dinámicamente con JS -->
+        </section>
+
+        <!-- RESUMEN -->
+        <aside class="resumen-compra">
+            <h3>Resumen de Compra</h3>
+            <div class="linea"></div>
+            <p>Subtotal: <span>$0.00</span></p>
+            <p><strong>Total:</strong> <span class="total">$40.00</span></p>
+            <div class="acciones-resumen">
+                <button class="btn-volver" onclick="window.location.href='catalogo.html'">Volver al catálogo</button>
+                <!-- <button class="btn-finalizar">Finalizar compra</button> -->
+                <button onclick="finalizarDesdeCarrito()">Finalizar compra</button>
+
+
+
+            </div>
+        </aside>
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="footer">
+        <div class="footer-contenido">
+            <h2>Agroinsumos San Pedro</h2>
+            <p>Todos los derechos reservados © 2025</p>
+        </div>
+    </footer>
+
+    <script src="javascript/carrito.js"> </script>
+    <script>
+  function finalizarDesdeCarrito() {
+    localStorage.setItem("modo_compra", "carrito");
+    window.location.href = "pago.html";
+  }
+</script>
+</body>
+</html>

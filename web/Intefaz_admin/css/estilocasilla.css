@@ -1,0 +1,419 @@
+/* ===========================
+   ESTILOS GENERALES
+=========================== */
+html, body {
+    margin: 0;
+    padding: 0;
+    min-height: 100%;
+    display: flex;
+    flex-direction: column;
+    font-family: Arial, sans-serif;
+    color: #111;
+}
+
+body {
+    flex: 1;
+}
+
+.contenido {
+    flex: 1; /* Ocupa todo el espacio disponible */
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.fondo {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    z-index: -1;
+}
+
+/* ===========================
+   HEADER
+=========================== */
+.Header {
+    background-color: #3B8952;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 15px 30px;
+    flex-wrap: wrap;
+}
+
+.logo img {
+    height: 90px;
+    width: auto;
+}
+
+.Nombre {
+    font-size: 2rem;
+    text-align: center;
+    flex: 1;
+}
+
+.botones-derecha {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.btn-close,
+.btn-start,
+.campanita {
+    cursor: pointer;
+    border: none;
+    transition: transform 0.2s ease, background 0.2s ease;
+}
+
+.btn-close,
+.btn-start {
+    padding: 8px 15px;
+    border-radius: 5px;
+    color: white;
+    background-color: #0f684b;
+}
+
+.btn-close:hover,
+.btn-start:hover {
+    background-color: #03484c;
+    transform: scale(1.1);
+}
+
+.campanita {
+    background: none;
+}
+
+.campanita img {
+    width: 40px;
+    height: 40px;
+    transition: transform 0.2s ease;
+}
+
+.campanita:hover img {
+    transform: scale(1.1);
+}
+
+/* ===========================
+   BOTONES CENTRO
+=========================== */
+.botones-centro {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    margin-top: 40px;
+    flex-wrap: wrap;
+}
+
+.inventario,
+.historial {
+    flex: 1;
+    max-width: 250px;
+    height: 80px;
+    text-align: center;
+    background: rgba(255, 255, 255, 0.65);
+    color: #2e7d32;
+    border: none;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.35);
+    font-size: 1.4rem;
+    cursor: pointer;
+    transition: 0.2s ease;
+}
+
+.inventario:hover,
+.historial:hover,
+.inventario.activo,
+.historial.activo {
+    background-color: white;
+    transform: scale(1.1);
+}
+
+/* ===================== TABLA RESPONSIVA ===================== */
+.tabla-contenedor {
+    width: 100%;
+    overflow-x: auto;
+}
+
+.tabla-inventario {
+    width: 100%;
+    min-width: 700px;
+    border-collapse: collapse;
+    background-color: rgba(255, 255, 255, 0.85);
+    border-radius: 15px;
+    overflow: hidden;
+}
+
+.tabla-inventario th {
+    background-color: #3B8952;
+    color: white;
+    padding: 12px;
+    text-align: center;
+}
+
+.tabla-inventario td {
+    padding: 12px;
+    text-align: justify;
+}
+
+.tabla-inventario td span {
+    display: inline-block;
+    background-color: white;
+    padding: 6px 12px;
+    border-radius: 8px;
+    min-width: 120px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+}
+
+/* Botón modificar */
+.modificar {
+    background-color: #3B8952;
+    color: white;
+    border: none;
+    padding: 6px 12px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.modificar:hover {
+    background-color: #0f684b;
+}
+
+/* ==================== BOTÓN GESTIÓN ==================== */
+.gestion {
+    margin-top: 30px;
+    background-color: #0e1a0e;
+    color: #fff;
+    border-radius: 8px;
+    padding: 10px 16px;
+    text-decoration: none;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.gestion:hover {
+    background-color: #16663d;
+    transform: scale(1.08);
+}
+
+/* Botón volver alineado a la izquierda */
+.volver {
+    position: relative;
+    align-self: flex-start;
+    margin-top: 10px;
+    padding: 10px 16px;
+    background: #0f684b;
+    color: white;
+    border: none;
+    font-size: 14px;
+    border-radius: 8px;
+    cursor: pointer;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.25);
+    transition: transform 0.2s ease, background 0.2s ease;
+}
+
+.volver:hover {
+    background-color: #03484c;
+    transform: scale(1.05);
+}
+
+/* ========================== CONTENEDORES MODIFICAR PRODUCTO ========================== */
+.contenedor-modificar {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    background: rgba(255, 255, 255, 0.85);
+    padding: 25px;
+    border-radius: 12px;
+    box-shadow: 0 0 8px 10px rgba(80,255,80,0.55);
+    max-width: 900px;
+    width: 100%;
+    justify-content: center;
+}
+
+.lado-izquierdo, .lado-derecho {
+    flex: 1 1 300px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.img-producto {
+    width: 240px;
+    border-radius: 10px;
+    margin-bottom: 20px;
+}
+
+.label {
+    font-weight: bold;
+    color: #0f684b;
+}
+
+.cantidad-box,
+.resultado-box {
+    background: white;
+    padding: 10px 25px;
+    border-radius: 8px;
+    font-size: 20px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.25);
+}
+
+.caja-modificar {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin: 10px 0;
+}
+
+.btn-mas,
+.btn-menos {
+    background: #2e7d32;
+    color: white;
+    border: none;
+    width: 40px;
+    height: 40px;
+    font-size: 22px;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+#nuevaCantidad {
+    width: 90px;
+    padding: 8px;
+    font-size: 18px;
+    text-align: center;
+    border-radius: 6px;
+    border: 1px solid #aaa;
+}
+
+.acciones {
+    margin-top: 15px;
+    display: flex;
+    gap: 20px;
+}
+
+.accion {
+    padding: 10px 18px;
+    background: #03484c;
+    color: white;
+    border-radius: 8px;
+    cursor: pointer;
+}
+
+.botones-finales {
+    margin-top: 25px;
+    display: flex;
+    gap: 25px;
+    flex-wrap: wrap;
+}
+
+.guardar, .cancelar {
+    padding: 12px 20px;
+    border: none;
+    background: #3B8952;
+    color: white;
+    font-size: 18px;
+    border-radius: 8px;
+    cursor: pointer;
+}
+
+.cancelar {
+    background: #8b1a1a;
+}
+
+/* ===========================
+   FOOTER
+=========================== */
+.footer {
+    width: 100%;
+    background-color: #3B8952;
+    color: white;
+    text-align: center;
+    padding: 10px 0;
+    margin-top: auto; /* asegura que siempre quede al final */
+}
+
+/* ===========================
+   RESPONSIVE
+=========================== */
+
+/* Tablet */
+@media (max-width: 992px) {
+    .Header {
+        flex-direction: column;
+        height: auto;
+        text-align: center;
+        padding: 20px;
+    }
+
+    .Nombre {
+        font-size: 2rem;
+        width: 100%;
+    }
+
+    .logo img {
+        height: 80px;
+    }
+
+    .botones-derecha {
+        justify-content: center;
+        width: 100%;
+        margin-top: 10px;
+    }
+
+    .tabla-inventario {
+        min-width: 100%;
+    }
+
+    .contenedor-modificar {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .lado-izquierdo, .lado-derecho {
+        width: 100%;
+        max-width: 100%;
+    }
+
+    .volver {
+        margin-bottom: 15px;
+        font-size: 16px;
+        padding: 8px 14px;
+    }
+
+    .botones-finales {
+        justify-content: center;
+    }
+}
+
+/* Móvil */
+@media (max-width: 600px) {
+    .Nombre {
+        font-size: 1.6rem;
+    }
+
+    .inventario, .historial {
+        max-width: 90%;
+        height: 60px;
+        font-size: 16px;
+    }
+
+    .contenedor-modificar {
+        padding: 15px;
+        width: 85%;
+    }
+
+    #nuevaCantidad {
+        max-width: 70px;
+    }
+
+    .botones-finales {
+        flex-direction: column;
+        gap: 10px;
+    }
+}

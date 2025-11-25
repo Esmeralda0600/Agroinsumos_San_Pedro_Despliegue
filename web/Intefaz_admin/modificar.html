@@ -1,0 +1,97 @@
+<!doctype html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Modificar Producto - Agroinsumos San Pedro</title>
+    <link rel="stylesheet" href="css/estilocasilla.css">
+</head>
+
+<body>
+    <!-- HEADER -->
+    <div class="Header">
+        <a href="principal.html" class="logo">
+            <img src="imgs/logo.png" alt="Logotipo de Agroinsumos San Pedro" class="logo__img" />
+        </a>
+
+        <div class="Nombre"> Agroinsumos San Pedro </div>
+
+        <div class="botones-derecha">
+            <button class="btn-start" onclick="window.location.href='principal.html'">Inicio</button>
+            <button class="btn-close" onclick="window.location.href='index.html'">Cerrar sesión</button>
+        </div>
+    </div>
+
+    <!-- CONTENIDO PRINCIPAL -->
+    <main class="contenido">
+
+        <h2 class="titulo-modificar">Modificar datos del producto</h2>
+
+        <div class="contenedor-modificar">
+
+            <!-- Lado izquierdo: imagen y cantidad actual -->
+            <div class="lado-izquierdo">
+                <img src="imgs/agrex_abc.png" class="img-producto" id="imgProducto">
+
+                <p id="nombreProducto" class="nombre-producto">Nombre del producto</p>
+
+                <p class="label">Cantidad actual:</p>
+                <p id="cantidadActual" class="cantidad-box">0</p>
+            </div>
+
+            <!-- Lado derecho: modificar cantidad y precio -->
+            <div class="lado-derecho">
+
+                <!-- Cantidad -->
+                <p class="label">Cantidad a modificar:</p>
+
+                <div class="caja-modificar">
+                    <button type="button" class="btn-menos">−</button>
+                    <input type="number" id="nuevaCantidad" value="0" min="0" step="1" 
+                    oninput="this.value = this.value.replace(/[^0-9]/g,'')">
+                    <button type="button" class="btn-mas">+</button>
+                </div>
+
+                <div class="acciones">
+                    <button type="button" class="accion aumentar">Aumentar</button>
+                    <button type="button" class="accion disminuir">Disminuir</button>
+                </div>
+
+                <!-- Muestra previa del cambio -->
+                <p class="label">Cantidad resultante:</p>
+                <p id="resultado" class="resultado-box">0</p>
+
+                <!-- Precio -->
+                <div class="precio-section">
+                    <p class="label">Precio actual:</p>
+                    <p id="precioActual" class="precio-box">$0.00</p>
+
+                    <p class="label">Nuevo precio:</p>
+                    <input type="number" id="nuevoPrecio" class="input-precio" step="0.01" min="0">
+                </div>
+
+            </div>
+        </div>
+
+        <!-- Botones finales -->
+        <div class="botones-finales">
+            <button class="guardar" type="button">Guardar cambios</button>
+            <button class="cancelar" type="button" onclick="window.location.href='inventario.html'">Cancelar</button>
+        </div>
+
+        <div>
+            <button class="volver" onclick="window.location.href='inventario.html'">Volver</button>
+        </div>    
+    </main>
+
+    <footer class="footer">
+        <div class="footer-contenido">
+            <p class="mb-1">&copy; 2025 Agroinsumos San Pedro</p>
+            <p class="small mb-0">Todos los derechos reservados </p>
+        </div>
+    </footer>
+
+    <script src="js/modificar.js"></script>
+</body>
+</html>

@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Favoritos - Agroinsumos San Pedro</title>
+
+    <link rel="icon" type="image/png" href="imgs/logo.png">
+    <link rel="stylesheet" href="css/favoritos.css">
+</head>
+
+<body>
+
+    <header class="Header">
+         <a href="index.html" class="logo">
+  <img src="imgs/logo.png" alt="Logotipo de Agroinsumos San Pedro" class="logo__img" />
+</a>
+
+        <h2 class="titulo-header">🧡 Mis Favoritos</h2>
+    </header>
+
+    <main class="carrito-container">
+        <section id="lista-favoritos" class="carrito-productos">
+            <!-- AQUÍ SE CARGAN LOS FAVORITOS -->
+        </section>
+
+        <aside class="resumen-compra">
+            <h3>Resumen</h3>
+            <div class="linea"></div>
+            <p>Total de Favoritos: <span id="total-favoritos">0 productos</span></p>
+
+            <div class="acciones-resumen">
+                <button class="btn-volver" onclick="window.location.href='catalogo.html'">
+                    Volver al catálogo
+                </button>
+            </div>
+        </aside>
+    </main>
+
+    <footer class="footer">
+        <div class="footer-contenido">
+            <h2>Agroinsumos San Pedro</h2>
+            <p>Todos los derechos reservados © 2025</p>
+        </div>
+    </footer>
+
+    <script src="javascript/favoritos.js"></script>
+</body>
+</html>

@@ -1,0 +1,89 @@
+<!doctype html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Agroinsumos San Pedro</title>
+    <link rel="stylesheet" href="css/estiloiven.css">
+</head>
+
+<body>
+    <img src="imgs/fondoindex.jpg" class="fondo">
+    <div class="Header">
+        <a href="principal.html" class="logo">
+            <img src="imgs/logo.png" alt="Logotipo de Agroinsumos San Pedro" class="logo__img" />
+        </a>
+
+        <div class="Nombre">Agroinsumos San Pedro</div>
+
+        <div class="botones-derecha">
+            <button class="btn-start" type="button" onclick="window.location.href='principal.html'">Inicio</button>
+            <button class="btn-close" type="button" onclick="window.location.href='index.html'">Cerrar sesión</button>
+        </div>
+    </div>
+
+    <div class="botones-centro">
+        <button class="inventario activo" type="button" onclick="window.location.href='inventario.html'">INVENTARIO</button>
+        <button class="historial" type="button" onclick="window.location.href='historial.html'">HISTORIAL COMPRAS</button>
+    </div>
+
+    <main class="contenido">
+        <!-- 🔹 Contenedor para hacer la tabla responsiva -->
+        <div class="busqueda-container">
+            <input type="text" id="buscar" placeholder="Buscar producto..." onkeyup="filtrarTabla()">
+
+            <select id="categoria" onchange="filtrarTabla()">
+                <option value="todo">Todas las categorías</option>
+                <option value="FERTILIZANTES">FERTILIZANTES</option>
+                <option value="SEMILLAS">SEMILLAS</option>
+                <option value="HERBICIDAS">HERBICIDAS</option>
+                <option value="ADHERENTES">AdDEHERENTES</option>
+                <option value="INSECTICIDAS">INSECTICIDAS</option>
+                <option value="ESTIMULANTES/BIOESTIMULANTES">ESTIMILANTES/BIOESTIMULANTES</option>
+                <option value="HERRAMIENTAS">HERRAMIENTAS</option>
+                <!-- Puedes agregar más categorías -->
+            </select>
+        </div>
+        <div class="tabla-contenedor">
+            <table class="tabla-inventario">
+                <thead>
+                    <tr>
+                        <th>Nombre del producto</th>
+                        <th>Precio</th>
+                        <th>Ingrediente Activo</th>
+                        <th>Marca</th>
+                        <th>Descripcion</th>
+                        <th>Cantidad</th>
+                        <th>Sucursal</th>
+                        <th>Categoria</th>
+                        <th>Accion</th>
+
+                    </tr>
+                </thead>
+                
+                <tbody id="tbody-inventario">
+                   
+                </tbody>
+            </table>
+        </div>
+        <div>
+            <button class="volver" onclick="window.location.href='principal.html'">Volver</button>
+        </div>
+
+        <a href="gestion.html" class="gestion">Gestión de productos</a>
+        
+    </main>
+
+    <footer class="footer">
+        <div class="footer-contenido">
+            <p class="mb-1">&copy; 2025 Agroinsumos San Pedro</p>
+            <p class="small mb-0">Todos los derechos reservados </p>
+        </div>
+    </footer>
+
+    <!-- <script src="js/notificacion.js"></script> -->
+    <!-- <script src="js/filtro.js"></script> -->
+    <script src="js/logicaInventario.js"></script>
+</body>
+</html>

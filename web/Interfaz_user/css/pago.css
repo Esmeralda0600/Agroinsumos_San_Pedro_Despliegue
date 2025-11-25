@@ -1,0 +1,241 @@
+/* Reset básico */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Arial', sans-serif;
+    background: linear-gradient(to right, #ffffff, #a8d5b6);
+    color: #114d30;
+}
+
+/* ---------- HEADER ---------- */
+.Header {
+    background-color: #f9f9f9;
+    padding: 15px 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+.Header .logo img {
+    height: 70px;
+    max-width: 100%;
+}
+
+/* ---------- CONTENEDOR PRINCIPAL ---------- */
+.container {
+    max-width: 800px;
+    margin: 50px auto;
+    background: #fff;
+    padding: 30px;
+    border-radius: 15px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+}
+
+h2 {
+    text-align: center;
+    margin-bottom: 30px;
+    color: #0f684b;
+}
+
+/* ---------- RESUMEN DE PRODUCTOS ---------- */
+.resumen-item {
+    display: flex;
+    gap: 20px;
+    align-items: center;
+    background: #e6f0eb;
+    padding: 20px;
+    border-radius: 12px;
+    margin-bottom: 20px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+}
+
+.resumen-item img {
+    width: 120px;
+    height: 120px;
+    border-radius: 10px;
+    object-fit: cover;
+    border: 2px solid #114d30;
+}
+
+.producto-nombre {
+    font-weight: bold;
+    font-size: 18px;
+    margin-bottom: 10px;
+}
+
+input[type="number"] {
+    width: 70px;
+    padding: 5px;
+    border-radius: 5px;
+    border: 1px solid #aaa;
+    text-align: center;
+}
+
+/* ---------- MÉTODOS DE PAGO ---------- */
+.metodos {
+    margin: 30px 0;
+}
+
+.metodos h3 {
+    margin-bottom: 15px;
+}
+
+.metodos .tarjetas,
+.metodos .otros {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+}
+
+.metodos label {
+    background: #fff;
+    border: 2px solid #114d30;
+    border-radius: 10px;
+    padding: 10px 15px;
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    transition: all 0.3s;
+    gap: 10px;
+}
+
+.metodos label:hover {
+    transform: scale(1.05);
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
+}
+
+.metodos input[type="radio"] {
+    accent-color: #4CAF50;
+    cursor: pointer;
+}
+
+.metodos img {
+    width: 40px;
+    height: auto;
+}
+
+/* ---------- TOTAL Y BOTONES ---------- */
+.total {
+    font-size: 1.5rem;
+    font-weight: bold;
+    text-align: right;
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+
+.acciones {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    flex-wrap: wrap;
+}
+
+.btn {
+    padding: 12px 30px;
+    border-radius: 8px;
+    border: none;
+    font-size: 16px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.btn-volver {
+    background-color: #b71c1c;
+    color: white;
+}
+
+.btn-volver:hover {
+    background-color: #7f0000;
+    transform: translateY(-2px);
+}
+
+.btn-finalizar {
+    background-color: #0f684b;
+    color: white;
+}
+
+.btn-finalizar:hover {
+    background-color: #03484c;
+    transform: translateY(-2px);
+}
+
+/* ---------- FOOTER ---------- */
+.footer {
+    background-color: #3B8952;
+    color: white;
+    text-align: center;
+    padding: 15px 0;
+    margin-top: 50px;
+}
+
+/* ---------- 🔹 MEDIA QUERIES (RESPONSIVE) ---------- */
+
+/* Tablets (pantallas medianas) */
+@media (max-width: 768px) {
+    .container {
+        margin: 30px 20px;
+        padding: 20px;
+    }
+
+    .resumen-item {
+        flex-direction: column;
+        text-align: center;
+    }
+
+    .resumen-item img {
+        width: 100px;
+        height: 100px;
+    }
+
+    .producto-nombre {
+        font-size: 16px;
+    }
+
+    .total {
+        text-align: center;
+    }
+}
+
+/* Celulares (pantallas pequeñas) */
+@media (max-width: 480px) {
+    .Header {
+        padding: 10px;
+    }
+
+    .Header .logo img {
+        height: 60px;
+    }
+
+    .container {
+        margin: 20px 10px;
+        padding: 15px;
+    }
+
+    h2 {
+        font-size: 1.2rem;
+    }
+
+    .resumen-item {
+        padding: 15px;
+    }
+
+    .metodos label {
+        flex: 1 1 100%;
+        justify-content: center;
+    }
+
+    .btn {
+        width: 100%;
+        padding: 12px;
+    }
+
+    .acciones {
+        flex-direction: column;
+        gap: 10px;
+    }
+}

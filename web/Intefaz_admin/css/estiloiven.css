@@ -1,0 +1,352 @@
+/* ===========================
+   ESTILOS GENERALES
+=========================== */
+html, body {
+    overflow-x: hidden;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    color: #111;
+}
+
+.fondo {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    z-index: -1;
+}
+
+/* ===========================
+   HEADER
+=========================== */
+.Header {
+    background-color: #3B8952;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 15px 30px;
+    flex-wrap: wrap;
+}
+
+.logo img {
+    height: 90px;
+    width: auto;
+}
+
+.Nombre {
+    font-size: 2rem;
+    text-align: center;
+    flex: 1;
+}
+
+.botones-derecha {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+/* botones */
+.campanita {
+    background: none;
+    border: none;
+    cursor: pointer;
+}
+
+.campanita img {
+    width: 40px;
+    height: 40px;
+    transition: transform 0.2s ease;
+}
+.campanita:hover img {
+    transform: scale(1.1);
+}
+
+.btn-close,
+.btn-start {
+    padding: 8px 15px;
+    border-radius: 5px;
+    border: none;
+    cursor: pointer;
+    color: white;
+    background-color: #0f684b;
+    transition: transform 0.2s ease, background 0.2s ease;
+}
+
+.btn-close:hover,
+.btn-start:hover {
+    background-color: #03484c;
+    transform: scale(1.1);
+}
+
+/* ===========================
+   BOTONES CENTRO
+=========================== */
+.botones-centro {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    margin-top: 40px;
+}
+
+.inventario,
+.historial {
+    flex: 1;
+    max-width: 250px;
+    height: 80px;
+    text-align: center;
+    background: rgba(255, 255, 255, 0.65);
+    color: #2e7d32;
+    border: none;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.35);
+    font-size: 1.4rem;
+    cursor: pointer;
+    transition: 0.2s ease;
+}
+
+.inventario:hover,
+.historial:hover {
+    background-color: white;
+    transform: scale(1.1);
+}
+
+.inventario.activo {
+    background-color: white;
+}
+
+/* ============================
+   BUSCADOR Y CATEGORÍAS
+============================ */
+
+.busqueda-container {
+    width: 100%;
+    max-width: 900px;
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    margin-bottom: 25px;
+    margin-top: 10px;
+    flex-wrap: wrap;
+    background: rgba(255, 255, 255, 0.75);
+    padding: 15px;
+    border-radius: 12px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.25);
+}
+
+.busqueda-container input,
+.busqueda-container select {
+    padding: 10px 14px;
+    font-size: 1rem;
+    border-radius: 8px;
+    border: 2px solid #3B8952;
+    outline: none;
+    background: white;
+    color: #0f3a1f;
+    transition: 0.2s ease;
+}
+
+/* Input de búsqueda */
+.busqueda-container input {
+    flex: 1;
+    min-width: 250px;
+}
+
+/* Selector de categorías */
+.busqueda-container select {
+    min-width: 200px;
+    cursor: pointer;
+}
+
+/* Efectos */
+.busqueda-container input:focus,
+.busqueda-container select:focus {
+    border-color: #0f684b;
+    transform: scale(1.03);
+    box-shadow: 0 0 8px rgba(15, 104, 75, 0.5);
+}
+
+/* Adaptación en pantallas pequeñas */
+@media (max-width: 600px) {
+    .busqueda-container {
+        flex-direction: column;
+        align-items: center;
+        gap: 15px;
+    }
+
+    .busqueda-container input,
+    .busqueda-container select {
+        width: 100%;
+        max-width: 90%;
+        min-width: 0%;
+    }
+}
+
+/* ===================== TABLA RESPONSIVA ===================== */
+
+.contenido {
+    padding: 30px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: relative;
+}
+
+.tabla-contenedor {
+    width: 100%;
+    overflow-x: auto;
+}
+
+/* Tabla */
+.tabla-inventario {
+    width: 100%;
+    min-width: 700px;
+    border-collapse: collapse;
+    background-color: rgba(255, 255, 255, 0.85);
+    border-radius: 15px;
+    overflow: hidden;
+}
+
+.tabla-inventario th {
+    background-color: #3B8952;
+    color: white;
+    padding: 12px;
+    text-align: center;
+}
+
+.tabla-inventario td {
+    padding: 12px;
+    text-align: justify;
+}
+
+.tabla-inventario td span {
+    display: inline-block;
+    background-color: white;
+    padding: 6px 12px;
+    border-radius: 8px;
+    min-width: 120px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+}
+
+/* Botón modificar */
+.modificar {
+    background-color: #3B8952;
+    color: white;
+    border: none;
+    padding: 6px 12px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.modificar:hover {
+    background-color: #0f684b;
+}
+
+
+/* ==================== BOTÓN GESTIÓN ==================== */
+
+.gestion {
+    margin-top: 30px;
+    background-color: #0e1a0e;
+    color: #fff;
+    border-radius: 8px;
+    padding: 10px 16px;
+    text-decoration: none;
+    cursor: pointer;
+    transition: .2s;
+}
+
+.gestion:hover {
+    background-color: #16663d;
+    transform: scale(1.08);
+}
+
+.volver {
+    position: absolute;  /* se posiciona relativo a .contenido */
+    margin-top: 30px;
+    right: 20px;         /* alineado a la derecha */
+    padding: 10px 16px;
+    border: none;
+    background:  #0f684b; /* mismo color que guardar */
+    color: white;
+    font-size: 14px;
+    border-radius: 8px;
+    cursor: pointer;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.25);
+    transition: transform 0.2s ease, background 0.2s ease;
+}
+
+.volver:hover {
+    background-color: #03484c;
+    transform: scale(1.08);
+}
+
+
+
+/* ========================== FOOTER ========================== */
+
+.footer {
+    bottom: 0;
+    width: 100%;
+    background-color: #3B8952;
+    color: white;
+    text-align: center;
+    padding: 10px 0;
+}
+
+
+
+/* ===================== RESPONSIVE ===================== */
+
+/* Tablet */
+@media (max-width: 992px) {
+    .Nombre {
+        font-size: 2rem;
+    }
+}
+
+/* Móvil */
+@media (max-width: 768px) {
+
+    .Header {
+        flex-direction: column;
+        height: auto;
+        text-align: center;
+        padding: 20px;
+    }
+
+    .logo img {
+        height: 80px;
+    }
+
+    .Nombre {
+        font-size: 1.8rem;
+        margin: 10px 0;
+    }
+
+    .botones-derecha {
+        margin: 10px 0 0;
+    }
+
+    .inventario,
+    .historial {
+        max-width: 160px;
+        height: 60px;
+        font-size: 16px;
+    }
+
+    .gestion {
+        bottom: 15px;
+        right: 15px;
+        padding: 8px 12px;
+    }
+
+    .tabla-inventario td span {
+        min-width: 80px;
+    }
+}

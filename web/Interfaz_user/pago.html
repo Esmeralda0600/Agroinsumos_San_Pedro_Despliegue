@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <!-- ============================================================
+         Archivo: pago.html
+         Descripción: Página de resumen y método de pago - Agroinsumos San Pedro
+         Cumple con el estándar de codificación HTML/CSS/JS
+         ============================================================ -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pagar | Agroinsumos San Pedro</title>
+    <link rel="stylesheet" href="css/pago.css">
+</head>
+<body>
+    <!-- HEADER -->
+    <header class="Header">
+         <a href="index.html" class="logo">
+  <img src="imgs/logo.png" alt="Logotipo de Agroinsumos San Pedro" class="logo__img" />
+</a>
+
+    </header>
+
+    <!-- CONTENIDO PRINCIPAL -->
+    <main class="container">
+        <h2>Resumen de Compra</h2>
+
+        <!-- PRODUCTO -->
+        <section class="resumen">
+            <div class="resumen-item">
+                <img src="imgs/agrex_abc.png" alt="Producto Agrex-ABC">
+                <div>
+                    <p class="producto-nombre">Agrex-ABC Acidificante Antiespumante 1 Lt</p>
+                    <p>Precio unitario: <strong>$150.00</strong></p>
+                    <p>
+                        Cantidad:
+                        <input type="number" id="cantidad" value="1" min="1">
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- MÉTODOS DE PAGO -->
+        <section class="metodos">
+            <h3>Método de Pago</h3>
+
+            <div class="tarjetas">
+                <label>
+                    <input type="radio" name="pago" value="santander" checked>
+                    <img src="imgs/santander.png" alt="Banco Santander">
+                    Santander
+                </label>
+                <label>
+                    <input type="radio" name="pago" value="bbva">
+                    <img src="imgs/bbva.png" alt="Banco BBVA">
+                    BBVA
+                </label>
+                <label>
+                    <input type="radio" name="pago" value="banorte">
+                    <img src="imgs/banorte.png" alt="Banco Banorte">
+                    Banorte
+                </label>
+            </div>
+
+            <div class="otros">
+                <label>
+                    <input type="radio" name="pago" value="oxxo">
+                    <img src="imgs/oxxo.png" alt="Pago en OXXO">
+                    OXXO
+                </label>
+                <label>
+                    <input type="radio" name="pago" value="7eleven">
+                    <img src="imgs/7eleven.png" alt="Pago en 7-Eleven">
+                    7-Eleven
+                </label>
+            </div>
+        </section>
+
+        <!-- TOTAL -->
+        <div class="total">
+            Total: <span id="total">$150.00</span>
+        </div>
+
+        <!-- ACCIONES -->
+        <div class="acciones">
+            <button class="btn btn-volver" onclick="window.location.href='index.html'">Cancelar</button>
+            <button class="btn btn-finalizar" onclick="finalizarCompra()">Continuar</button>
+        </div>
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="footer">
+        <p>Agroinsumos San Pedro © 2025</p>
+    </footer>
+
+    <!-- SCRIPT -->
+    <script>
+        /* ============================================================
+           Control de cálculo y almacenamiento de datos del pago
+           ============================================================ */
+        const precioUnitario = 150;
+        const cantidadInput = document.getElementById('cantidad');
+        const totalSpan = document.getElementById('total');
+
+        cantidadInput.addEventListener('input', () => {
+            const cantidad = parseInt(cantidadInput.value) || 1;
+            totalSpan.textContent = '$' + (precioUnitario * cantidad).toFixed(2);
+        });
+
+        function finalizarCompra() {
+            const cantidad = parseInt(cantidadInput.value) || 1;
+            const total = (precioUnitario * cantidad).toFixed(2);
+            const metodoPago = document.querySelector('input[name="pago"]:checked').value;
+
+            localStorage.setItem('producto', 'Agrex-ABC Acidificante Antiespumante 1 Lt');
+            localStorage.setItem('precio', precioUnitario);
+            localStorage.setItem('cantidad', cantidad);
+            localStorage.setItem('total', total);
+            localStorage.setItem('metodoPago', metodoPago);
+
+            alert("Datos guardados. Redirigiendo al sistema de pago...");
+            // window.location.href = "confirmacion.html";
+        }
+    </script>
+</body>
+</html>

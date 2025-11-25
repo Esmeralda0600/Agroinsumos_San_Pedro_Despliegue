@@ -1,0 +1,659 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    color: #111;
+    background-image: url("imgs/fondo.jpg");
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    /* 🔹 evita que se repita */
+    background-attachment: fixed;
+    /* 🔹 hace que el fondo quede fijo al hacer scroll */
+}
+
+main {
+    flex: 1;
+    /* el contenido empuja el footer hacia abajo */
+}
+
+.fondo {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    z-index: -1;
+    /* <-- para que quede detrás */
+}
+
+
+
+.Header {
+    background-color: #f9f9f9;
+    color: navy;
+    font-size: 1.5rem;
+    display: flex;
+    align-items: center;
+    /* centra verticalmente */
+    justify-content: flex-start;
+    /* logo a la izquierda */
+    padding: 0 40px;
+    /* solo padding horizontal */
+    height: 150px;
+    /* define la altura del header */
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    /* espacio entre logo y buscador */
+}
+
+/* Logo */
+.logo img {
+    height: 120px;
+    width: auto;
+    margin-right: 170px;
+    /* espacio entre logo y buscador */
+}
+
+.botones-derecha {
+    display: flex;
+    align-items: center;
+    gap: 25px;
+    /* espacio entre favoritos y carrito */
+    margin-left: 80px;
+    /* distancia desde el buscador */
+}
+
+
+
+/* Quitar estilos por defecto de los botones */
+.boton-favoritos {
+    background: none;
+    /* sin fondo */
+    border: none;
+    /* sin borde */
+    cursor: pointer;
+    /* cursor de mano */
+    padding: 0;
+    margin-right: 3px;
+    margin-left: 80px;
+}
+
+
+
+.carrito-de-compras {
+    background: none;
+    /* sin fondo */
+    border: none;
+    /* sin borde */
+    cursor: pointer;
+    /* cursor de mano */
+    padding: 0;
+    margin-right: 3px;
+}
+
+/* Opcional: tamaño de las imágenes dentro de los botones */
+.boton-favoritos img,
+.carrito-de-compras img {
+    width: 40px;
+    /* ajusta el tamaño */
+    height: 40px;
+    transition: transform 0.2s ease;
+}
+
+.boton-favoritos:hover {
+    transform: scale(1.1);
+    /* 1.1 = 10% más grande */
+    transition: transform 0.2s ease;
+    /* suave */
+}
+
+.carrito-de-compras:hover {
+    transform: scale(1.1);
+    /* 1.1 = 10% más grande */
+    transition: transform 0.2s ease;
+    /* suave */
+}
+
+
+/* Buscador centrado aproximadamente */
+.Buscador {
+    background: linear-gradient(180deg, #fff9f5 0%, #f3ecff 100%);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    width: 50%;
+    /* ancho del buscador */
+    height: 30px;
+    border-radius: 30px;
+}
+
+/* Input con lupa */
+.input-con-imagen {
+    display: flex;
+    align-items: center;
+    padding: 5px 10px;
+    border-radius: 15px;
+    height: 40px;
+    background-color: white;
+    box-shadow: 0 7px 10px rgba(0, 0, 0, 0.1);
+}
+
+.input-con-imagen input {
+    flex: 1;
+    border: none;
+    background: transparent;
+    font-size: 1rem;
+    color: navy;
+    padding-right: 8px;
+    outline: none;
+}
+
+.input-con-imagen input::placeholder {
+    color: rgba(0, 0, 128, 0.6);
+}
+
+.icono-lupa {
+    width: 22px;
+    height: 22px;
+    margin-left: 8px;
+    /* si quieres lupa a la derecha */
+    cursor: pointer;
+}
+
+/* Botones de texto */
+.btn-login,
+.btn-registrarse {
+    padding: 8px 15px;
+    border-radius: 5px;
+    border: none;
+    cursor: pointer;
+    font-size: 1rem;
+    color: white;
+    background-color: #0f684b;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    /* azul */
+    transition: background 0.3s;
+    transition: transform 0.2s ease;
+
+}
+
+.btn-login:hover,
+.btn-registrarse:hover {
+    background-color: #03484c;
+    transform: scale(1.1);
+    /* 1.1 = 10% más grande */
+    transition: transform 0.2s ease;
+    /* suave */
+
+}
+
+/* PRODUCTOS*/
+.tarjeta-producto img {
+    border-radius: 10px;
+    width: 90%;
+    height: 200px;
+    display: block;
+    margin: 0 auto;
+}
+
+/* ====== SECCIÓN PRINCIPAL ====== */
+.producto-detalle {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    gap: 60px;
+    padding: 60px;
+    /* ✅ Fondo general blanco */
+}
+
+
+/* ====== TARJETA DEL PRODUCTO ====== */
+.tarjeta-producto {
+    /* ✅ Verde más vivo */
+    border-radius: 15px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.45);
+    padding: 30px;
+    width: 320px;
+    text-align: center;
+    color: white;
+}
+
+/* Descripción */
+.info-producto {
+    max-width: 500px;
+    color: white;
+    background-color: #ffffff;
+    /* ✅ Otro verde */
+    padding: 20px;
+    border: #111;
+    box-shadow: 0 10px 15px rgba(0, 0, 0, 0.45);
+    border-radius: 10px;
+}
+
+.tarjeta-producto img {
+    width: 100px;
+    height: 200px;
+    border-radius: 10px;
+}
+
+.tarjeta-producto h3 {
+    font-size: 18px;
+    color: #111;
+    margin-top: 15px;
+}
+
+
+.info-producto p {
+    font-size: 1rem;
+    color: #222;
+    line-height: 1.5;
+    margin-bottom: 20px;
+}
+
+/* ====== BOTONES ====== */
+.acciones-producto {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    margin-top: 30px;
+}
+
+.botones-acciones {
+    display: flex;
+    gap: 20px;
+    justify-content: center;
+}
+
+.btn {
+    background-color: #114d30;
+    color: white;
+    border: none;
+    border-radius: 25px;
+    padding: 12px 25px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: all 0.3s;
+}
+
+.btn:hover {
+    background-color: #16663d;
+    transform: scale(1.05);
+}
+
+.btn.comprar {
+    background-color: #124a2f;
+    padding: 12px 40px;
+    width: fit-content;
+    margin: 0 auto;
+}
+
+.volver {
+    text-align: center;
+    margin-top: 20px;
+    margin-bottom: 120px;
+}
+
+.catalogo {
+    background-color: transparent;
+    text-align: center;
+    padding: 60px 20px;
+}
+
+.catalogo h2 {
+
+    font-size: 2rem;
+    color: #ffffff;
+    margin-bottom: 40px;
+    letter-spacing: 2px;
+}
+
+.productos-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 30px;
+    justify-items: center;
+    padding: 0 40px;
+}
+
+.tarjeta {
+    position: relative;
+    width: 100%;
+    max-width: 800px;
+    /* antes 500px */
+    max-height: 700px;
+    /* antes 600px */
+    height: 350px;
+    /* antes 250px */
+    background-color: white;
+    border-radius: 15px;
+    background-size: cover;
+    background-position: center;
+    overflow: hidden;
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.75);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    cursor: pointer;
+}
+
+
+.tarjeta img {
+    width: 160px;
+    height: 160px;
+}
+
+.tarjeta:hover {
+    transform: scale(1.1);
+    /* 1.1 = 10% más grande */
+    transition: transform 0.2s ease;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.4);
+}
+
+.overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.35);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background 0.3s ease;
+}
+
+.tarjeta:hover .overlay {
+    background: rgba(0, 0, 0, 0.55);
+}
+
+.overlay p {
+    color: white;
+    font-size: 2rem;
+    font-weight: bold;
+    letter-spacing: 1px;
+    text-shadow: 0 3px 6px rgba(0, 0, 0, 0.5);
+}
+
+
+/* ==== Barra de búsqueda avanzada debajo del header ==== */
+.barra-filtros-busqueda {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 30px;
+    margin-top: 15px;
+    background-color: rgba(255, 255, 255, 0.8);
+    backdrop-filter: blur(5px);
+    padding: 10px 20px;
+    border-radius: 10px;
+    width: fit-content;
+    margin-left: auto;
+    margin-right: auto;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.15);
+}
+
+.barra-filtros-busqueda label {
+    font-weight: 600;
+    color: #114d30;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 15px;
+}
+
+.barra-filtros-busqueda input[type="radio"] {
+    accent-color: #4CAF50;
+    /* color verde del tema */
+    cursor: pointer;
+    width: 18px;
+    height: 18px;
+}
+
+.btn-volver {
+    display: block;
+    margin: 30px auto;
+    /* centrado horizontal */
+    padding: 12px 25px;
+    background-color: #2e7d32;
+    /* verde corporativo */
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.btn-volver:hover {
+    background-color: #114d30;
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+}
+
+
+/* ==== CARRITO DE COMPRAS ==== */
+
+.carrito-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    padding: 60px 80px;
+    gap: 40px;
+}
+
+/* Lista de productos */
+.carrito-productos {
+    flex: 2;
+    background-color: rgba(255, 255, 255, 0.95);
+    padding: 30px;
+    border-radius: 15px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.25);
+}
+
+.item-carrito {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 25px;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+    padding-bottom: 15px;
+}
+
+.item-carrito img {
+    width: 130px;
+    height: 130px;
+    border-radius: 10px;
+    object-fit: cover;
+    margin-right: 20px;
+}
+
+.info-producto-carrito {
+    flex: 1;
+}
+
+.info-producto-carrito h3 {
+    margin: 0 0 5px;
+    color: #114d30;
+}
+
+.info-producto-carrito p {
+    margin: 3px 0;
+    font-size: 15px;
+    color: #222;
+}
+
+.cantidad {
+    margin-top: 10px;
+}
+
+.cantidad input {
+    width: 60px;
+    padding: 5px;
+    border-radius: 5px;
+    border: 1px solid #aaa;
+    text-align: center;
+}
+
+.acciones-item {
+    text-align: right;
+}
+
+.subtotal {
+    font-weight: bold;
+    color: #333;
+    margin-bottom: 10px;
+}
+
+.btn-eliminar {
+    background-color: #b71c1c;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    padding: 8px 15px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.btn-eliminar:hover {
+    background-color: #7f0000;
+    transform: scale(1.05);
+}
+
+/* ==== Resumen de compra ==== */
+.resumen-compra {
+    flex: 1;
+    background-color: rgba(255, 255, 255, 0.95);
+    padding: 30px;
+    border-radius: 15px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.25);
+    color: #222;
+}
+
+.resumen-compra h3 {
+    text-align: center;
+    color: #114d30;
+    font-size: 1.5rem;
+}
+
+.resumen-compra .linea {
+    width: 100%;
+    height: 2px;
+    background-color: #114d30;
+    margin: 15px 0;
+}
+
+.resumen-compra p {
+    display: flex;
+    justify-content: space-between;
+    margin: 8px 0;
+    font-size: 16px;
+}
+
+.total {
+    color: #0b5320;
+    font-size: 1.3rem;
+}
+
+.acciones-resumen {
+    margin-top: 25px;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.btn-finalizar {
+    padding: 12px 25px;
+    background-color: #0f684b;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.btn-finalizar:hover {
+    background-color: #03484c;
+    transform: translateY(-2px);
+}
+
+
+/* Botón comprar dentro de favoritos */
+.btn-comprar {
+    margin-top: 5px;
+    padding: 8px 15px;
+    background-color: #0f684b;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.btn-comprar:hover {
+    background-color: #03484c;
+    transform: scale(1.05);
+}
+
+/* Ajustes específicos para favoritos */
+.carrito-container {
+    padding: 60px 80px;
+}
+
+.item-carrito {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 25px;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+    padding-bottom: 15px;
+}
+
+.acciones-item {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    text-align: right;
+}
+
+
+/* ==== Responsividad carrito ==== */
+@media (max-width: 900px) {
+    .carrito-container {
+        flex-direction: column;
+        padding: 20px;
+    }
+
+    .carrito-productos {
+        margin-right: 0;
+        margin-bottom: 20px;
+    }
+
+    .item-carrito {
+        flex-direction: column;
+        text-align: center;
+    }
+
+    .item-carrito img {
+        margin: 0 auto 10px;
+        width: 80px;
+        height: 80px;
+    }
+
+    .acciones-item {
+        text-align: center;
+        margin-top: 10px;
+    }
+
+    .resumen-compra {
+        width: 100%;
+    }
+}
+
+@media (max-width: 500px) {
+    .resumen-compra p {
+        font-size: 14px;
+    }
+
+    .acciones-resumen button {
+        font-size: 14px;
+        padding: 8px;
+    }
+}

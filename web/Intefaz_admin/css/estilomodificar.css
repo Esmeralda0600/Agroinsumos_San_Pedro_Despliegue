@@ -1,0 +1,189 @@
+/* =========================== RESET / GLOBAL =========================== */
+html,
+body {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    overflow-x: hidden;
+    font-family: Arial, sans-serif;
+    color: #111;
+}
+
+body {
+    background-image: url("/imgs/fondo.jpg");
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+}
+
+/* =========================== NAVBAR =========================== */
+.navbar {
+    background-color: #3B8952 !important;
+    position: relative;
+    height: 120px;
+    display: flex;
+    align-items: center;
+    padding: 15 30px !important;
+    /*box-shadow: 0px 2px 2px 4px rgba(149, 247, 104, 0.774);*/
+}
+
+.navbar .container-fluid {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    padding-left: 16px;
+    padding-right: 16px;
+}
+
+/* LOGO */
+.navbar-brand img {
+    display: block;
+    height: 90px;
+    width: auto;
+}
+
+/* TÍTULO CENTRADO */
+.navbar-title {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 28px;
+    font-weight: 600;
+    color: white;
+    text-align: center;
+    white-space: nowrap;
+    z-index: 15;
+    pointer-events: none;
+}
+
+/* ACCIONES DERECHA */
+.navbar-actions {
+    margin-left: auto;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    z-index: 20;
+}
+
+.navbar-actions button img {
+    width: 28px;
+    height: 28px;
+}
+
+/* BOTONES VERDES */
+.btn-verde {
+    background-color: #0f684b;
+    color: white;
+    border: none;
+    padding: 7px 12px;
+    font-size: 0.95rem;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: transform .12s ease, background .12s ease;
+}
+
+.btn-verde:hover {
+    transform: translateY(-1px);
+    background-color: #03484c;
+}
+
+/* =========================== RESPONSIVE =========================== */
+@media (max-width: 768px) {
+    .navbar {
+        height: auto;
+        padding: 12px 10px !important;
+    }
+
+    .navbar .container-fluid {
+        flex-direction: column;
+        gap: 8px;
+        align-items: center;
+    }
+
+    .navbar-brand img {
+        height: 64px;
+    }
+
+    .navbar-title {
+        position: static;
+        transform: none;
+        font-size: 18px;
+        pointer-events: auto;
+    }
+
+    .navbar-actions {
+        width: 100%;
+        justify-content: center;
+    }
+}
+
+.logo img {
+    height: 90px;
+    width: auto;
+    margin-right: 20px;
+}
+
+
+/* =========================== FOOTER =========================== */
+footer {
+    width: 100%;
+    background-color: #3B8952;
+    color: white;
+    text-align: center;
+    padding: 14px 0;
+    margin-top: 40px;
+}
+
+/* =========================== CONTENEDOR (CARD) =========================== */
+/* Fuerza el fondo blanco aunque el HTML tenga style="" */
+.card[style] {
+    background-color: #ffffff !important;
+}
+
+/* Quita la sombra de Bootstrap */
+.card.shadow-lg {
+    box-shadow: 0 0 8px 10px rgba(80, 255, 80, 0.55) !important;
+}
+
+/* Aplica tu sombra verde personalizada */
+.card {
+    background-color: #ffffff !important;
+    border-radius: 12px;
+    border: none;
+}
+
+/* Texto interno */
+.card-body {
+    color: #111 !important;
+}
+
+/* Imagen dentro del contenedor */
+#preview {
+    max-width: 220px;
+    border-radius: 10px;
+    /*box-shadow: 0 0 8px 10px rgba(80, 255, 80, 0.55);*/
+}
+
+.volver {
+    position: absolute;
+    /* se posiciona relativo a .contenido */
+    /*margin-top: -85.7px;*/
+    right: 20px;
+    /* alineado a la derecha */
+    padding: 10px 16px;
+    border: none;
+    background: #0f684b;
+    /* mismo color que guardar */
+    color: white;
+    font-size: 14px;
+    border-radius: 8px;
+    cursor: pointer;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.25);
+    transition: transform 0.2s ease, background 0.2s ease;
+}
+
+.volver:hover {
+    background-color: #03484c;
+    transform: scale(1.08);
+}

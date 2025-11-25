@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <!-- ============================================================
+         Archivo: semillas_maiz.html
+         Descripción: Página de detalle de producto "Semillas de Maíz"
+         Cumple con el estándar de codificación HTML/CSS/JS
+         ============================================================ -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Semillas de Maíz | Agroinsumos San Pedro</title>
+    <link rel="stylesheet" href="css/estiloproducto.css">
+</head>
+
+<body>
+    <!-- Fondo -->
+    <img src="imgs/fondoproducto.jpg" alt="Fondo del producto" class="fondo">
+
+    <!-- HEADER -->
+    <header class="Header">
+         <a href="index.html" class="logo">
+  <img src="imgs/logo.png" alt="Logotipo de Agroinsumos San Pedro" class="logo__img" />
+</a>
+
+
+        <div class="Buscador">
+            <div class="input-con-imagen">
+                <input type="text" placeholder="Buscar productos...">
+                <img src="imgs/lupa.png" alt="Buscar" class="icono-lupa">
+            </div>
+        </div>
+
+        <div class="botones-derecha">
+            <button class="carrito-de-compras" type="button" onclick="window.location.href='favoritos.html'">
+                <img src="imgs/favs.png" alt="Favoritos">
+            </button>
+            <button class="carrito-de-compras" type="button" onclick="window.location.href='carrito.html'">
+                <img src="imgs/carrito.png" alt="Carrito">
+            </button>
+            <button class="btn-login" type="button" onclick="window.location.href='login.html'">
+                Iniciar sesión
+            </button>
+            <button class="btn-registrarse" type="button" onclick="window.location.href='registro.html'">
+                Registrarse
+            </button>
+        </div>
+    </header>
+
+    <!-- CONTENIDO PRINCIPAL -->
+    <main>
+        <section class="producto-detalle">
+            <!-- IMAGEN DEL PRODUCTO -->
+            <div class="tarjeta-producto">
+                <img src="imgs/semillas1.jpg" alt="Semillas de Maíz">
+                <h3>Semillas de Maíz Certificadas 1 Kg</h3>
+            </div>
+
+            <!-- INFORMACIÓN DEL PRODUCTO -->
+            <div class="info-producto">
+                <p>
+                    🌽 <strong>Descripción del producto:</strong><br>
+                    Semillas de maíz de alta calidad, seleccionadas para garantizar una excelente germinación y rendimiento. 
+                    Ideales para siembras agrícolas a pequeña y mediana escala.
+                </p>
+
+                <p>
+                    🧴 <strong>Presentación:</strong><br>
+                    Bolsa de 1 kilogramo.
+                </p>
+
+                <p>
+                    🚜 <strong>Ideal</strong> para productores que buscan maximizar su producción de maíz con semillas certificadas y resistentes.
+                </p>
+
+                <!-- BOTONES DE ACCIÓN -->
+                <div class="acciones-producto">
+                    <div class="botones-acciones">
+                        <button class="btn">Agregar al carrito</button>
+                        <button class="btn">Agregar a favoritos</button>
+                    </div>
+                    <button class="btn comprar" onclick="window.location.href='pago.html'">Comprar</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- BOTÓN VOLVER -->
+        <div class="volver">
+            <a href="catalogo.html" class="btn volver-btn">Volver</a>
+        </div>
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="footer">
+        <div class="footer-contenido">
+            <h2>Agroinsumos San Pedro</h2>
+            <p>Todos los derechos reservados © 2025</p>
+        </div>
+    </footer>
+
+    <!-- BOTÓN FLOTANTE DE CONTACTO -->
+    <button class="boton-contactar">💬 Contactar</button>
+
+    <!-- SCRIPT FUNCIONAL -->
+    <script>
+        // ====================== SELECCIÓN DE BOTONES ======================
+        const btnAgregar = document.querySelector('.acciones-producto .btn:nth-child(1)');
+        const btnFavoritos = document.querySelector('.acciones-producto .btn:nth-child(2)');
+        const btnComprar = document.querySelector('.acciones-producto .comprar');
+
+        // ====================== DATOS DEL PRODUCTO ======================
+        const tarjeta = document.querySelector('.tarjeta-producto');
+        const nombre = tarjeta.querySelector('h3').innerText;
+        const img = tarjeta.querySelector('img').src;
+        const precio = 120.00;
+
+        // ====================== AGREGAR AL CARRITO ======================
+        btnAgregar.addEventListener('click', () => {
+            let carrito = JSON.parse(localStorage.getItem('carrito')) || [];
+            const existente = carrito.find(p => p.nombre === nombre);
+
+            if (existente) {
+                existente.cantidad += 1;
+            } else {
+                carrito.push({ nombre, precio, img, cantidad: 1 });
+            }
+
+            localStorage.setItem('carrito', JSON.stringify(carrito));
+            window.location.href = 'carrito.html';
+        });
+
+        // ====================== AGREGAR A FAVORITOS ======================
+        btnFavoritos.addEventListener('click', () => {
+            let favoritos = JSON.parse(localStorage.getItem('favoritos')) || [];
+            const existente = favoritos.find(p => p.nombre === nombre);
+
+            if (!existente) {
+                favoritos.push({ nombre, precio, img });
+            }
+
+            localStorage.setItem('favoritos', JSON.stringify(favoritos));
+            window.location.href = 'favoritos.html';
+        });
+
+        // ====================== COMPRAR DIRECTAMENTE ======================
+        btnComprar.addEventListener('click', () => {
+            let carrito = JSON.parse(localStorage.getItem('carrito')) || [];
+            const existente = carrito.find(p => p.nombre === nombre);
+
+            if (existente) {
+                existente.cantidad += 1;
+            } else {
+                carrito.push({ nombre, precio, img, cantidad: 1 });
+            }
+
+            localStorage.setItem('carrito', JSON.stringify(carrito));
+            window.location.href = 'pago.html';
+        });
+    </script>
+</body>
+</html>

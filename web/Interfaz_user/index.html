@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Agroinsumos San Pedro</title>
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/png" href="imgs/logo.png">
+
+  <!-- Hoja de estilos principal -->
+  <link rel="stylesheet" href="css/estilo.css">
+</head>
+
+<body>
+  <span id="bienvenida"></span>
+
+  <!-- HEADER -->
+  <header class="header">
+    <div class="header__logo">
+      <img src="imgs/logo.png" alt="Logotipo de Agroinsumos San Pedro" class="header__logo-img">
+    </div>
+
+    <div class="header__buscador">
+      <form class="buscador__form" action="#" method="get">
+        <div class="buscador__contenedor">
+          <input id="input-busqueda" type="text" placeholder="Te ayudamos a encontrar el producto ideal..."
+            class="buscador__input" />
+
+          <img id="btn-buscar-ia" src="imgs/lupa.png" alt="Buscar" class="buscador__icono">
+
+        </div>
+      </form>
+    </div>
+
+    <div class="header__acciones">
+      <button class="acciones__btn acciones__btn--favoritos" type="button"
+        onclick="window.location.href='favoritos.html'">
+        <img src="imgs/favs.png" alt="Favoritos" class="acciones__icono">
+      </button>
+
+      <button class="acciones__btn acciones__btn--carrito" type="button" onclick="window.location.href='carrito.html'">
+        <img src="imgs/carrito.png" alt="Carrito" class="acciones__icono">
+      </button>
+
+      <button class="acciones__btn acciones__btn--login" type="button" onclick="window.location.href='login.html'">
+        Iniciar sesión
+      </button>
+
+      <button class="acciones__btn acciones__btn--registro" type="button"
+        onclick="window.location.href='registro.html'">
+        Registrarse
+      </button>
+    </div>
+  </header>
+
+  <!-- CARRUSEL -->
+  <section class="carrusel">
+    <div class="carrusel__contenedor">
+      <div class="carrusel__slide fade">
+        <img src="imgs/carru1.jpg" alt="Imagen promocional 1" class="carrusel__imagen">
+      </div>
+
+      <div class="carrusel__slide fade">
+        <img src="imgs/carrusel2.jpg" alt="Imagen promocional 2" class="carrusel__imagen">
+      </div>
+
+      <div class="carrusel__slide fade">
+        <img src="imgs/carrusel3.jpg" alt="Imagen promocional 3" class="carrusel__imagen">
+      </div>
+
+      <!-- Botones centrales -->
+      <div class="carrusel__botones">
+        <button class="btn btn--info" type="button" onclick="location.href='#sobre-nosotros'">¿Quiénes somos?</button>
+        <button class="btn btn--catalogo" type="button" onclick="window.location.href='catalogo.html'">Catálogo</button>
+      </div>
+
+      <!-- Botones de navegación -->
+      <button class="carrusel__control carrusel__control--prev" type="button" onclick="cambiarSlide(-1)">
+        &#10094;
+      </button>
+      <button class="carrusel__control carrusel__control--next" type="button" onclick="cambiarSlide(1)">
+        &#10095;
+      </button>
+    </div>
+
+    <!-- Puntos indicadores -->
+    <div class="carrusel__puntos">
+      <span class="carrusel__dot" onclick="irASlide(1)"></span>
+      <span class="carrusel__dot" onclick="irASlide(2)"></span>
+      <span class="carrusel__dot" onclick="irASlide(3)"></span>
+    </div>
+  </section>
+
+  <!-- OFERTAS Y PROMOCIONES -->
+  <section class="ofertas">
+    <h2 class="ofertas__titulo">Ofertas y Promociones</h2>
+
+    <div class="ofertas__contenedor">
+      <div class="oferta">
+        <img src="imgs/oferta1.jpg" alt="Promoción 1 - Fertilizante orgánico" class="oferta__img">
+        <div class="oferta__info">
+          <h3 class="oferta__titulo">Fertilizante Orgánico</h3>
+          <p class="oferta__desc">20% de descuento esta semana</p>
+          <button class="btn btn--comprar">Comprar ahora</button>
+        </div>
+      </div>
+
+      <div class="oferta">
+        <img src="imgs/oferta2.jpg" alt="Promoción 2 - Control de plagas" class="oferta__img">
+        <div class="oferta__info">
+          <h3 class="oferta__titulo">Control de Plagas</h3>
+          <p class="oferta__desc">Llévate 3 y paga 2</p>
+          <button class="btn btn--comprar">Aprovechar</button>
+        </div>
+      </div>
+
+      <div class="oferta">
+        <img src="imgs/oferta3.jpg" alt="Promoción 3 - Semillas Premium" class="oferta__img">
+        <div class="oferta__info">
+          <h3 class="oferta__titulo">Semillas Premium</h3>
+          <p class="oferta__desc">Hasta 30% menos</p>
+          <button class="btn btn--comprar">Ver más</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SECCIÓN SOBRE NOSOTROS -->
+  <section id="sobre-nosotros" class="about">
+    <div class="about__contenedor">
+      <div class="about__texto">
+        <h2 class="about__titulo">Sobre nosotros</h2>
+        <p class="about__descripcion">
+          Somos una empresa dedicada a ofrecer insumos agrícolas de alta calidad,
+          comprometidos con la sustentabilidad y el crecimiento del campo mexicano.
+        </p>
+      </div>
+
+      <div class="about__imagen">
+        <img src="imgs/pasion.png" alt="Equipo Agroinsumos" class="about__img">
+      </div>
+    </div>
+  </section>
+
+  <!-- SEGUNDA SECCIÓN DE INFORMACIÓN -->
+  <section class="about about--secundaria">
+    <div class="about__contenedor">
+      <div class="about__imagen">
+        <img src="imgs/sobre-nosotros1.jpg" alt="Equipo en campo" class="about__img">
+      </div>
+
+      <div class="about__texto">
+        <h2 class="about__titulo">Nuestra pasión por el campo</h2>
+        <p class="about__descripcion">
+          Fomentamos la innovación y el uso responsable de los recursos naturales para
+          impulsar una agricultura más eficiente y sostenible.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <div class="footer__contenido">
+      <h2 class="footer__titulo">Agroinsumos San Pedro</h2>
+      <p class="footer__texto">Todos los derechos reservados © 2025</p>
+    </div>
+  </footer>
+
+  <!-- BOTÓN FLOTANTE DE CONTACTO -->
+  <!-- <button class="btn btn--contacto" type="button">💬 Contactar</button> -->
+  <a class="btn btn--contacto" href="https://chat.whatsapp.com/IJY6hGHNQM3KOmJgJm5BJh?mode=hqrt3">💬 Contactar</a>
+
+  <script src="javascript/animaciones.js"></script>
+</body>
+
+</html>

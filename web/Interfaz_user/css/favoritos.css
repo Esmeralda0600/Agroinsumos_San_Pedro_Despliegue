@@ -1,0 +1,428 @@
+/* ==================== ESTILOS BASE ==================== */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    color: #111;
+    background-image: url("../imgs/fondo2.jpg");
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+    overflow-x: hidden; 
+    
+    /* --- CORRECCIÓN FOOTER ABAJO (Sticky Footer) --- */
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh; 
+}
+
+/* Contenedor principal para que ocupe todo el espacio sobrante */
+main { 
+    flex-grow: 1; /* Permite que el contenido principal empuje el footer hacia abajo */
+    /* Aseguramos que el main no se desborde */
+    width: 100%; 
+    box-sizing: border-box;
+    /* Margin top para separarlo del header */
+    margin-top: 20px; 
+}
+
+/* CORRECCIÓN: Eliminamos la clase .fondo que creaba la doble imagen */
+/*
+.fondo {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    z-index: -1;
+}
+*/
+
+/* ==================== HEADER ==================== */
+.Header {
+    background-color: #f9f9f9;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    padding: 15px 20px; 
+    box-sizing: border-box;
+    flex-wrap: wrap;
+    justify-content: center;
+    text-align: center;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); 
+}
+
+.logo img {
+    height: 90px;
+    width: auto;
+    margin-right: 20px;
+}
+
+/* ==================== ESTILOS PARA MENSAJES DE ESTADO ==================== */
+
+.sin-sesion {
+    color: #03484c; 
+    font-size: 1.5rem; 
+    font-weight: bold;
+    text-align: center;
+    margin: 40px auto; 
+    padding: 30px;
+    background: #e9f7ef; 
+    border: 2px solid #3c8c40; 
+    border-radius: 15px;
+    max-width: 600px; 
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
+    width: 90%; 
+    box-sizing: border-box;
+}
+
+.sin-sesion a {
+    color: #0f684b;
+    text-decoration: none;
+    font-weight: 700;
+    border-bottom: 2px solid #0f684b;
+    transition: color 0.3s;
+}
+
+.sin-sesion a:hover {
+    color: #03484c;
+    border-bottom-color: #03484c;
+}
+.sin-favoritos {
+    color: #03484c; 
+    font-size: 1.5rem; 
+    font-weight: bold;
+    text-align: center;
+    margin: 40px auto; 
+    padding: 30px;
+    background: #e9f7ef; 
+    border: 2px solid #3c8c40; 
+    border-radius: 15px;
+    max-width: 600px; 
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
+    width: 90%; 
+    box-sizing: border-box;
+}
+
+.sin-favoritos a {
+    color: #0f684b;
+    text-decoration: none;
+    font-weight: 700;
+    border-bottom: 2px solid #0f684b;
+    transition: color 0.3s;
+}
+
+.sin-favoritos a:hover {
+    color: #03484c;
+    border-bottom-color: #03484c;
+}
+
+
+/* ==================== SECCIÓN PRINCIPAL ==================== */
+.carrito-container {
+    display: flex;
+    justify-content: center; 
+    align-items: flex-start;
+    flex-wrap: wrap;
+    gap: 30px;
+    padding: 40px 60px;
+    max-width: 1400px; 
+    margin: 0 auto; 
+    width: 100%; 
+    box-sizing: border-box;
+}
+
+/* Lista de productos */
+.carrito-productos {
+    flex: 2;
+    min-width: 300px; 
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.item-carrito {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background-color: rgba(255, 255, 255, 0.9);
+    border-radius: 12px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    padding: 15px;
+    gap: 20px;
+    transition: transform 0.2s ease;
+}
+
+.item-carrito:hover {
+    transform: scale(1.01); 
+}
+
+.item-carrito img {
+    min-width: 100px; 
+    width: 130px;
+    height: 130px;
+    border-radius: 10px;
+    object-fit: cover;
+}
+
+.info-producto-carrito {
+    flex: 1;
+    text-align: left;
+}
+
+.info-producto-carrito h3 {
+    margin: 0 0 10px 0;
+    color: #2f5d3d;
+    font-size: 1.2rem;
+}
+
+.info-producto-carrito p {
+    font-size: 1rem;
+    color: #333;
+}
+
+.acciones-item {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    min-width: 100px; 
+}
+
+/* Botones (sin cambios) */
+.btn-eliminar, .btn-comprar {
+    border: none;
+    border-radius: 5px;
+    padding: 10px 15px;
+    font-size: 0.95rem;
+    cursor: pointer;
+    transition: 0.3s;
+    color: white;
+}
+
+.btn-eliminar {
+    background-color: #c0392b;
+}
+
+.btn-eliminar:hover {
+    background-color: #a93226;
+}
+
+.btn-comprar {
+    background-color: #2ecc71;
+}
+
+.btn-comprar:hover {
+    background-color: #27ae60;
+}
+
+/* ==================== RESUMEN ==================== */
+.resumen-compra {
+    flex: 1;
+    background-color: rgba(255, 255, 255, 0.95);
+    border-radius: 15px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    padding: 25px;
+    min-width: 250px;
+    max-width: 400px;
+}
+
+/* ... (Resto de estilos de resumen sin cambios) ... */
+.resumen-compra h3 {
+    color: #2f5d3d;
+    text-align: center;
+    margin-bottom: 15px;
+}
+
+.resumen-compra .linea {
+    height: 2px;
+    background-color: #3B8952;
+    width: 60%;
+    margin: 10px auto 20px;
+    border-radius: 2px;
+}
+
+.resumen-compra p {
+    text-align: center;
+    font-size: 1rem;
+    margin-bottom: 25px;
+}
+
+.acciones-resumen {
+    display: flex;
+    justify-content: center;
+}
+
+.btn-volver {
+    background-color: #3B8952;
+    border: none;
+    color: white;
+    padding: 12px 20px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 1rem;
+    transition: 0.3s;
+}
+
+.btn-volver:hover {
+    background-color: #2e6b3f;
+    transform: scale(1.05);
+}
+
+/* ==================== FOOTER ==================== */
+.footer {
+    width: 100%; 
+    background-color: #3B8952;
+    color: white;
+    text-align: center;
+    padding: 20px;
+    box-shadow: 0 -4px 8px rgba(0, 0, 0, 0.1); 
+    margin-top: auto; /* CRÍTICO: Asegura que el footer se pegue al fondo usando flexbox */
+}
+
+.footer-contenido h2 {
+    margin-bottom: 5px;
+}
+
+/* ==================== RESPONSIVIDAD OPTIMIZADA ==================== */
+
+/* Tablets (max-width: 992px) */
+@media (max-width: 992px) {
+    .carrito-container {
+        flex-direction: column; 
+        align-items: center;
+        padding: 30px 20px;
+        gap: 25px;
+    }
+
+    .carrito-productos {
+        width: 100%; 
+        max-width: 600px; 
+    }
+
+    .resumen-compra {
+        width: 100%;
+        max-width: 500px; 
+        margin-top: 20px;
+    }
+
+    .item-carrito img {
+        width: 90px;
+        height: 90px;
+    }
+}
+
+/* Celulares grandes (max-width: 768px) */
+@media (max-width: 768px) {
+    .Header {
+        flex-direction: column;
+        padding: 10px;
+    }
+
+    .logo img {
+        height: 60px;
+        margin: 10px 0;
+    }
+
+    .carrito-container {
+        padding: 15px;
+        gap: 20px;
+    }
+    
+    .carrito-productos {
+        width: 100%; 
+        max-width: 100%;
+    }
+
+    .item-carrito {
+        flex-direction: column; 
+        align-items: center;
+        text-align: center;
+        padding: 15px 10px;
+        gap: 10px; /* Reducimos el espacio entre elementos */
+    }
+
+    .item-carrito img {
+        width: 95%; /* Ligeramente más ancho */
+        max-width: 300px; /* Un poco más de ancho */
+        height: 160px;
+        margin-bottom: 5px;
+    }
+
+    .info-producto-carrito {
+        text-align: center;
+        margin-bottom: 10px; 
+    }
+
+    .acciones-item {
+        flex-direction: row; 
+        justify-content: space-around; /* Usamos space-around para mejor distribución */
+        width: 100%;
+        gap: 5px; /* Reducimos el gap */
+    }
+
+    .btn-eliminar, .btn-comprar {
+        flex: 1; 
+        max-width: 150px;
+    }
+
+    .resumen-compra {
+        width: 100%;
+        min-width: auto;
+    }
+    
+    .sin-favoritos {
+        width: 95%; /* Asegura que no haya desbordamiento */
+    }
+}
+
+/* Celulares pequeños (max-width: 480px) */
+@media (max-width: 480px) {
+    .Header h2 {
+        font-size: 1.2rem;
+        margin: 10px 0;
+    }
+    
+    .logo img {
+        height: 50px;
+    }
+    
+    .carrito-container {
+        padding: 10px 5px; /* Menor padding para ganar espacio */
+    }
+    
+    .item-carrito {
+        padding: 10px; /* Reducimos el padding de la tarjeta */
+    }
+    
+    .item-carrito img {
+        height: 120px; 
+    }
+    
+    .info-producto-carrito h3 {
+        font-size: 1.1rem;
+    }
+    
+    /* Botones más compactos */
+    .btn-eliminar,
+    .btn-comprar {
+        padding: 6px 8px; /* Reducimos el padding de los botones */
+        font-size: 0.75rem; /* Fuente más pequeña */
+    }
+
+    .btn-volver {
+        padding: 8px 12px;
+        font-size: 0.85rem;
+    }
+
+    .resumen-compra {
+        padding: 15px;
+    }
+    
+    .sin-favoritos {
+        font-size: 1rem;
+        padding: 15px;
+        margin: 15px auto;
+
+    }
+}

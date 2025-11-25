@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <!-- ============================================================
+         Archivo: registro.html
+         Descripción: Página de registro de usuario
+         Cumple con el estándar de codificación HTML/CSS/JS
+         ============================================================ -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registro | Agroinsumos San Pedro</title>
+    <link rel="stylesheet" href="css/registroestilo.css">
+</head>
+
+<body>
+    <!-- CONTENEDOR PRINCIPAL -->
+    <div class="contenedor">
+        <img src="imgs/logo.png" alt="Logo de Agroinsumos San Pedro" class="logo">
+
+        <h2>Registrarse</h2>
+        <p class="texto-secundario">Bienvenido 🌱</p>
+        <form>
+            <label for="usuario">Usuario</label>
+            <input type="text" id="usuario" name="usuario" placeholder="Ingrese un nombre de usuario" required>
+
+            <label for="correo">Correo electrónico</label>
+            <input type="email" id="correo" name="correo" placeholder="ejemplo@gmail.com" required>
+
+            <label for="contraseña">Contraseña</label>
+            <input type="password" id="password" name="contraseña" placeholder="Ingrese una contraseña" required>
+
+            <button type="button" id="boton_registro" class="boton-registrar">
+                Registrarse
+            </button>
+
+        </form>
+
+    </div>
+    <!-- BOTÓN VOLVER -->
+    <a href="index.html" class="boton-volver">Volver al inicio</a>
+    <script type="module" src="javascript/logica.js"></script>
+</body>
+
+</html>

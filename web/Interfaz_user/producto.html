@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Producto | Agroinsumos San Pedro</title>
+    <link rel="stylesheet" href="css/estiloproducto.css">
+</head>
+
+<body>
+
+    <!-- HEADER -->
+    <header class="Header">
+        <a href="index.html" class="logo">
+            <img src="imgs/logo.png" alt="Logotipo de Agroinsumos San Pedro" class="logo__img" />
+        </a>
+
+        <div class="buscador__contenedor">
+            <input id="input-busqueda" type="text" placeholder="Te ayudamos a encontrar el producto ideal..."
+                class="buscador__input" />
+            <img id="btn-buscar-ia" src="imgs/lupa.png" alt="Buscar" class="buscador__icono">
+        </div>
+
+        <div class="botones-derecha">
+            <button class="carrito-de-compras" onclick="window.location.href='favoritos.html'">
+                <img src="imgs/favs.png">
+            </button>
+            <button class="carrito-de-compras" onclick="window.location.href='carrito.html'">
+                <img src="imgs/carrito.png">
+            </button>
+            <button class="btn-login" onclick="window.location.href='login.html'">Iniciar sesión</button>
+            <button class="btn-registrarse" onclick="window.location.href='registro.html'">Registrarse</button>
+        </div>
+    </header>
+
+    <!-- CONTENIDO PRINCIPAL -->
+    <main>
+        <div class="producto-detalle" id="productos">
+
+            <div class="tarjeta-producto">
+                <img src="" alt="Producto" id="img-producto">
+                <h3 id="nombre-producto"></h3>
+            </div>
+
+            <div class="info-producto" id="info-producto"></div>
+
+        </div>
+
+        <!-- BOTÓN VOLVER -->
+        <div class="volver">
+            <a href="catalogo.html" class="btn volver-btn">Volver</a>
+        </div>
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="footer">
+        <h2>Agroinsumos San Pedro</h2>
+        <p>Todos los derechos reservados © 2025</p>
+    </footer>
+
+    <!-- LÓGICA DEL PRODUCTO -->
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+
+            const producto = JSON.parse(localStorage.getItem("productoSeleccionado"));
+
+            if (!producto) {
+                alert("No se pudo cargar el producto.");
+                return window.location.href = "catalogo.html";
+            }
+
+            // Insertar datos
+            document.getElementById("img-producto").src = producto.direccion_img || "imgs/ingrediente.png";
+            document.getElementById("nombre-producto").innerText = producto.nombre_producto;
+
+            document.getElementById("info-producto").innerHTML = `
+                <p>🌽 <strong>Descripción:</strong> ${producto.descripcion}</p>
+                <p>🧴 <strong>Categoría:</strong> ${producto.categoria_producto}</p>
+                <p>🚜 <strong>Ingrediente Activo:</strong> ${producto.ingrediente_activo}</p>
+                <p><strong>Cantidad disponible:</strong> ${producto.cantidad}</p>
+                <p><strong>Precio:</strong> $${producto.precio}</p>
+
+                <div class="acciones-producto">
+                    <div class="botones-acciones">
+                        <button id="btn-carrito" class="btn">Agregar al carrito</button>
+                        <button id="btn-fav" class="btn">Agregar a favoritos</button>
+                    </div>
+                    <button id="btn-comprar" class="btn comprar">Comprar ahora</button>
+                </div>
+            `;
+
+            // Función para agregar al carrito
+            function agregarAlCarrito(prod) {
+                const usuarioId = localStorage.getItem("usuarioId");
+                if (!usuarioId) {
+                    alert("Debes iniciar sesión para agregar productos al carrito.");
+                    window.location.href = "login.html";
+                    return;
+                }
+
+                const claveCarrito = `carrito_${usuarioId}`;
+                let carrito = JSON.parse(localStorage.getItem(claveCarrito)) || [];
+
+                const existe = carrito.find(p => p.id_producto === prod.id_producto);
+
+                if (existe) {
+                    existe.cantidad++;
+                } else {
+                    carrito.push({
+                        id_producto: prod.id_producto,
+                        nombre: prod.nombre_producto,
+                        precio: prod.precio,
+                        cantidad: 1,
+                        imagen: prod.direccion_img || "imgs/ingrediente.png"
+                    });
+                }
+
+                localStorage.setItem(claveCarrito, JSON.stringify(carrito));
+            }
+
+
+             // Botón Agregar al carrito → flujo normal carrito
+            document.getElementById("btn-carrito").addEventListener("click", () => {
+                agregarAlCarrito(producto);
+                window.location.href = "carrito.html";
+            });
+
+            // COMPRAR AHORA (solo este producto)
+            document.getElementById("btn-comprar").addEventListener("click", () => {
+                const usuarioId = localStorage.getItem("usuarioId");
+
+                if (!usuarioId) {
+                    alert("Debes iniciar sesión para comprar.");
+                    return window.location.href = "login.html";
+                }
+
+                const item = {
+                    id_producto: producto.id_producto,
+                    nombre: producto.nombre_producto,
+                    precio: producto.precio,
+                    cantidad: 1,
+                    imagen: producto.direccion_img || "imgs/ingrediente.png"
+                };
+
+                // Marcamos que venimos de "comprar ahora"
+                localStorage.setItem("modo_compra", "directa");
+                localStorage.setItem("compra_directa", JSON.stringify([item]));
+
+                window.location.href = "pago.html";
+            });
+
+
+            // Botón Favoritos (CORREGIDO)
+            document.getElementById("btn-fav").addEventListener("click", async () => {
+
+                const usuarioId = localStorage.getItem("usuarioId");
+                if (!usuarioId) {
+                    alert("Inicia sesión para guardar favoritos.");
+                    return window.location.href = "login.html";
+                }
+
+                const resp = await fetch("https://agroinsumos-san-pedro-despliegue.onrender.com/favoritos", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ usuarioId, productoId: producto.id_producto })
+                });
+
+                const data = await resp.json();
+
+                if (resp.ok) {
+                    alert("Producto agregado ❤️");
+                    window.location.href = "favoritos.html";
+                } else {
+                    alert("Error: " + data.error);
+                }
+            });
+
+        });
+
+
+        /* ============================================================
+            BUSCADOR INTELIGENTE CON IA PARA REDIRECCIÓN DE CATEGORÍAS
+        ============================================================ */
+
+        const IA_URL = "https://agroinsumos-san-pedro-despliegue.onrender.com/api/ia/interpretar";
+
+        document.getElementById("btn-buscar-ia").addEventListener("click", interpretarBusqueda);
+        document.getElementById("input-busqueda").addEventListener("keypress", e => {
+            if (e.key === "Enter") interpretarBusqueda();
+        });
+
+        async function interpretarBusqueda() {
+            const texto = document.getElementById("input-busqueda").value.trim();
+
+            if (!texto) {
+                alert("Por favor escribe lo que deseas buscar.");
+                return;
+            }
+
+            console.log("Consultando IA para:", texto);
+
+            try {
+                const response = await fetch(IA_URL, {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ texto })
+                });
+
+                const data = await response.json();
+                console.log("Respuesta IA:", data);
+
+                const categoria = data.categoria;
+
+                if (!categoria) {
+                    alert("No se pudo identificar la categoría.");
+                    return;
+                }
+
+                const URL_BASE = "https://agroinsumos-san-pedro-despliegue-us-gamma.vercel.app";
+                const destino = `${URL_BASE}/inven.html?categoria=${categoria}`;
+
+                console.log("Redirigiendo a:", destino);
+                window.location.href = destino;
+
+            } catch (error) {
+                console.error("Error con IA:", error);
+                alert("Ocurrió un error al procesar la búsqueda.");
+            }
+        }
+
+    </script>
+
+</body>
+
+</html>
