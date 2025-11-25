@@ -11,6 +11,9 @@ import favoritoRoutes from "./routes/favoritoRoutes.js";
 import swaggerJSDoc from "swagger-jsdoc";
 import swaggerUi from "swagger-ui-express";
 
+import pagoRoutes from "./routes/pagoRoutes.js";
+
+
 import geminiRoutes from "./routes/gemini_routes.js";
 
 
@@ -24,11 +27,13 @@ const app = express();
 // =============================
 const allowedOrigins = [
   "http://localhost:3000",
+
   "http://localhost:4000",
-  "https://agroinsumos-san-pedro-despliegue-us-tau.vercel.app",
-  "https://agroinsumos-san-pedro-despliegue.vercel.app",
+  "https://agroinsumos-san-pedro-despliegue-us-gamma.vercel.app",
+
   "https://agroinsumos-san-pedro-despliegue.onrender.com",
-  "https://agroinsumos-san-pedro-despliegue-kafy.onrender.com"
+  "https://agroinsumos-san-pedro-despliegue-kafy.onrender.com",
+  "https://agroinsumos-san-pedro-despliegue-ad-seven.vercel.app"
 ];
 
 app.use(cors({
@@ -60,6 +65,8 @@ app.use("/administradores", agro_spa_routes_admin);
 app.use("/favoritos", favoritoRoutes);
 app.use("/productos", producto_routes);
 app.use("/api/ia", geminiRoutes);
+app.use("/pagos", pagoRoutes);
+
 // Swagger
 const swaggerDocs = swaggerJSDoc({
   definition: {

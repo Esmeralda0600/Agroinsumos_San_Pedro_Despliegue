@@ -93,7 +93,15 @@
             // Función para agregar al carrito
             function agregarAlCarrito(prod) {
                 const usuarioId = localStorage.getItem("usuarioId");
-                let carrito = JSON.parse(localStorage.getItem(`carrito_${usuarioId}`)) || [];
+                if (!usuarioId) {
+                    alert("Debes iniciar sesión para agregar productos al carrito.");
+                    window.location.href = "login.html";
+                    return;
+                }
+
+                const claveCarrito = `carrito_${usuarioId}`;
+                let carrito = JSON.parse(localStorage.getItem(claveCarrito)) || [];
+
 
                 const existe = carrito.find(p => p.id_producto === prod.id_producto);
 
@@ -109,18 +117,37 @@
                     });
                 }
 
-                localStorage.setItem(`carrito_${usuarioId}`, JSON.stringify(carrito));
+                localStorage.setItem(claveCarrito, JSON.stringify(carrito));
             }
 
-            // Botón Agregar al carrito
+
+             // Botón Agregar al carrito → flujo normal carrito
             document.getElementById("btn-carrito").addEventListener("click", () => {
                 agregarAlCarrito(producto);
                 window.location.href = "carrito.html";
             });
 
-            // Botón Comprar
+            // COMPRAR AHORA (solo este producto)
             document.getElementById("btn-comprar").addEventListener("click", () => {
-                agregarAlCarrito(producto);
+                const usuarioId = localStorage.getItem("usuarioId");
+
+                if (!usuarioId) {
+                    alert("Debes iniciar sesión para comprar.");
+                    return window.location.href = "login.html";
+                }
+
+                const item = {
+                    id_producto: producto.id_producto,
+                    nombre: producto.nombre_producto,
+                    precio: producto.precio,
+                    cantidad: 1,
+                    imagen: producto.direccion_img || "imgs/ingrediente.png"
+                };
+
+                // Marcamos que venimos de "comprar ahora"
+                localStorage.setItem("modo_compra", "directa");
+                localStorage.setItem("compra_directa", JSON.stringify([item]));
+
                 window.location.href = "pago.html";
             });
 
@@ -190,7 +217,7 @@
                     return;
                 }
 
-                const URL_BASE = "https://agroinsumos-san-pedro-despliegue-us-tau.vercel.app";
+                const URL_BASE = "https://agroinsumos-san-pedro-despliegue-us-gamma.vercel.app";
                 const destino = `${URL_BASE}/inven.html?categoria=${categoria}`;
 
                 console.log("Redirigiendo a:", destino);

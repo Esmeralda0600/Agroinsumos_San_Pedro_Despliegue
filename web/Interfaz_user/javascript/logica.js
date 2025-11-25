@@ -5,7 +5,8 @@
 const paginaActual = window.location.pathname;
 
 // URL DE LA API EN PRODUCCIÓN
-const API_URL = "https://agroinsumos-san-pedro-despliegue-kafy.onrender.com";
+const API_URL = "https://agroinsumos-san-pedro-despliegue.onrender.com";
+
 
 // ============================================================
 // BOTONES LOGIN Y REGISTRO
@@ -385,8 +386,7 @@ async function interpretarBusqueda() {
     }
 
     // URL de tu catálogo (PROYECTO DEPLOYADO EN VERCEL)
-    const URL_BASE = "https://agroinsumos-san-pedro-despliegue-us-tau.vercel.app";
-
+    const URL_BASE = "https://agroinsumos-san-pedro-despliegue-us-gamma.vercel.app";
     const destino = `${URL_BASE}/inven.html?categoria=${categoria}`;
 
     console.log("Redirigiendo a:", destino);
