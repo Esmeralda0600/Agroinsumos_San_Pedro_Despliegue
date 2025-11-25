@@ -135,7 +135,7 @@ if (categoria) mostrar_productos(categoria);
 async function mostrar_productos(categoria) {
     const productos = document.getElementById("mostrar_productos_por_categoria");
     const loader = document.getElementById("loader");
-    
+
     loader.classList.remove("oculto");
     
     productos.innerHTML = "";
@@ -188,32 +188,35 @@ async function mostrar_productos(categoria) {
             div.append(img, n, precio, btnFav, btnVer);
             grid.appendChild(div);
         });
-        const controles = document.createElement("div");
-        controles.classList.add("volver");
-
-        const btnPrev = document.createElement("button");
-        btnPrev.classList.add("btn-volver")
-        btnPrev.innerText = "Anterior";
-        btnPrev.disabled = page === 1;
-        btnPrev.onclick = () => {
-            page--;
-            mostrar_productos(categoria);
-        };
-
         productos.appendChild(grid);
-
-        const btnNext = document.createElement("button");
-        btnNext.classList.add("btn-volver")
-        btnNext.innerText = "Siguiente";
-        btnNext.disabled = page === data.totalPaginas;
-        btnNext.onclick = () => {
-            page++;
-            mostrar_productos(categoria);
-        };
-
-        controles.append(btnPrev, btnNext);
-        productos.appendChild(controles);
-
+        if (data.totalPaginas > 1){
+            const controles = document.createElement("div");
+            controles.classList.add("volver");
+            if (data.paginaActual>1){
+                const btnPrev = document.createElement("button");
+                btnPrev.classList.add("btn-volver")
+                btnPrev.innerText = "Anterior";
+                btnPrev.disabled = page === 1;
+                btnPrev.onclick = () => {
+                    page--;
+                    mostrar_productos(categoria);
+                };
+                controles.appendChild(btnPrev);
+            };
+            if (data.paginaActual!= data.totalPaginas){
+                const btnNext = document.createElement("button");
+                btnNext.classList.add("btn-volver")
+                btnNext.innerText = "Siguiente";
+                btnNext.disabled = page === data.totalPaginas;
+                btnNext.onclick = () => {
+                    page++;
+                    mostrar_productos(categoria);
+                };
+                controles.appendChild(btnNext);
+            }
+            
+            productos.appendChild(controles);
+        }
         
 
     } catch {
