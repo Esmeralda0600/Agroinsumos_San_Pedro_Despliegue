@@ -14,6 +14,7 @@ main {
     flex: 1;
 }
 
+
 body {
     font-family: Arial, sans-serif;
     margin: 0;
@@ -43,22 +44,22 @@ main {
 
 /* ==================== HEADER ==================== */
 .Header {
-    background-color: #f9f9f9;
-    width: 100%;          /* antes 90% */
-    margin: 0 auto;
+    background-color: #f9f9F9;
+    width: 100%;
+    margin: 0;
     position: relative;
-
     display: flex;
     align-items: center;
+    flex-direction: row;
     justify-content: space-between;
-
-    height: auto;         /* antes 100px */
-    padding: 10px 40px;   /* compactito */
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+    flex-wrap: wrap;
+    /* 🔹 permite que los elementos bajen */
+    padding: 10px 20px;
+    box-sizing: border-box;
 }
 
 .logo img {
-    height: 75px;         /* antes 100px */
+    height: 100px;
     width: auto;
     margin-right: 30px;
 }
@@ -66,9 +67,9 @@ main {
 .botones-derecha {
     display: flex;
     align-items: center;
-    justify-content: center;
-    gap: 15px;
-    margin: 0;
+    justify-content: center; /* ✔ centrado */
+    gap: 15px; /* ✔ que ocupen todo el ancho disponible */
+    margin: 0;   /* ✔ quitar el empuje */
 }
 
 /* Botones de íconos */
@@ -342,12 +343,10 @@ main {
         flex-direction: column;
         align-items: center;
         text-align: center;
-        padding: 15px;
-        width: 100%;
     }
 
     .logo img {
-        height: 70px;
+        height: 90px;
         margin: 10px 0;
     }
 
@@ -369,15 +368,11 @@ main {
 @media (max-width: 768px) {
     .Header {
         flex-direction: column;
-        padding: 15px;
-        text-align: center;
     }
 
     .botones-derecha {
         justify-content: center;
         margin: 10px 0;
-        flex-wrap: wrap;
-        gap: 15px;
     }
 
     .Buscador {
@@ -407,16 +402,16 @@ main {
 /* Celulares pequeños */
 @media (max-width: 480px) {
     .Header {
-        padding: 10px;
+        flex-direction: column;
         text-align: center;
     }
 
     .logo img {
-        height: 60px;
+        height: 70px;
     }
 
     .Buscador {
-        width: 95%;
+        width: 100%;
         margin: 10px 0;
     }
 
@@ -447,8 +442,10 @@ main {
 .btn-volver {
     display: block;
     margin: 30px auto;
+    /* centrado horizontal */
     padding: 12px 25px;
     background-color: #2e7d32;
+    /* verde corporativo */
     color: white;
     border: none;
     border-radius: 8px;
@@ -469,6 +466,7 @@ main {
     align-items: flex-start;
     gap: 60px;
     padding: 60px;
+    /* ✅ Fondo general blanco */
 }
 
 /* 🔹 Barra de filtros */
@@ -510,7 +508,7 @@ main {
 }
 
 /* 🔹 Cuando uno está seleccionado */
-.barra-filtros-busqueda input[type="radio"]:checked + label,
+.barra-filtros-busqueda input[type="radio"]:checked+label,
 .barra-filtros-busqueda label:has(input[type="radio"]:checked) {
     background-color: #4CAF50;
     color: white;
@@ -521,22 +519,22 @@ main {
 
 @media (max-width: 1024px) {
     body {
-        background-size: cover;
-        background-position: center;
-        background-attachment: scroll;
+        background-size: cover;       /* asegúrate que cubra todo */
+        background-position: center;  /* centrado */
+        background-attachment: scroll; /* evita cortes en tablet/móvil */
     }
 
     .fondo {
-        width: 100vw;
-        height: 100vh;
+        width: 100vw;   /* toda la ventana horizontal */
+        height: 100vh;  /* toda la ventana vertical */
         object-fit: cover;
     }
 
     .Header {
-        width: 100%;
         flex-direction: column;
         height: auto;
         padding: 20px;
+        width: 100%;
     }
 
     .producto-detalle {
@@ -557,6 +555,36 @@ main {
 
 /* Tablets pequeñas / móviles grandes hasta 768px */
 @media (max-width: 768px) {
+    .Header {
+        flex-direction: column;
+        height: auto;
+        padding: 15px;
+        text-align: center;
+    }
+
+    .logo img {
+        margin: 0;
+        height: 80px;
+    }
+
+    .Buscador {
+        width: 90%;
+        margin: 15px 0;
+    }
+
+    .botones-derecha {
+        margin: 10px 0 0;
+        flex-wrap: wrap;
+        gap: 15px;
+        justify-content: center;
+    }
+
+    .btn-login,
+    .btn-registrarse {
+        font-size: 0.9rem;
+        padding: 6px 12px;
+    }
+
     .producto-detalle {
         flex-direction: column;
         align-items: center;
@@ -604,6 +632,22 @@ main {
 
 /* Móviles pequeños hasta 480px */
 @media (max-width: 480px) {
+    .Header {
+        padding: 10px;
+    }
+
+    .logo img {
+        height: 60px;
+    }
+
+    .Buscador {
+        width: 95%;
+    }
+
+    .botones-derecha {
+        gap: 10px;
+    }
+
     .producto-detalle {
         padding: 10px;
         gap: 15px;
@@ -634,16 +678,16 @@ main {
 /* Fondo completo entre 768px y 1024px */
 @media (min-width: 769px) and (max-width: 1024px) {
     body {
-        background-size: cover;
-        background-position: center;
-        background-attachment: scroll;
+        background-size: cover;       /* asegura que cubra toda la pantalla */
+        background-position: center;  /* centrado */
+        background-attachment: scroll; /* evita que se corte en tablet */
     }
 
     .Header {
-        width: 100%;
         flex-direction: column;
         height: auto;
         padding: 20px;
+        width: 100%;
     }
 
     .producto-detalle {
@@ -662,9 +706,92 @@ main {
 }
 
 
+
+/* ============================
+   BUSCADOR DEL HEADER
+   ============================ */
+
+.header__buscador {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.buscador__form {
+    width: 100%;
+}
+
+.buscador__contenedor {
+    display: flex;
+    align-items: center;
+    background: #ffffff;
+    border-radius: 15px;
+    width: 100%;
+    max-width: 1000px; /* ✅ antes era width:1000px fijo */
+    padding: 8px 15px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+    height: 40px;
+    transition: all 0.25s ease;
+}
+
+.buscador__contenedor:hover {
+    transform: scale(1.02);
+}
+
+.buscador__input {
+    flex: 1;
+    border: none;
+    outline: none;
+    background: transparent;
+    font-size: 1rem;
+    color: #001f3f;
+}
+
+.buscador__input::placeholder {
+    color: rgba(0, 0, 128, 0.6);
+}
+
+.buscador__icono {
+    width: 22px;
+    height: 22px;
+    cursor: pointer;
+    transition: transform 0.2s ease;
+}
+
+.buscador__icono:hover {
+    transform: scale(1.1);
+}
+
+
+/* ============================
+   RESULTADO IA (Opcional)
+   ============================ */
+
+.buscador__resultado {
+    background: #ffffff;
+    width: 100%;
+    margin: 10px auto;
+    padding: 15px;
+    border-radius: 12px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    font-size: 1rem;
+    display: block;
+}
+
+.buscador__resultado ul {
+    padding-left: 20px;
+}
+
+.buscador__resultado li {
+    margin-bottom: 8px;
+    color: #114d30;
+}
+
+
 /* ============================
    AJUSTES EXTRA DE RESPONSIVIDAD
-   (header + buscador)
+   (solo corrigen header + buscador en móvil/tablet)
    ============================ */
 
 /* Tablets y abajo: que el buscador no sea tan ancho */
@@ -676,6 +803,12 @@ main {
 
 /* Celulares grandes */
 @media (max-width: 768px) {
+    .Header {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+    }
+
     .buscador__contenedor {
         width: 90%;
         max-width: 90%;
@@ -688,7 +821,7 @@ main {
         width: 95%;
         max-width: 95%;
         padding: 6px 10px;
-        height: 34px;
+        height: 36px;
     }
 
     .buscador__input {
