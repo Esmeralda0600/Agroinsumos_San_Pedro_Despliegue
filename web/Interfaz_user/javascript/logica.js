@@ -134,6 +134,10 @@ if (categoria) mostrar_productos(categoria);
 
 async function mostrar_productos(categoria) {
     const productos = document.getElementById("mostrar_productos_por_categoria");
+    const loader = document.getElementById("loader");
+    
+    loader.classList.remove("oculto");
+    
     productos.innerHTML = "";
     productos.classList.add("catalogo");
     console.log(categoria);
@@ -147,6 +151,8 @@ async function mostrar_productos(categoria) {
         console.log(categoria,resp);
         const data = await resp.json();
         if (!resp.ok) return alert("Error: " + data.error);
+
+        loader.classList.add("oculto");
 
         const titulo = document.createElement("h2");
         titulo.innerText = categoria.toUpperCase();
@@ -186,6 +192,7 @@ async function mostrar_productos(categoria) {
         controles.classList.add("volver");
 
         const btnPrev = document.createElement("button");
+        btnPrev.classList.add("btn-volver")
         btnPrev.innerText = "Anterior";
         btnPrev.disabled = page === 1;
         btnPrev.onclick = () => {
@@ -193,7 +200,10 @@ async function mostrar_productos(categoria) {
             mostrar_productos(categoria);
         };
 
+        productos.appendChild(grid);
+
         const btnNext = document.createElement("button");
+        btnNext.classList.add("btn-volver")
         btnNext.innerText = "Siguiente";
         btnNext.disabled = page === data.totalPaginas;
         btnNext.onclick = () => {
@@ -204,7 +214,7 @@ async function mostrar_productos(categoria) {
         controles.append(btnPrev, btnNext);
         productos.appendChild(controles);
 
-        productos.appendChild(grid);
+        
 
     } catch {
         alert("Error de conexión con la API");

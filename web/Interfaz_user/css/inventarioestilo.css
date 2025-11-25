@@ -197,7 +197,7 @@ body {
 
 /* ==================== CATÁLOGO ==================== */
 .catalogo {
-    padding: 50px 20px;
+    padding: 50px 20px 0px 20px;
     text-align: center;
 }
 
@@ -280,7 +280,7 @@ body {
 /* ==================== BOTÓN VOLVER ==================== */
 .volver {
     text-align: center;
-    margin: 30px 0 60px;
+    margin: 30px 0 30px;
 }
 
 .btn-volver {
@@ -292,6 +292,7 @@ body {
     font-size: 1rem;
     cursor: pointer;
     transition: 0.3s;
+    margin: 15px;
 }
 
 .btn-volver:hover {
@@ -414,4 +415,23 @@ body {
     .footer p {
         font-size: 0.8rem;
     }
+}
+
+.loader {
+    border: 6px solid #f3f3f3;
+    border-top: 6px solid #3498db;
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+    animation: girar 1s linear infinite;
+    margin: 40px auto;
+}
+
+@keyframes girar {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+.oculto {
+    display: none;
 }
