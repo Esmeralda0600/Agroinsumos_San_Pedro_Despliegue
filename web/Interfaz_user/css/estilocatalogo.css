@@ -44,18 +44,21 @@ main {
 
 /* ==================== HEADER ==================== */
 .Header {
-    background-color: #f9f9F9;
+    background-color: #f9f9f9;
     width: 100%;
     margin: 0;
     position: relative;
+
+    /* 📌 Nueva configuración correcta */
     display: flex;
     align-items: center;
-    flex-direction: row;
     justify-content: space-between;
-    flex-wrap: wrap;
-    /* 🔹 permite que los elementos bajen */
-    padding: 10px 20px;
-    box-sizing: border-box;
+
+    height: 100px;      
+    padding: 0 40px;   
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+
+
 }
 
 .logo img {
