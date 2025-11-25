@@ -350,7 +350,7 @@ async function interpretarBusqueda() {
     }
 
     // URL de tu catálogo (PROYECTO DEPLOYADO EN VERCEL)
-    const URL_BASE = "https://agroinsumos-san-pedro-despliegue-us-tau.vercel.app";
+    const URL_BASE = "https://agroinsumos-san-pedro-despliegue-us-gamma.vercel.app";
 
     const destino = `${URL_BASE}/inven.html?categoria=${categoria}`;
 
