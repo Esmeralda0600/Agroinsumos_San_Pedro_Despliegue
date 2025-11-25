@@ -1,29 +1,4 @@
-// ===========================
-// FUNCIÓN GLOBAL: AGREGAR AL CARRITO
-// ===========================
-// function agregarAlCarrito(prod) {
-//     const usuarioId = localStorage.getItem("usuarioId");  //verifica  usuario loguado
-//     //let carrito = JSON.parse(localStorage.getItem("carrito")) || [];
-
-//     const existe = carrito.find(p => p.id_producto === prod.id_producto);
-
-//     if (existe) {
-//         existe.cantidad += 1;
-//     } else {
-//         carrito.push({
-//             id_producto: prod.id_producto,
-//             nombre: prod.nombre_producto,
-//             precio: prod.precio,
-//             cantidad: 1,
-//             imagen: prod.direccion_img || "../imgs/ingrediente.png"
-//         });
-//     }
-
-//     localStorage.setItem("carrito", JSON.stringify(carrito));
-//     alert("Producto agregado al carrito 🛒");
-//     window.location.href = "carrito.html";
-// }
-// ===========================
+ 
 // FUNCIÓN GLOBAL: AGREGAR AL CARRITO
 // ===========================
 function agregarAlCarrito(prod) {
@@ -134,7 +109,9 @@ function descripcion_producto() {
         div_general.appendChild(div_info);
 
         // ============================================================
-        // ⭐ AGREGAR A FAVORITOS
+
+        // ⭐ AGREGAR A FAVORITOS (corregido)
+
         // ============================================================
         btn_fav.addEventListener("click", async () => {
 
@@ -147,12 +124,14 @@ function descripcion_producto() {
             }
 
             try {
-                const respuesta = await fetch("http://localhost:3000/favoritos", {
+                const respuesta = await fetch(`${API_URL}/favoritos`, {
+
                     method: "POST",
                     headers: { "Content-Type": "application/json" },
                     body: JSON.stringify({
                         usuarioId: usuarioId,
-                        productoId: producto.id_producto   // 🔥 ID correcto
+                        productoId: producto.id_producto
+
                     })
                 });
 

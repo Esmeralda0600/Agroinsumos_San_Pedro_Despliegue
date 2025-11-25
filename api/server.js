@@ -10,7 +10,9 @@ import favoritoRoutes from "./routes/favoritoRoutes.js";
 
 import swaggerJSDoc from "swagger-jsdoc";
 import swaggerUi from "swagger-ui-express";
+
 import pagoRoutes from "./routes/pagoRoutes.js";
+
 
 import geminiRoutes from "./routes/gemini_routes.js";
 
@@ -61,6 +63,7 @@ app.use("/favoritos", favoritoRoutes);
 app.use("/productos", producto_routes);
 app.use("/api/ia", geminiRoutes);
 app.use("/pagos", pagoRoutes);
+
 // Swagger
 const swaggerDocs = swaggerJSDoc({
   definition: {

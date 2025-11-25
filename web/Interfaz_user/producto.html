@@ -102,6 +102,7 @@
                 const claveCarrito = `carrito_${usuarioId}`;
                 let carrito = JSON.parse(localStorage.getItem(claveCarrito)) || [];
 
+
                 const existe = carrito.find(p => p.id_producto === prod.id_producto);
 
                 if (existe) {
@@ -149,7 +150,6 @@
 
                 window.location.href = "pago.html";
             });
-
 
             // Botón Favoritos (CORREGIDO)
             document.getElementById("btn-fav").addEventListener("click", async () => {
