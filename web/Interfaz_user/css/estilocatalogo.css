@@ -1,4 +1,20 @@
 /* ==================== ESTILOS BASE ==================== */
+
+html, body {
+    height: 100%;
+    margin: 0;
+}
+
+body {
+    display: flex;
+    flex-direction: column;
+}
+
+main {
+    flex: 1;
+}
+
+
 body {
     font-family: Arial, sans-serif;
     margin: 0;
@@ -35,7 +51,7 @@ main {
     display: flex;
     align-items: center;
     flex-direction: row;
-    ;justify-content: space-between;
+    justify-content: space-between;
     flex-wrap: wrap;
     /* 🔹 permite que los elementos bajen */
     padding: 10px 20px;
@@ -77,7 +93,7 @@ main {
     transform: scale(1.1);
 }
 
-/* Buscador */
+/* Buscador (otra versión de buscador que usas) */
 .Buscador {
     background: linear-gradient(180deg, #fff9f5 0%, #f3ecff 100%);
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
@@ -711,7 +727,8 @@ main {
     align-items: center;
     background: #ffffff;
     border-radius: 15px;
-    width: 700px;
+    width: 100%;
+    max-width: 1000px; /* ✅ antes era width:1000px fijo */
     padding: 8px 15px;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
     height: 40px;
@@ -769,4 +786,55 @@ main {
 .buscador__resultado li {
     margin-bottom: 8px;
     color: #114d30;
+}
+
+
+/* ============================
+   AJUSTES EXTRA DE RESPONSIVIDAD
+   (solo corrigen header + buscador en móvil/tablet)
+   ============================ */
+
+/* Tablets y abajo: que el buscador no sea tan ancho */
+@media (max-width: 1024px) {
+    .buscador__contenedor {
+        max-width: 90%;
+    }
+}
+
+/* Celulares grandes */
+@media (max-width: 768px) {
+    .Header {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+    }
+
+    .buscador__contenedor {
+        width: 90%;
+        max-width: 90%;
+    }
+}
+
+/* Celulares pequeños */
+@media (max-width: 480px) {
+    .buscador__contenedor {
+        width: 95%;
+        max-width: 95%;
+        padding: 6px 10px;
+        height: 36px;
+    }
+
+    .buscador__input {
+        font-size: 0.9rem;
+    }
+
+    .carrito-de-compras img,
+    .boton-favoritos img {
+        width: 30px;
+        height: 30px;
+    }
+
+    .logo img {
+        height: 55px;
+    }
 }
