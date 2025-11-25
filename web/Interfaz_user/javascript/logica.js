@@ -128,12 +128,17 @@ document.addEventListener("DOMContentLoaded", () => {
 // ============================================================
 // MOSTRAR PRODUCTOS POR CATEGORÍA
 // ============================================================
+let page = 1;
 const params = new URLSearchParams(window.location.search);
 const categoria = params.get("categoria");
 if (categoria) mostrar_productos(categoria);
 
 async function mostrar_productos(categoria) {
     const productos = document.getElementById("mostrar_productos_por_categoria");
+    const loader = document.getElementById("loader");
+
+    loader.classList.remove("oculto");
+    
     productos.innerHTML = "";
     productos.classList.add("catalogo");
     console.log(categoria);
@@ -142,11 +147,13 @@ async function mostrar_productos(categoria) {
         const resp = await fetch(`${API_URL}/usuarios/productos`, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ categoria })
+            body: JSON.stringify({ categoria, page })
         });
         console.log(categoria,resp);
         const data = await resp.json();
         if (!resp.ok) return alert("Error: " + data.error);
+
+        loader.classList.add("oculto");
 
         const titulo = document.createElement("h2");
         titulo.innerText = categoria.toUpperCase();
@@ -155,12 +162,13 @@ async function mostrar_productos(categoria) {
         const grid = document.createElement("div");
         grid.classList.add("productos-grid");
 
-        data.forEach((e) => {
+        data.productos.forEach((e) => {
             const div = document.createElement("div");
             div.classList.add("tarjeta");
 
             const img = document.createElement("img");
-            img.src = "../imgs/ingrediente.png";
+            img.src = "../imgs/default.png";
+            img.width = 200;
 
             const n = document.createElement("h3");
             n.innerText = e.nombre_producto;
@@ -181,8 +189,36 @@ async function mostrar_productos(categoria) {
             div.append(img, n, precio, btnFav, btnVer);
             grid.appendChild(div);
         });
-
         productos.appendChild(grid);
+        if (data.totalPaginas > 1){
+            const controles = document.createElement("div");
+            controles.classList.add("volver");
+            if (data.paginaActual>1){
+                const btnPrev = document.createElement("button");
+                btnPrev.classList.add("btn-volver")
+                btnPrev.innerText = "Anterior";
+                btnPrev.disabled = page === 1;
+                btnPrev.onclick = () => {
+                    page--;
+                    mostrar_productos(categoria);
+                };
+                controles.appendChild(btnPrev);
+            };
+            if (data.paginaActual!= data.totalPaginas){
+                const btnNext = document.createElement("button");
+                btnNext.classList.add("btn-volver")
+                btnNext.innerText = "Siguiente";
+                btnNext.disabled = page === data.totalPaginas;
+                btnNext.onclick = () => {
+                    page++;
+                    mostrar_productos(categoria);
+                };
+                controles.appendChild(btnNext);
+            }
+            
+            productos.appendChild(controles);
+        }
+        
 
     } catch {
         alert("Error de conexión con la API");
@@ -265,7 +301,7 @@ function agregarAlCarrito(producto) {
             nombre: producto.nombre_producto,
             precio: producto.precio,
             cantidad: 1,
-            imagen: producto.direccion_img || "imgs/ingrediente.png"
+            imagen: producto.direccion_img || "imgs/default.png"
         });
     }
 
