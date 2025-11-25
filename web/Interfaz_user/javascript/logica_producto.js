@@ -14,7 +14,7 @@ function agregarAlCarrito(prod) {
             nombre: prod.nombre_producto,
             precio: prod.precio,
             cantidad: 1,
-            imagen: prod.direccion_img || "../imgs/ingrediente.png"
+            imagen: prod.direccion_img || "../imgs/default.png"
         });
     }
 
@@ -23,7 +23,7 @@ function agregarAlCarrito(prod) {
     window.location.href = "carrito.html";
 }
 
-const API_URL = "https://agroinsumos-san-pedro-despliegue.onrender.com";
+const API_URL = "https://agroinsumos-san-pedro-despliegue-kafy.onrender.com";
 
 function descripcion_producto() {
 
@@ -39,7 +39,8 @@ function descripcion_producto() {
         div_imagen.classList.add("tarjeta-producto");
 
         const img_producto = document.createElement("img");
-        img_producto.src = producto.direccion_img || "../imgs/ingrediente.png";
+        img_producto.src = producto.direccion_img || "../imgs/default.png";
+        img_producto.width = 200;
 
         const nombre = document.createElement("h3");
 

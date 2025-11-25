@@ -151,12 +151,16 @@ export async function mostrar_ingredientes(req, res) {
 // ============================================================
 export async function mostrar_productos(req, res) {
   try {
-    let { categoria } = req.body;
+    let { categoria, page } = req.body;
 
-    if (!categoria) return res.status(400).json({ error: "Falta categoría" });
+    if (!categoria) 
+      return res.status(400).json({ error: "Falta categoría" });
 
-    // La BD guarda categorías EN MAYÚSCULAS
     categoria = categoria.toUpperCase();
+    page = parseInt(page) || 1;
+
+    const limite = 10;
+    const skip = (page - 1) * limite;
 
     const existe_categoria = await CategoriaMongo.findOne({
       nombre_categoria: categoria
@@ -167,31 +171,37 @@ export async function mostrar_productos(req, res) {
     const existe_ingrediente = await IngredienteMongo.findOne({
       nombre_ingrediente: categoria
     });
-    console.log("problema",existe_categoria);
-    console.log(existe_marca);
-    console.log(existe_ingrediente);
+
     if (!existe_categoria && !existe_marca && !existe_ingrediente) {
       return res.status(404).json({ error: "Categoría no encontrada" });
-    };
-    let productos= 0;
-    if (existe_categoria){
-      productos = await ProductoMongo.find({
-        categoria_producto: categoria
-      });
-    }else if (existe_marca){
-      productos = await ProductoMongo.find({
-        marca: categoria
-      });
-    }else if (existe_ingrediente){
-      productos = await ProductoMongo.find({
-        ingrediente_activo: categoria
-      });
-    };
-    
+    }
 
-    res.json(productos);
+    let filtro = {};
+
+    if (existe_categoria) {
+      filtro = { categoria_producto: categoria };
+    } else if (existe_marca) {
+      filtro = { marca: categoria };
+    } else if (existe_ingrediente) {
+      filtro = { ingrediente_activo: categoria };
+    }
+
+    const totalProductos = await ProductoMongo.countDocuments(filtro);
+    const totalPaginas = Math.ceil(totalProductos / limite);
+
+    const productos = await ProductoMongo.find(filtro)
+      .skip(skip)
+      .limit(limite);
+
+    res.json({
+      productos,
+      paginaActual: page,
+      totalPaginas,
+      totalProductos
+    });
 
   } catch (error) {
     res.status(500).json({ error: "Error al obtener productos" });
   }
 }
+

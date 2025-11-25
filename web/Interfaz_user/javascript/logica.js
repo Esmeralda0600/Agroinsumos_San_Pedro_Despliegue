@@ -127,6 +127,7 @@ document.addEventListener("DOMContentLoaded", () => {
 // ============================================================
 // MOSTRAR PRODUCTOS POR CATEGORÍA
 // ============================================================
+let page = 1;
 const params = new URLSearchParams(window.location.search);
 const categoria = params.get("categoria");
 if (categoria) mostrar_productos(categoria);
@@ -141,7 +142,7 @@ async function mostrar_productos(categoria) {
         const resp = await fetch(`${API_URL}/usuarios/productos`, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ categoria })
+            body: JSON.stringify({ categoria, page })
         });
         console.log(categoria,resp);
         const data = await resp.json();
@@ -154,12 +155,13 @@ async function mostrar_productos(categoria) {
         const grid = document.createElement("div");
         grid.classList.add("productos-grid");
 
-        data.forEach((e) => {
+        data.productos.forEach((e) => {
             const div = document.createElement("div");
             div.classList.add("tarjeta");
 
             const img = document.createElement("img");
-            img.src = "../imgs/ingrediente.png";
+            img.src = "../imgs/default.png";
+            img.width = 200;
 
             const n = document.createElement("h3");
             n.innerText = e.nombre_producto;
@@ -180,6 +182,27 @@ async function mostrar_productos(categoria) {
             div.append(img, n, precio, btnFav, btnVer);
             grid.appendChild(div);
         });
+        const controles = document.createElement("div");
+        controles.classList.add("volver");
+
+        const btnPrev = document.createElement("button");
+        btnPrev.innerText = "Anterior";
+        btnPrev.disabled = page === 1;
+        btnPrev.onclick = () => {
+            page--;
+            mostrar_productos(categoria);
+        };
+
+        const btnNext = document.createElement("button");
+        btnNext.innerText = "Siguiente";
+        btnNext.disabled = page === data.totalPaginas;
+        btnNext.onclick = () => {
+            page++;
+            mostrar_productos(categoria);
+        };
+
+        controles.append(btnPrev, btnNext);
+        productos.appendChild(controles);
 
         productos.appendChild(grid);
 
@@ -264,7 +287,7 @@ function agregarAlCarrito(producto) {
             nombre: producto.nombre_producto,
             precio: producto.precio,
             cantidad: 1,
-            imagen: producto.direccion_img || "imgs/ingrediente.png"
+            imagen: producto.direccion_img || "imgs/default.png"
         });
     }
 
