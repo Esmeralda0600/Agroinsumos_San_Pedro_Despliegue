@@ -1,8 +1,18 @@
-// ===========================
+ 
 // FUNCIÓN GLOBAL: AGREGAR AL CARRITO
 // ===========================
 function agregarAlCarrito(prod) {
-    let carrito = JSON.parse(localStorage.getItem("carrito")) || [];
+    // 1. Verificar que haya usuario logueado
+    const usuarioId = localStorage.getItem("usuarioId");
+    if (!usuarioId) {
+        alert("Debes iniciar sesión para agregar productos al carrito.");
+        window.location.href = "login.html"; // ajusta el nombre si tu login se llama diferente
+        return;
+    }
+
+    // 2. Usar carrito_por_usuario
+    const claveCarrito = `carrito_${usuarioId}`;
+    let carrito = JSON.parse(localStorage.getItem(claveCarrito)) || [];
 
     const existe = carrito.find(p => p.id_producto === prod.id_producto);
 
@@ -14,16 +24,14 @@ function agregarAlCarrito(prod) {
             nombre: prod.nombre_producto,
             precio: prod.precio,
             cantidad: 1,
-            imagen: prod.direccion_img || "../imgs/ingrediente.png"
+            imagen: prod.direccion_img || "imgs/ingrediente.png"
         });
     }
 
-    localStorage.setItem("carrito", JSON.stringify(carrito));
+    localStorage.setItem(claveCarrito, JSON.stringify(carrito));
     alert("Producto agregado al carrito 🛒");
-    window.location.href = "carrito.html";
 }
 
-const API_URL = "https://agroinsumos-san-pedro-despliegue.onrender.com";
 
 function descripcion_producto() {
 
@@ -62,8 +70,9 @@ function descripcion_producto() {
         btn_carrito.innerText = "Agregar al carrito";
         btn_carrito.classList.add("btn");
         btn_carrito.addEventListener("click", () => {
-            agregarAlCarrito(producto);
-        });
+    agregarAlCarrito(producto);
+});
+
 
         const btn_fav = document.createElement("button");
         btn_fav.innerText = "Agregar a favoritos";
@@ -100,7 +109,9 @@ function descripcion_producto() {
         div_general.appendChild(div_info);
 
         // ============================================================
+
         // ⭐ AGREGAR A FAVORITOS (corregido)
+
         // ============================================================
         btn_fav.addEventListener("click", async () => {
 
@@ -114,11 +125,13 @@ function descripcion_producto() {
 
             try {
                 const respuesta = await fetch(`${API_URL}/favoritos`, {
+
                     method: "POST",
                     headers: { "Content-Type": "application/json" },
                     body: JSON.stringify({
                         usuarioId: usuarioId,
                         productoId: producto.id_producto
+
                     })
                 });
 
