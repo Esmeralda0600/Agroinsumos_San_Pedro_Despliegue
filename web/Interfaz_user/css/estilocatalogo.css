@@ -93,11 +93,28 @@ main {
     gap: 15px;
 }
 
+
+/* Botones de íconos */
+.boton-favoritos,
+.carrito-de-compras {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+    transition: transform 0.2s ease;
+}
+
 .boton-favoritos img,
 .carrito-de-compras img {
-    width: 35px;
-    height: 35px;
+    width: 40px;
+    height: 40px;
 }
+
+.boton-favoritos:hover,
+.carrito-de-compras:hover {
+    transform: scale(1.1);
+}
+
 
 /* Buttons */
 .btn-login,
