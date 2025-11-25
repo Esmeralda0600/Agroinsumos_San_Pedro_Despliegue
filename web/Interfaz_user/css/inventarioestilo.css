@@ -429,3 +429,63 @@ body {
         font-size: 0.8rem;
     }
 }
+
+/* ================================
+   RESPONSIVIDAD ESPECÍFICA BUSCADOR
+   ================================ */
+
+/* Ajuste base — permitir que se adapte */
+.buscador__contenedor {
+    width: 100%;
+    max-width: 800px; /* antes era width: 800px fijo */
+}
+
+/* Tablets (hasta 992px) */
+@media (max-width: 992px) {
+    .buscador__contenedor {
+        max-width: 600px;
+        width: 90%;
+    }
+}
+
+/* Celulares grandes (hasta 768px) */
+@media (max-width: 768px) {
+    .Header {
+        justify-content: center;
+        flex-direction: column;
+        text-align: center;
+        gap: 10px;
+    }
+
+    .header__buscador {
+        width: 100%;
+        display: flex;
+        justify-content: center;
+    }
+
+    .buscador__contenedor {
+        width: 90%;
+        max-width: 500px;
+        padding: 6px 12px;
+    }
+}
+
+/* Celulares pequeños (hasta 480px) */
+@media (max-width: 480px) {
+    .buscador__contenedor {
+        width: 95%;
+        max-width: 350px;
+        height: 36px;
+        padding: 5px 10px;
+    }
+
+    .buscador__input {
+        font-size: 0.9rem;
+    }
+
+    .buscador__icono {
+        width: 18px;
+        height: 18px;
+    }
+}
+
