@@ -385,121 +385,24 @@ main {
 
 /* Celulares pequeños */
 @media (max-width: 480px) {
-    .Header {
-        flex-direction: column;
-        text-align: center;
+
+    /* 🔥 BUSCADOR AJUSTADO */
+    .buscador__contenedor {
+        max-width: 300px;     /* antes podía llegar hasta 800px */
+        width: 85%;           /* ocupa solo una parte, no toda la pantalla */
+        height: 35px;         /* más pequeño y bonito */
+        padding: 5px 10px;
     }
 
-    .logo img {
-        height: 70px;
+    .buscador__input {
+        font-size: 0.9rem;    /* texto más compacto */
     }
 
-    .Buscador {
-        width: 100%;
-        margin: 10px 0;
-    }
-
-    .productos-grid {
-        grid-template-columns: 1fr;
-        padding: 0 10px;
-    }
-
-    .tarjeta {
-        height: 180px;
-    }
-
-    .overlay p {
-        font-size: 1rem;
-    }
-
-    .footer p {
-        font-size: 0.85rem;
+    .buscador__icono {
+        width: 18px;
+        height: 18px;
     }
 }
-
-.volver {
-    text-align: center;
-    margin-top: 20px;
-    margin-bottom: 120px;
-}
-
-.btn-volver {
-    display: block;
-    margin: 30px auto;
-    /* centrado horizontal */
-    padding: 12px 25px;
-    background-color: #2e7d32;
-    /* verde corporativo */
-    color: white;
-    border: none;
-    border-radius: 8px;
-    font-size: 16px;
-    cursor: pointer;
-    transition: all 0.3s ease;
-}
-
-.btn-volver:hover {
-    background-color: #114d30;
-    transform: translateY(-2px);
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
-}
-
-.producto-detalle {
-    display: flex;
-    justify-content: center;
-    align-items: flex-start;
-    gap: 60px;
-    padding: 60px;
-    /* ✅ Fondo general blanco */
-}
-
-/* 🔹 Barra de filtros */
-.barra-filtros-busqueda {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 1rem;
-    flex-wrap: wrap;
-    margin: 20px auto;
-    padding: 10px 20px;
-    background-color: #fff;
-    border-radius: 20px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
-    max-width: 700px;
-}
-
-/* 🔹 Estilo general de las opciones */
-.barra-filtros-busqueda label {
-    cursor: pointer;
-    font-weight: 600;
-    color: #444;
-    padding: 10px 20px;
-    border: 2px solid #ccc;
-    border-radius: 25px;
-    transition: all 0.3s ease;
-    background-color: #f9f9f9;
-}
-
-/* 🔹 Efecto hover */
-.barra-filtros-busqueda label:hover {
-    background-color: #eaeaea;
-    border-color: #888;
-}
-
-/* 🔹 Ocultar los botones de radio nativos */
-.barra-filtros-busqueda input[type="radio"] {
-    display: none;
-}
-
-/* 🔹 Cuando uno está seleccionado */
-.barra-filtros-busqueda input[type="radio"]:checked+label,
-.barra-filtros-busqueda label:has(input[type="radio"]:checked) {
-    background-color: #4CAF50;
-    color: white;
-    border-color: #4CAF50;
-    box-shadow: 0 0 10px rgba(76, 175, 80, 0.4);
-}
-
 
 @media (max-width: 1024px) {
     body {
