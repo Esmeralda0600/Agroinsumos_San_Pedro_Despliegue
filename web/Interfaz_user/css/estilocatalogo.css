@@ -1,20 +1,4 @@
 /* ==================== ESTILOS BASE ==================== */
-
-html, body {
-    height: 100%;
-    margin: 0;
-}
-
-body {
-    display: flex;
-    flex-direction: column;
-}
-
-main {
-    flex: 1;
-}
-
-
 body {
     font-family: Arial, sans-serif;
     margin: 0;
@@ -43,56 +27,32 @@ main {
 }
 
 /* ==================== HEADER ==================== */
-/* ==================== HEADER (CORREGIDO) ==================== */
 .Header {
+    background-color: #f9f9F9;
     width: 100%;
-    background-color: #ffffff;
+    margin: 0;
+    position: relative;
     display: flex;
-    align-items: center;
     justify-content: space-between;
-    padding: 10px 25px;
+    align-items: center;
+    flex-wrap: wrap;
+    /* 🔹 permite que los elementos bajen */
+    padding: 10px 20px;
     box-sizing: border-box;
-    gap: 20px;
 }
 
 .logo img {
-    height: 75px;        /* tamaño como la segunda imagen */
+    height: 100px;
     width: auto;
-    margin: 0;
+    margin-right: 30px;
 }
 
-/* Buscador centrado */
-.header__buscador {
-    flex: 1;   
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
-.buscador__contenedor {
-    display: flex;
-    align-items: center;
-    background: #ffffff;
-    border-radius: 15px;
-    width: 100%;
-    max-width: 650px;   /* tamaño realista */
-    padding: 8px 15px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
-    height: 40px;
-    transition: all 0.25s ease;
-}
-
-.buscador__contenedor:hover {
-    transform: scale(1.02);
-}
-
-/* Sección derecha: iconos + botones */
 .botones-derecha {
     display: flex;
     align-items: center;
     gap: 15px;
+    margin-left: auto;
 }
-
 
 /* Botones de íconos */
 .boton-favoritos,
@@ -115,24 +75,67 @@ main {
     transform: scale(1.1);
 }
 
+/* Buscador */
+.Buscador {
+    background: linear-gradient(180deg, #fff9f5 0%, #f3ecff 100%);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    width: 50%;
+    height: 40px;
+    border-radius: 30px;
+    margin: 10px auto;
+}
 
-/* Buttons */
+.input-con-imagen {
+    display: flex;
+    align-items: center;
+    padding: 5px 10px;
+    border-radius: 15px;
+    height: 100%;
+    background-color: white;
+    box-shadow: 0 7px 10px rgba(0, 0, 0, 0.1);
+}
+
+.input-con-imagen input {
+    flex: 1;
+    border: none;
+    background: transparent;
+    font-size: 1rem;
+    color: navy;
+    padding-right: 8px;
+    outline: none;
+}
+
+.input-con-imagen input::placeholder {
+    color: rgba(0, 0, 128, 0.6);
+}
+
+.icono-lupa {
+    width: 25px;
+    height: 25px;
+    object-fit: contain;
+    margin-left: 10px;
+    cursor: pointer;
+}
+
+
+/* ==================== BOTONES PRINCIPALES ==================== */
 .btn-login,
 .btn-registrarse {
-    padding: 7px 15px;
+    padding: 8px 15px;
     border-radius: 5px;
     border: none;
     cursor: pointer;
-    font-size: 0.95rem;
+    font-size: 1rem;
     color: white;
     background-color: #0f684b;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
     transition: 0.3s;
 }
 
 .btn-login:hover,
 .btn-registrarse:hover {
     background-color: #03484c;
-    transform: scale(1.05);
+    transform: scale(1.1);
 }
 
 /* ==================== CARRUSEL ==================== */
@@ -497,328 +500,20 @@ main {
     box-shadow: 0 0 10px rgba(76, 175, 80, 0.4);
 }
 
-
-@media (max-width: 1024px) {
-    body {
-        background-size: cover;       /* asegúrate que cubra todo */
-        background-position: center;  /* centrado */
-        background-attachment: scroll; /* evita cortes en tablet/móvil */
-    }
-
-    .fondo {
-        width: 100vw;   /* toda la ventana horizontal */
-        height: 100vh;  /* toda la ventana vertical */
-        object-fit: cover;
-    }
-
-    .Header {
-        flex-direction: column;
-        height: auto;
-        padding: 20px;
-        width: 100%;
-    }
-
-    .producto-detalle {
-        gap: 30px;
-        padding: 40px;
-    }
-
-    .tarjeta-producto {
-        width: 70%;
-    }
-
-    .info-producto {
-        width: 80%;
-        font-size: 1.1rem;
-    }
-}
-
-
-/* Tablets pequeñas / móviles grandes hasta 768px */
+/* 🔹 Responsividad */
 @media (max-width: 768px) {
-    .Header {
+    .barra-filtros-busqueda {
         flex-direction: column;
-        height: auto;
-        padding: 15px;
-        text-align: center;
-    }
-
-    .logo img {
-        margin: 0;
-        height: 80px;
-    }
-
-    .Buscador {
-        width: 90%;
-        margin: 15px 0;
-    }
-
-    .botones-derecha {
-        margin: 10px 0 0;
-        flex-wrap: wrap;
-        gap: 15px;
-        justify-content: center;
-    }
-
-    .btn-login,
-    .btn-registrarse {
-        font-size: 0.9rem;
-        padding: 6px 12px;
-    }
-
-    .producto-detalle {
-        flex-direction: column;
-        align-items: center;
-        gap: 20px;
-        padding: 20px;
-    }
-
-    .tarjeta-producto,
-    .info-producto {
-        width: 90%;
-    }
-
-    .info-producto {
-        font-size: 1rem;
-        height: auto;
-    }
-
-    .acciones-producto,
-    .botones-acciones {
-        flex-direction: column;
-    }
-
-    .btn {
-        width: 100%;
-        padding: 10px;
-        font-size: 1rem;
-    }
-
-    .footer {
-        position: static;
-        padding: 10px;
-    }
-
-    .volver {
-        margin-bottom: 40px;
-    }
-
-    .boton-contactar {
-        right: 10px;
-        bottom: 10px;
-        padding: 10px 15px;
-        font-size: 14px;
-    }
-}
-
-/* Móviles pequeños hasta 480px */
-@media (max-width: 480px) {
-    .Header {
-        padding: 10px;
-    }
-
-    .logo img {
-        height: 60px;
-    }
-
-    .Buscador {
-        width: 95%;
-    }
-
-    .botones-derecha {
         gap: 10px;
+        width: 90%;
     }
 
-    .producto-detalle {
-        padding: 10px;
-        gap: 15px;
-    }
-
-    .tarjeta-producto,
-    .info-producto {
+    .barra-filtros-busqueda label {
         width: 100%;
-    }
-
-    .info-producto {
-        font-size: 0.9rem;
-    }
-
-    .btn {
-        padding: 8px;
-        font-size: 0.9rem;
-    }
-
-    .boton-contactar {
-        right: 5px;
-        bottom: 5px;
-        padding: 8px 12px;
-        font-size: 12px;
-    }
-}
-
-/* Fondo completo entre 768px y 1024px */
-@media (min-width: 769px) and (max-width: 1024px) {
-    body {
-        background-size: cover;       /* asegura que cubra toda la pantalla */
-        background-position: center;  /* centrado */
-        background-attachment: scroll; /* evita que se corte en tablet */
-    }
-
-    .Header {
-        flex-direction: column;
-        height: auto;
-        padding: 20px;
-        width: 100%;
-    }
-
-    .producto-detalle {
-        gap: 30px;
-        padding: 40px;
-    }
-
-    .tarjeta-producto {
-        width: 70%;
-    }
-
-    .info-producto {
-        width: 80%;
-        font-size: 1.1rem;
-    }
-}
-
-
-
-/* ============================
-   BUSCADOR DEL HEADER
-   ============================ */
-
-.header__buscador {
-    flex: 1;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
-.buscador__form {
-    width: 100%;
-}
-
-.buscador__contenedor {
-    display: flex;
-    align-items: center;
-    background: #ffffff;
-    border-radius: 15px;
-    width: 100%;
-    max-width: 1000px; /* ✅ antes era width:1000px fijo */
-    padding: 8px 15px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
-    height: 40px;
-    transition: all 0.25s ease;
-}
-
-.buscador__contenedor:hover {
-    transform: scale(1.02);
-}
-
-.buscador__input {
-    flex: 1;
-    border: none;
-    outline: none;
-    background: transparent;
-    font-size: 1rem;
-    color: #001f3f;
-}
-
-.buscador__input::placeholder {
-    color: rgba(0, 0, 128, 0.6);
-}
-
-.buscador__icono {
-    width: 22px;
-    height: 22px;
-    cursor: pointer;
-    transition: transform 0.2s ease;
-}
-
-.buscador__icono:hover {
-    transform: scale(1.1);
-}
-
-
-/* ============================
-   RESULTADO IA (Opcional)
-   ============================ */
-
-.buscador__resultado {
-    background: #ffffff;
-    width: 100%;
-    margin: 10px auto;
-    padding: 15px;
-    border-radius: 12px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
-    font-size: 1rem;
-    display: block;
-}
-
-.buscador__resultado ul {
-    padding-left: 20px;
-}
-
-.buscador__resultado li {
-    margin-bottom: 8px;
-    color: #114d30;
-}
-
-
-/* ============================
-   AJUSTES EXTRA DE RESPONSIVIDAD
-   (solo corrigen header + buscador en móvil/tablet)
-   ============================ */
-
-/* Tablets y abajo: que el buscador no sea tan ancho */
-@media (max-width: 1024px) {
-    .buscador__contenedor {
-        max-width: 90%;
-    }
-}
-
-/* Celulares grandes */
-@media (max-width: 768px) {
-    .Header {
-        flex-direction: column;
-        align-items: center;
         text-align: center;
     }
-
-    .buscador__contenedor {
-        width: 90%;
-        max-width: 90%;
-    }
 }
-
-/* Celulares pequeños */
-@media (max-width: 480px) {
-    .buscador__contenedor {
-        width: 95%;
-        max-width: 95%;
-        padding: 6px 10px;
-        height: 36px;
-    }
-
-    .buscador__input {
-        font-size: 0.9rem;
-    }
-
-    .carrito-de-compras img,
-    .boton-favoritos img {
-        width: 30px;
-        height: 30px;
-    }
-
-    .logo img {
-        height: 55px;
-    }
-}
+/* Botón Cerrar Sesión - Mismo estilo que Iniciar sesión / Registrarse */
 
 #btn-logout {
   background-color: #0b6b47; /* tu verde */
@@ -851,6 +546,10 @@ main {
     justify-content: center !important;
 }
 
-
-
-
+#btn-user img {
+    width: 40px !important;
+    height: 40px !important;
+    display: inline-block !important;
+    object-fit: contain !important;
+    margin: 0 12px !important;
+}
