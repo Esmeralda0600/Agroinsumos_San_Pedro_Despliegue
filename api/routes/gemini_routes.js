@@ -22,11 +22,50 @@ router.post("/interpretar", async (req, res) => {
       El usuario escribió: "${texto}".
 
       Estas son las únicas categorías válidas:
-      - SEMILLAS
       - FERTILIZANTES
-      - PLAGUICIDAS
       - HERBICIDAS
       - FUNGICIDAS
+      - ADHERENTES
+      - INSECTICIDAS
+      - BACTERICIDAS
+      - ENRAIZADOR
+      - SYGENTA
+      - FORMUVEG
+      - ALIAGRO
+      - ULTRASOL
+      - BAYER
+      - AGROENZYMAS
+      - UPL
+      - DRAGON
+      - ULTRAQUIMIA
+      - ABAMECTINA
+      - ESTREPTOMICINA
+      - PEROXIDO DE HIDROGENO
+      - FLONICAMID
+      - COBRE
+      - IMIDACLOPRID
+      - PARAQUAT
+      - BORO
+      - ZINC
+      - CALCIO
+      - 6-BENCILAMINOPURINA
+      - NITROGENO
+      - CITOCINA
+      - FOSFORO
+      - AGENTES TENSOACTIVOS
+      - ACIDO GIBERELICO
+      - SUSTANCIAS HUMICAS
+      - TIOCYCLAM
+      - BUPROFEZIN
+      - PROPAMOCARB
+      - HIDROXIDO CUPRICO
+      - ATRAZINA
+      - DIMETOATO
+      - CLORPIRIFOS
+      - FOMESAFEN
+      - AMINA
+      - CARBENDAZIM
+      - TIOFANATO DE METILO
 
       Responde SOLO en JSON:
       {
