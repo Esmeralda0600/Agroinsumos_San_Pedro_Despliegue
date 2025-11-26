@@ -533,10 +533,18 @@ main {
   transform: scale(1.05);
 }
 
-#btn-user,
-#btn-user img {
-    all: unset !important; /* limpiamos TODO lo heredado */
+#btn-user {
+    background: none;
+    border: none;
+    cursor: pointer;
+    display: none; /* Oculto por defecto */
 }
+
+#btn-user img {
+    width: 40px;
+    height: 40px;
+}
+
 
 #btn-user img {
     width: 40px !important;
