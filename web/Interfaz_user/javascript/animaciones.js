@@ -112,7 +112,7 @@ async function interpretarBusqueda() {
     }
 
     // URL del catálogo desplegado
-    const URL_BASE = "https://agroinsumos-san-pedro-despliegue-ts.vercel.app";
+    const URL_BASE = "https://agroinsumos-san-pedro-despliegue-us-eight.vercel.app";
 
     const destino = `${URL_BASE}/inven.html?categoria=${categoria}`;
 
