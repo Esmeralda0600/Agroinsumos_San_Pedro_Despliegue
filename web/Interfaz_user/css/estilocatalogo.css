@@ -538,14 +538,6 @@ main {
     all: unset !important; /* limpiamos TODO lo heredado */
 }
 
-
-#btn-user {
-    cursor: pointer !important;
-    display: inline-flex !important;
-    align-items: center !important;
-    justify-content: center !important;
-}
-
 #btn-user img {
     width: 40px !important;
     height: 40px !important;
