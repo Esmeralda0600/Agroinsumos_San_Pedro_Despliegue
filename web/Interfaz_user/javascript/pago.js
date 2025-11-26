@@ -1,9 +1,3 @@
-// ============================================================
-// pago.js
-// Muestra en pago.html los productos del carrito del usuario
-// o una compra directa, y crea la preferencia de pago en MP
-// ============================================================
-
 // 1) Obtener items para el pago (compra directa o carrito)
 function obtenerItemsParaPago() {
   const usuarioId = localStorage.getItem("usuarioId");
@@ -30,7 +24,7 @@ function obtenerItemsParaPago() {
     }
   }
 
-  //  Caso 1: Modo compra directa → usar SOLO compra_directa
+  // Caso 1: Modo compra directa → usar SOLO compra_directa
   if (modo === "directa") {
     if (Array.isArray(compraDirecta) && compraDirecta.length > 0) {
       return { items: compraDirecta, esCompraDirecta: true };
@@ -129,7 +123,7 @@ async function finalizarCompra() {
   const emailCliente = localStorage.getItem("correo") || "test_user@test.com";
 
   try {
-    const resp = await fetch("https://agroinsumos-san-pedro-despliegue.onrender.com/pagos/crear-preferencia", {
+    const resp = await fetch("http://localhost:3000/pagos/crear-preferencia", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
@@ -157,7 +151,16 @@ async function finalizarCompra() {
     localStorage.removeItem("compra_directa");
     localStorage.removeItem("modo_compra");
 
-    let urlCheckout;
+    // const urlCheckout = data.sandbox_init_point || data.init_point;
+
+    // if (!urlCheckout) {
+    //   alert("No se recibió URL de pago desde Mercado Pago.");
+    //   return;
+    // }
+
+    // // Redirigimos al checkout de Mercado Pago
+    // window.location.href = urlCheckout;
+        let urlCheckout;
     if (data.env === "sandbox") {
       // Backend está usando TEST-... → sandbox_init_point
       urlCheckout = data.sandbox_init_point || data.init_point;
@@ -174,6 +177,8 @@ async function finalizarCompra() {
 
     // Redirigimos al checkout de Mercado Pago
     window.location.href = urlCheckout;
+
+
   } catch (err) {
     console.error("Error de red al crear el pago:", err);
     alert("Error conectando con el servidor de pagos.");

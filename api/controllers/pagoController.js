@@ -1,5 +1,9 @@
 // api/controllers/pagoController.js
 import { MercadoPagoConfig, Preference } from "mercadopago";
+import Venta from "../models/Venta.js";
+
+// Detectar si el token es de PRUEBA (TEST-) o PRODUCCIÓN (APP_USR-)
+const isSandbox = String(process.env.MP_ACCESS_TOKEN || "").startsWith("TEST-");
 
 // Cliente de Mercado Pago usando el token del .env
 const client = new MercadoPagoConfig({
@@ -21,8 +25,6 @@ const preference = new Preference(client);
  * }
  */
 export const crearPreferencia = async (req, res) => {
-  console.log("MP_ACCESS_TOKEN (prefijo):", String(process.env.MP_ACCESS_TOKEN || "").slice(0, 15));
-
   try {
     const { items, email, metodoPago } = req.body;
 
@@ -43,22 +45,24 @@ export const crearPreferencia = async (req, res) => {
       items: mpItems,
       payer: {
         // correo del COMPRADOR (cliente)
-        email: email || "test_user@test.com",
+        email: email || "cliente_sin_correo@example.com",
       },
       metadata: {
         metodoPagoSeleccionado: metodoPago || "no_especificado",
+        ambiente: isSandbox ? "sandbox" : "production",
       },
       back_urls: {
         success: "http://localhost:8181/Interfaz_user/confirmacion.html",
         failure: "http://localhost:8181/Interfaz_user/pago.html",
         pending: "http://localhost:8181/Interfaz_user/pago.html",
       },
-     //5 auto_return: "approved",
+      // en producción es útil para que regrese solo al success
+      //auto_return: "approved",
     };
 
     const result = await preference.create({ body });
 
-    // En el SDK nuevo los datos vienen directo en result (no en .body)
+    // En el SDK nuevo los datos vienen directo en result
     return res.status(200).json({
       id: result.id,
       init_point: result.init_point,               // URL de producción
