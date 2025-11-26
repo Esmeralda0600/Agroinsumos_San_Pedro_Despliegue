@@ -14,37 +14,55 @@
 
 <body>
     <!-- ==================== HEADER ==================== -->
-    <header class="Header">
-        <a href="index.html" class="logo">
-            <img src="imgs/logo.png" alt="Logotipo de Agroinsumos San Pedro" class="logo__img" />
-        </a>
+  <header class="Header">
+    <a href="index.html" class="logo">
+        <img src="imgs/logo.png" alt="Logotipo de Agroinsumos San Pedro" class="logo__img" />
+    </a>
 
-        <div class="buscador__contenedor">
-            <input id="input-busqueda" type="text" placeholder="Te ayudamos a encontrar el producto ideal..."
-                class="buscador__input" />
+    <div class="buscador__contenedor">
+        <input id="input-busqueda" type="text" 
+            placeholder="Te ayudamos a encontrar el producto ideal..."
+            class="buscador__input" />
+        <img id="btn-buscar-ia" src="imgs/lupa.png" alt="Buscar" class="buscador__icono">
+    </div>
 
-            <img id="btn-buscar-ia" src="imgs/lupa.png" alt="Buscar" class="buscador__icono">
+    <div class="botones-derecha">
 
-        </div>
+        <!-- Favoritos -->
+        <button class="carrito-de-compras" type="button" onclick="window.location.href='favoritos.html'">
+            <img src="imgs/favs.png" alt="Ver favoritos">
+        </button>
 
-        <div class="botones-derecha">
-            <button class="carrito-de-compras" type="button" onclick="window.location.href='favoritos.html'">
-                <img src="imgs/favs.png" alt="Ver favoritos">
-            </button>
+        <!-- Carrito -->
+        <button class="carrito-de-compras" type="button" onclick="window.location.href='carrito.html'">
+            <img src="imgs/carrito.png" alt="Ver carrito">
+        </button>
 
-            <button class="carrito-de-compras" type="button" onclick="window.location.href='carrito.html'">
-                <img src="imgs/carrito.png" alt="Ver carrito">
-            </button>
+        <!-- BOTONES CONTROLADOS POR auth.js -->
 
-            <button class="btn-login" type="button" onclick="window.location.href='login.html'">
-                Iniciar sesión
-            </button>
+        <!-- Login -->
+        <button id="btn-login" class="btn-login" type="button" onclick="window.location.href='login.html'">
+            Iniciar sesión
+        </button>
 
-            <button class="btn-registrarse" type="button" onclick="window.location.href='registro.html'">
-                Registrarse
-            </button>
-        </div>
-    </header>
+        <!-- Registro -->
+        <button id="btn-register" class="btn-registrarse" type="button" onclick="window.location.href='registro.html'">
+            Registrarse
+        </button>
+
+        <!-- Icono usuario -->
+        <button id="btn-user" class="icono-user" style="display:none;">
+            <img src="imgs/usuario.png" alt="Usuario">
+        </button>
+
+        <!-- Cerrar sesión -->
+        <button id="btn-logout" class="btn-registrarse" style="display:none;">
+            Cerrar sesión
+        </button>
+
+    </div>
+</header>
+
 
     <!-- ==================== CATÁLOGO DE SEMILLAS ==================== -->
     <div id="loader" class="loader oculto"></div>
@@ -69,6 +87,7 @@
 
     <!-- ==================== SCRIPT ==================== -->
     <!--<script src="javascript/inven.js"></script>-->
+    <script src="javascript/auth.js" defer></script>
     <script type="module" src="javascript/logica.js"></script>
 </body>
 
