@@ -508,4 +508,48 @@ body {
         height: 18px;
     }
 }
+#btn-user,
+#btn-user img {
+    all: unset !important;
+}
+
+#btn-user {
+    cursor: pointer !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+}
+
+#btn-user img {
+    width: 40px !important;
+    height: 40px !important;
+    object-fit: contain !important;
+    display: inline-block !important;
+    margin: 0 12px !important;
+    filter: brightness(0); /* negro igual que los otros */
+    transition: 0.25s ease;
+}
+
+#btn-user:hover img {
+    transform: scale(1.1);
+}
+
+/* --- BOTÓN CERRAR SESIÓN (verde elegante) --- */
+#btn-logout {
+    background-color: #0b6b47;
+    color: #fff;
+    border: none;
+    padding: 7px 16px;
+    border-radius: 6px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    box-shadow: 0 3px 6px rgba(0,0,0,0.22);
+    transition: 0.25s ease;
+}
+
+#btn-logout:hover {
+    background-color: #0a5c3d;
+    transform: scale(1.05);
+}
 
