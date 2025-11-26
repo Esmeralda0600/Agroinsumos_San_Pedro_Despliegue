@@ -537,14 +537,8 @@ main {
     background: none;
     border: none;
     cursor: pointer;
-    display: none; /* Oculto por defecto */
+    display: none; /* Oculto por defecto, suficiente */
 }
-
-#btn-user img {
-    width: 40px;
-    height: 40px;
-}
-
 
 #btn-user img {
     width: 40px !important;
@@ -552,10 +546,5 @@ main {
     display: inline-block !important;
     object-fit: contain !important;
     margin: 0 12px !important;
-}
-
-/* Ocultar siempre el ícono de usuario por defecto */
-#btn-user {
-    display: none !important;
 }
 
