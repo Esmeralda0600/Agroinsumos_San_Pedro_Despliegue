@@ -480,6 +480,8 @@ body {
         max-width: 500px;
         padding: 6px 12px;
     }
+
+}
   
 #btn-user {
     display: none; /* Lo controla auth.js */
