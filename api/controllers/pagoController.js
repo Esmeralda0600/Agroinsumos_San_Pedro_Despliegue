@@ -61,8 +61,9 @@ export const crearPreferencia = async (req, res) => {
     // En el SDK nuevo los datos vienen directo en result (no en .body)
     return res.status(200).json({
       id: result.id,
-      init_point: result.init_point,
-      sandbox_init_point: result.sandbox_init_point, // para modo test, si viene
+      init_point: result.init_point,               // URL de producción
+      sandbox_init_point: result.sandbox_init_point, // URL sandbox si el token es TEST
+      env: isSandbox ? "sandbox" : "production",   // para que el front sepa qué usar
     });
   } catch (error) {
     console.error("Error creando preferencia de Mercado Pago:", error);
