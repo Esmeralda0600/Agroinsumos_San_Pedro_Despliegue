@@ -157,10 +157,18 @@ async function finalizarCompra() {
     localStorage.removeItem("compra_directa");
     localStorage.removeItem("modo_compra");
 
-    const urlCheckout = data.sandbox_init_point || data.init_point;
+    let urlCheckout;
+    if (data.env === "sandbox") {
+      // Backend está usando TEST-... → sandbox_init_point
+      urlCheckout = data.sandbox_init_point || data.init_point;
+    } else {
+      // Backend está usando APP_USR-... → producción
+      urlCheckout = data.init_point || data.sandbox_init_point;
+    }
 
     if (!urlCheckout) {
       alert("No se recibió URL de pago desde Mercado Pago.");
+      console.error("Respuesta de MP sin URL:", data);
       return;
     }
 
