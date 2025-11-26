@@ -123,7 +123,7 @@
                     return window.location.href = "login.html";
                 }
 
-                let carrito = JSON.parse(localStorage.getItem(`carrito_${usuarioId}`)) || [];
+                let carrito = JSON.parse(localStorage.getItem(claveCarrito)) || []; //`carrito_${usuarioId}`
 
                 const existe = carrito.find(p => p.id_producto === prod.id_producto);
 
@@ -139,7 +139,7 @@
                     });
                 }
 
-                localStorage.setItem(`carrito_${usuarioId}`, JSON.stringify(carrito));
+                localStorage.setItem(claveCarrito, JSON.stringify(carrito)); //`carrito_${usuarioId}`
             }
 
             // Botones
