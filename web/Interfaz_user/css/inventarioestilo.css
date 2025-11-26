@@ -1,18 +1,4 @@
 /* ==================== ESTILOS BASE ==================== */
-html, body {
-    height: 100%;
-    margin: 0;
-}
-
-body {
-    display: flex;
-    flex-direction: column;
-}
-
-main {
-    flex: 1;
-}
-
 body {
     font-family: Arial, sans-serif;
     margin: 0;
@@ -211,7 +197,7 @@ body {
 
 /* ==================== CATÁLOGO ==================== */
 .catalogo {
-    padding: 50px 20px 0px 20px;
+    padding: 50px 20px;
     text-align: center;
 }
 
@@ -294,7 +280,7 @@ body {
 /* ==================== BOTÓN VOLVER ==================== */
 .volver {
     text-align: center;
-    margin: 30px 0 30px;
+    margin: 30px 0 60px;
 }
 
 .btn-volver {
@@ -306,7 +292,6 @@ body {
     font-size: 1rem;
     cursor: pointer;
     transition: 0.3s;
-    margin: 15px;
 }
 
 .btn-volver:hover {
@@ -431,125 +416,24 @@ body {
     }
 }
 
-
-.loader {
-    border: 6px solid #f3f3f3;
-    border-top: 6px solid #3498db;
-    border-radius: 50%;
-    width: 50px;
-    height: 50px;
-    animation: girar 1s linear infinite;
-    margin: 40px auto;
-}
-
-@keyframes girar {
-    0% { transform: rotate(0deg); }
-    100% { transform: rotate(360deg); }
-}
-
-.oculto {
-    display: none;
-}
-/* ================================
-   RESPONSIVIDAD ESPECÍFICA BUSCADOR
-   ================================ */
-
-/* Ajuste base — permitir que se adapte */
-.buscador__contenedor {
-    width: 100%;
-    max-width: 800px; /* antes era width: 800px fijo */
-}
-
-/* Tablets (hasta 992px) */
-@media (max-width: 992px) {
-    .buscador__contenedor {
-        max-width: 600px;
-        width: 90%;
-    }
-}
-
-/* Celulares grandes (hasta 768px) */
-@media (max-width: 768px) {
-    .Header {
-        justify-content: center;
-        flex-direction: column;
-        text-align: center;
-        gap: 10px;
-    }
-
-    .header__buscador {
-        width: 100%;
-        display: flex;
-        justify-content: center;
-    }
-
-    .buscador__contenedor {
-        width: 90%;
-        max-width: 500px;
-        padding: 6px 12px;
-    }
-}
-
-/* Celulares pequeños (hasta 480px) */
-@media (max-width: 480px) {
-    .buscador__contenedor {
-        width: 95%;
-        max-width: 350px;
-        height: 36px;
-        padding: 5px 10px;
-    }
-
-    .buscador__input {
-        font-size: 0.9rem;
-    }
-
-    .buscador__icono {
-        width: 18px;
-        height: 18px;
-    }
-}
-#btn-user,
-#btn-user img {
-    all: unset !important;
-}
+/* ==============================
+   🔐 PROTEGER ICONO DE USUARIO
+   ============================== */
 
 #btn-user {
-    cursor: pointer !important;
-    display: inline-flex !important;
-    align-items: center !important;
-    justify-content: center !important;
+    display: none; /* Lo controla auth.js */
+    border: none;
+    background: transparent;
+    padding: 0;
+    margin: 0 10px;
+    cursor: pointer;
 }
 
 #btn-user img {
     width: 40px !important;
     height: 40px !important;
     object-fit: contain !important;
-    display: inline-block !important;
-    margin: 0 12px !important;
-    filter: brightness(0); /* negro igual que los otros */
-    transition: 0.25s ease;
+    border-radius: 0 !important;
+    box-shadow: none !important;
+    display: block !important;
 }
-
-#btn-user:hover img {
-    transform: scale(1.1);
-}
-
-/* --- BOTÓN CERRAR SESIÓN (verde elegante) --- */
-#btn-logout {
-    background-color: #0b6b47;
-    color: #fff;
-    border: none;
-    padding: 7px 16px;
-    border-radius: 6px;
-    font-size: 14px;
-    font-weight: 600;
-    cursor: pointer;
-    box-shadow: 0 3px 6px rgba(0,0,0,0.22);
-    transition: 0.25s ease;
-}
-
-#btn-logout:hover {
-    background-color: #0a5c3d;
-    transform: scale(1.05);
-}
-
