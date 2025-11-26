@@ -30,7 +30,7 @@ function obtenerItemsParaPago() {
     }
   }
 
-  // ⭐ Caso 1: Modo compra directa → usar SOLO compra_directa
+  //  Caso 1: Modo compra directa → usar SOLO compra_directa
   if (modo === "directa") {
     if (Array.isArray(compraDirecta) && compraDirecta.length > 0) {
       return { items: compraDirecta, esCompraDirecta: true };
@@ -42,7 +42,7 @@ function obtenerItemsParaPago() {
     return { items: [], esCompraDirecta: true };
   }
 
-  // ⭐ Caso 2: Modo carrito (o default)
+  // Caso 2: Modo carrito (o default)
   if (Array.isArray(carrito) && carrito.length > 0) {
     return { items: carrito, esCompraDirecta: false };
   }
@@ -129,7 +129,7 @@ async function finalizarCompra() {
   const emailCliente = localStorage.getItem("correo") || "test_user@test.com";
 
   try {
-    const resp = await fetch("http://localhost:3000/pagos/crear-preferencia", {
+    const resp = await fetch("https://agroinsumos-san-pedro-despliegue.onrender.com/pagos/crear-preferencia", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({

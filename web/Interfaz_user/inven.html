@@ -28,29 +28,40 @@
         </div>
 
         <div class="botones-derecha">
-            <button class="carrito-de-compras" type="button" onclick="window.location.href='favoritos.html'">
-                <img src="imgs/favs.png" alt="Ver favoritos">
-            </button>
+    <button class="carrito-de-compras" onclick="window.location.href='favoritos.html'">
+        <img src="imgs/favs.png">
+    </button>
 
-            <button class="carrito-de-compras" type="button" onclick="window.location.href='carrito.html'">
-                <img src="imgs/carrito.png" alt="Ver carrito">
-            </button>
+    <button class="carrito-de-compras" onclick="window.location.href='carrito.html'">
+        <img src="imgs/carrito.png">
+    </button>
 
-            <button class="btn-login" type="button" onclick="window.location.href='login.html'">
-                Iniciar sesión
-            </button>
+    <button id="btn-login" class="btn-login" onclick="window.location.href='login.html'">
+        Iniciar sesión
+    </button>
 
-            <button class="btn-registrarse" type="button" onclick="window.location.href='registro.html'">
-                Registrarse
-            </button>
-        </div>
+    <button id="btn-register" class="btn-registrarse" onclick="window.location.href='registro.html'">
+        Registrarse
+    </button>
+
+    <button id="btn-user" class="icono-user" style="display:none;">
+        <img src="imgs/usuario.png" alt="Usuario">
+    </button>
+
+    <button id="btn-logout" class="btn-registrarse" style="display:none;">
+        Cerrar sesión
+    </button>
+</div>
+
     </header>
 
     <!-- ==================== CATÁLOGO DE SEMILLAS ==================== -->
-    <div id="loader" class="loader oculto"></div>
     <section class="catalogo" id="mostrar_productos_por_categoria">
         <!-- Aquí logica.js insertará el título y los productos -->
     </section>
+
+    <div id="loader" class="oculto">Cargando...</div>
+
 
     <!-- ==================== BOTÓN VOLVER ==================== -->
     <div class="volver">
@@ -69,7 +80,9 @@
 
     <!-- ==================== SCRIPT ==================== -->
     <!--<script src="javascript/inven.js"></script>-->
-    <script type="module" src="javascript/logica.js"></script>
+    <script src="javascript/logica.js"></script>
+    <script src="javascript/auth.js"></script>
+
 </body>
 
 </html>

@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="es">
-
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -14,8 +13,7 @@
 </head>
 
 <body>
-  <span id="bienvenida"></span>
-
+ 
   <!-- HEADER -->
   <header class="header">
     <div class="header__logo">
@@ -25,33 +23,55 @@
     <div class="header__buscador">
       <form class="buscador__form" action="#" method="get">
         <div class="buscador__contenedor">
-          <input id="input-busqueda" type="text" placeholder="Te ayudamos a encontrar el producto ideal..."
-            class="buscador__input" />
-
-          <img id="btn-buscar-ia" src="imgs/lupa.png" alt="Buscar" class="buscador__icono">
-
+          <input 
+            type="text" 
+            placeholder="Te ayudamos a encontrar el producto ideal..." 
+            class="buscador__input"
+          >
+          <img src="imgs/lupa.png" alt="Buscar" class="buscador__icono">
         </div>
       </form>
     </div>
 
+    <!-- ============================
+         ACCIONES (CON LOGIN DINÁMICO)
+         ============================ -->
     <div class="header__acciones">
+
+      <!-- Favoritos -->
       <button class="acciones__btn acciones__btn--favoritos" type="button"
         onclick="window.location.href='favoritos.html'">
         <img src="imgs/favs.png" alt="Favoritos" class="acciones__icono">
       </button>
 
-      <button class="acciones__btn acciones__btn--carrito" type="button" onclick="window.location.href='carrito.html'">
+      <!-- Carrito -->
+      <button class="acciones__btn acciones__btn--carrito" type="button"
+        onclick="window.location.href='carrito.html'">
         <img src="imgs/carrito.png" alt="Carrito" class="acciones__icono">
       </button>
 
-      <button class="acciones__btn acciones__btn--login" type="button" onclick="window.location.href='login.html'">
+      <!-- 🔵 LOGIN -->
+      <button id="btn-login" class="acciones__btn acciones__btn--login" type="button"
+        onclick="window.location.href='login.html'">
         Iniciar sesión
       </button>
 
-      <button class="acciones__btn acciones__btn--registro" type="button"
+      <!-- 🟢 REGISTRO -->
+      <button id="btn-register" class="acciones__btn acciones__btn--registro" type="button"
         onclick="window.location.href='registro.html'">
         Registrarse
       </button>
+
+      <!-- 🟣 ICONO DE USUARIO (OCULTO AL INICIO) -->
+      <button id="btn-user" class="acciones__btn acciones__btn--user" style="display:none;">
+        <img src="imgs/usuario.png" alt="Usuario" class="acciones__icono">
+      </button>
+
+      <!-- 🔴 CERRAR SESIÓN (OCULTO AL INICIO) -->
+      <button id="btn-logout" class="acciones__btn acciones__btn--logout" style="display:none;">
+        Cerrar sesión
+      </button>
+
     </div>
   </header>
 
@@ -70,14 +90,12 @@
         <img src="imgs/carrusel3.jpg" alt="Imagen promocional 3" class="carrusel__imagen">
       </div>
 
-      <!-- Botones centrales -->
       <div class="carrusel__botones">
         <button class="btn btn--info" type="button" onclick="location.href='#sobre-nosotros'">¿Quiénes somos?</button>
         <button class="btn btn--catalogo" type="button" onclick="window.location.href='catalogo.html'">Catálogo</button>
         <button class="btn btn--catalogo" type="button" onclick="window.location.href='ayuda.html'">¿Necesitas ayuda?</button>
       </div>
 
-      <!-- Botones de navegación -->
       <button class="carrusel__control carrusel__control--prev" type="button" onclick="cambiarSlide(-1)">
         &#10094;
       </button>
@@ -86,7 +104,6 @@
       </button>
     </div>
 
-    <!-- Puntos indicadores -->
     <div class="carrusel__puntos">
       <span class="carrusel__dot" onclick="irASlide(1)"></span>
       <span class="carrusel__dot" onclick="irASlide(2)"></span>
@@ -94,13 +111,13 @@
     </div>
   </section>
 
-  <!-- OFERTAS Y PROMOCIONES -->
+  <!-- OFERTAS -->
   <section class="ofertas">
     <h2 class="ofertas__titulo">Ofertas y Promociones</h2>
 
     <div class="ofertas__contenedor">
       <div class="oferta">
-        <img src="imgs/oferta1.jpg" alt="Promoción 1 - Fertilizante orgánico" class="oferta__img">
+        <img src="imgs/oferta1.jpg" class="oferta__img">
         <div class="oferta__info">
           <h3 class="oferta__titulo">Fertilizante Orgánico</h3>
           <p class="oferta__desc">20% de descuento esta semana</p>
@@ -109,7 +126,7 @@
       </div>
 
       <div class="oferta">
-        <img src="imgs/oferta2.jpg" alt="Promoción 2 - Control de plagas" class="oferta__img">
+        <img src="imgs/oferta2.jpg" class="oferta__img">
         <div class="oferta__info">
           <h3 class="oferta__titulo">Control de Plagas</h3>
           <p class="oferta__desc">Llévate 3 y paga 2</p>
@@ -118,7 +135,7 @@
       </div>
 
       <div class="oferta">
-        <img src="imgs/oferta3.jpg" alt="Promoción 3 - Semillas Premium" class="oferta__img">
+        <img src="imgs/oferta3.jpg" class="oferta__img">
         <div class="oferta__info">
           <h3 class="oferta__titulo">Semillas Premium</h3>
           <p class="oferta__desc">Hasta 30% menos</p>
@@ -128,18 +145,18 @@
     </div>
   </section>
 
-  <!-- SECCIÓN SOBRE NOSOTROS -->
+  <!-- SOBRE NOSOTROS -->
   <section id="sobre-nosotros" class="about">
     <div class="about__contenedor">
       <div class="about__texto">
         <h2 class="about__titulo">Sobre nosotros</h2>
         <p class="about__descripcion">
-          Somos una empresa dedicada a brindar insumos agrícolas de la más alta calidad, comprometida con la innovación, la sustentabilidad y el impulso al crecimiento del campo mexicano. Con 2 años de experiencia en el mercado, trabajamos de la mano con nuestros clientes para ofrecer soluciones eficientes que fortalezcan su producción y contribuyan al desarrollo agrícola de la región.
+          Somos una empresa dedicada a brindar insumos agrícolas de la más alta calidad, comprometidos con la innovación, la sustentabilidad y el impulso al crecimiento del campo mexicano. Con 2 años de experiencia en el mercado, trabajamos de la mano con nuestros clientes para ofrecer soluciones eficientes que fortalezcan su producción y contribuyan al desarrollo agrícola de la región.
         </p>
       </div>
 
       <div class="about__imagen">
-        <img src="imgs/pasion.png" alt="Equipo Agroinsumos" class="about__img">
+        <img src="imgs/pasion.png" class="about__img">
       </div>
     </div>
   </section>
@@ -160,6 +177,7 @@
     </div>
   </section>
 
+
   <!-- FOOTER -->
   <footer class="footer">
     <div class="footer__contenido">
@@ -168,11 +186,15 @@
     </div>
   </footer>
 
-  <!-- BOTÓN FLOTANTE DE CONTACTO -->
-  <!-- <button class="btn btn--contacto" type="button">💬 Contactar</button> -->
-  <a class="btn btn--contacto" href="https://chat.whatsapp.com/IJY6hGHNQM3KOmJgJm5BJh?mode=hqrt3">💬 Contactar</a>
+  <!-- CONTACTO -->
+  <button class="btn btn--contacto" type="button">💬 Contactar</button>
 
+  <!-- SCRIPTS -->
   <script src="javascript/animaciones.js"></script>
-</body>
 
+  <script type="module" src="javascript/logica.js"></script>
+
+  <!-- SCRIPT DE LOGIN/AUTENTICACIÓN -->
+  <script src="javascript/auth.js"></script>
+</body>
 </html>
