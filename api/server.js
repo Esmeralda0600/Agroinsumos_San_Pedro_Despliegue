@@ -13,14 +13,15 @@ import swaggerUi from "swagger-ui-express";
 
 import pagoRoutes from "./routes/pagoRoutes.js";
 import ventaRoutes from "./routes/venta_routes.js";
-
 import geminiRoutes from "./routes/gemini_routes.js";
 
-import express from "express";
 import multer from "multer";
 import path from "path";
 import { fileURLToPath } from "url";
 
+// =====================================
+// 🔧 Ajustes de archivo y directorio
+// =====================================
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
@@ -35,7 +36,7 @@ const allowedOrigins = [
   "http://localhost:3000",
   "http://localhost:4000",
 
-  // 🔹 Dominios Vercel actuales
+  // 🔹 Dominios Vercel que estás usando AHORA
   "https://agroinsumos-san-pedro-despliegue-us-eight.vercel.app",
   "https://agroinsumos-san-pedro-despliegue-sigma.vercel.app",
 
@@ -51,6 +52,7 @@ app.use(cors({
     if (!origin || allowedOrigins.includes(origin)) {
       callback(null, true);
     } else {
+      console.log("⚠️ Origen BLOQUEADO:", origin);
       callback(new Error("CORS bloqueado por seguridad"));
     }
   },
@@ -58,15 +60,16 @@ app.use(cors({
   credentials: true
 }));
 
-// ❗ IMPORTANTE: QUITAR ESTO ❌
-// app.options("*", cors());
-
 app.use(express.json());
 
-// Conexión
+// =============================
+// 📡 Conexión a Mongo
+// =============================
 await connectMongo();
 
-// Rutas API
+// =============================
+// 📌 Rutas API
+// =============================
 app.use("/usuarios", agro_spa_routes);
 app.use("/administradores", agro_spa_routes_admin);
 app.use("/favoritos", favoritoRoutes);
@@ -75,20 +78,25 @@ app.use("/api/ia", geminiRoutes);
 app.use("/pagos", pagoRoutes);
 app.use("/ventas", ventaRoutes);
 
-// Swagger
+// =============================
+// 📘 Swagger
+// =============================
 const swaggerDocs = swaggerJSDoc({
   definition: {
     openapi: "3.0.0",
-    info: { title: "API Agro SPA", version: "1.0.0" },
+    info: { title: "API Agro SPA", version: "1.0.0" }
   },
-  apis: ["./controllers/*.js"],
+  apis: ["./controllers/*.js"]
 });
 
+app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocs));
 
-// Configuración de multer
+// =============================
+// 📁 Multer configurado
+// =============================
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
-    cb(null, path.join(__dirname, "imgs")); // carpeta donde guardar
+    cb(null, path.join(__dirname, "imgs"));
   },
   filename: (req, file, cb) => {
     const ext = path.extname(file.originalname);
@@ -99,7 +107,6 @@ const storage = multer.diskStorage({
 
 const upload = multer({ storage });
 
-// Ruta para guardar imagen
 app.post("/subir", upload.single("foto"), (req, res) => {
   res.json({
     mensaje: "Imagen guardada",
@@ -107,8 +114,8 @@ app.post("/subir", upload.single("foto"), (req, res) => {
   });
 });
 
-
-app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocs));
-
+// =============================
+// 🚀 Iniciar servidor
+// =============================
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => console.log(`🔥 Servidor en puerto ${PORT}`));
