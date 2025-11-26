@@ -34,7 +34,7 @@ const app = express();
 const allowedOrigins = [
   "http://localhost:3000",
   "http://localhost:4000",
-  "https://agroinsumos-san-pedro-despliegue-us-eight.vercel.app",
+  "https://agroinsumos-san-pedro-despliegue-sigma.vercel.app",
   "https://agroinsumos-san-pedro-despliegue.onrender.com",
   "https://agroinsumos-san-pedro-despliegue-kafy.onrender.com",
   "https://agroinsumos-san-pedro-despliegue-ad-seven.vercel.app"
