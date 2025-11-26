@@ -10,29 +10,32 @@
 
 <body>
 
-    <!-- HEADER -->
-    <header class="Header">
+   <header class="Header">
+
+    <!-- Logo -->
     <a href="index.html" class="logo">
-        <img src="imgs/logo.png" alt="Logotipo de Agroinsumos San Pedro" class="logo__img" />
+        <img src="imgs/logo.png" alt="Logo" class="logo__img" />
     </a>
 
+    <!-- Buscador -->
     <div class="buscador__contenedor">
         <input id="input-busqueda" type="text" 
             placeholder="Te ayudamos a encontrar el producto ideal..."
             class="buscador__input" />
-        <img id="btn-buscar-ia" src="imgs/lupa.png" alt="Buscar" class="buscador__icono">
+        <img id="btn-buscar-ia" src="imgs/lupa.png" alt="Buscar" class="buscador__icono" />
     </div>
 
+    <!-- Botones derecha -->
     <div class="botones-derecha">
 
         <!-- Favoritos -->
         <button class="carrito-de-compras" onclick="window.location.href='favoritos.html'">
-            <img src="imgs/favs.png">
+            <img src="imgs/favs.png" alt="Favoritos">
         </button>
 
         <!-- Carrito -->
         <button class="carrito-de-compras" onclick="window.location.href='carrito.html'">
-            <img src="imgs/carrito.png">
+            <img src="imgs/carrito.png" alt="Carrito">
         </button>
 
         <!-- Login -->
@@ -45,18 +48,19 @@
             Registrarse
         </button>
 
-        <!-- Icono usuario (solo aparece si hay sesión) -->
+        <!-- Icono usuario (oculto por defecto) -->
         <button id="btn-user" class="icono-user" style="display:none;">
             <img src="imgs/usuario.png" alt="Usuario">
         </button>
 
-        <!-- Cerrar sesión -->
+        <!-- Cerrar sesión (oculto por defecto) -->
         <button id="btn-logout" class="btn-registrarse" style="display:none;">
             Cerrar sesión
         </button>
 
     </div>
 </header>
+
 
 
     <!-- CONTENIDO PRINCIPAL -->
@@ -85,6 +89,7 @@
     </footer>
 
     <!-- LÓGICA DEL PRODUCTO -->
+    <script src="javascript/auth.js" defer></script>
     <script>
         document.addEventListener("DOMContentLoaded", () => {
 
@@ -255,7 +260,7 @@
         }
 
     </script>
-    <script src="javascript/auth.js" defer></script>
+    
 
 
 </body>
