@@ -16,7 +16,13 @@ import pagoRoutes from "./routes/pagoRoutes.js";
 
 import geminiRoutes from "./routes/gemini_routes.js";
 
+import express from "express";
+import multer from "multer";
+import path from "path";
+import { fileURLToPath } from "url";
 
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 dotenv.config();
 
@@ -27,10 +33,8 @@ const app = express();
 // =============================
 const allowedOrigins = [
   "http://localhost:3000",
-
   "http://localhost:4000",
   "https://agroinsumos-san-pedro-despliegue-us-eight.vercel.app",
-
   "https://agroinsumos-san-pedro-despliegue.onrender.com",
   "https://agroinsumos-san-pedro-despliegue-kafy.onrender.com",
   "https://agroinsumos-san-pedro-despliegue-ad-seven.vercel.app"
@@ -74,6 +78,30 @@ const swaggerDocs = swaggerJSDoc({
   },
   apis: ["./controllers/*.js"],
 });
+
+
+// Configuración de multer
+const storage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    cb(null, path.join(__dirname, "imgs")); // carpeta donde guardar
+  },
+  filename: (req, file, cb) => {
+    const ext = path.extname(file.originalname);
+    const nombre = Date.now() + ext;
+    cb(null, nombre);
+  }
+});
+
+const upload = multer({ storage });
+
+// Ruta para guardar imagen
+app.post("/subir", upload.single("foto"), (req, res) => {
+  res.json({
+    mensaje: "Imagen guardada",
+    archivo: req.file.filename
+  });
+});
+
 
 app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocs));
 

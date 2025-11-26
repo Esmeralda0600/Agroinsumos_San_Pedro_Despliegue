@@ -1,3 +1,5 @@
+const API_URL = "https://agroinsumos-san-pedro-despliegue.onrender.com";
+
 document.addEventListener("DOMContentLoaded", () => {
     console.log("[DEBUG] script.js cargado");
 
@@ -20,7 +22,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 };
                 reader.readAsDataURL(archivo);
             } else {
-                preview.src = "imgs/agrex_abc.png";
+                preview.src = "imgs/logo.png";
             }
         });
     }
@@ -28,7 +30,7 @@ document.addEventListener("DOMContentLoaded", () => {
     // ============================
     //   URL API GLOBAL (Render)
     // ============================
-    const API_URL = "https://agroinsumos-san-pedro-despliegue.onrender.com";
+    
 
     // Endpoint final
     const API_CREAR_PRODUCTO_URL = `${API_URL}/productos`;
@@ -37,6 +39,26 @@ document.addEventListener("DOMContentLoaded", () => {
     form.addEventListener("submit", async (e) => {
         e.preventDefault();
         console.log("[DEBUG] Submit de alta de producto");
+
+        // ============================
+        // 1. Obtener archivo
+        // ============================
+        const archivo = fotoInput?.files[0];
+        let rutaImagen = "default.png";
+
+        // ============================
+        // 2. Subir imagen si existe
+        // ============================
+        if (archivo) {
+            try {
+                const subida = await subirImagen(archivo);
+                rutaImagen = subida;  // "/imgs_productos/1732635399.png"
+            } catch (error) {
+                console.error("Error subiendo imagen:", error);
+                alert("Error al subir imagen");
+                return;
+            }
+        }
 
         // Leer valores del formulario
         const nombre = document.getElementById("nombre").value.trim();
@@ -52,7 +74,7 @@ document.addEventListener("DOMContentLoaded", () => {
         const cantidadValor = document.getElementById("cantidad").value;
         const cantidad = parseInt(cantidadValor, 10);
 
-        const archivo = fotoInput?.files[0];
+        //const archivo = fotoInput?.files[0];
 
         if (
             !nombre ||
@@ -71,10 +93,10 @@ document.addEventListener("DOMContentLoaded", () => {
         // Generar id único
         const id_producto = `P-${Date.now()}`;
 
-        let direccion_img = "default.png";
-        if (archivo) {
-            direccion_img = archivo.name;
-        }
+        // let direccion_img = "default.png";
+        // if (archivo) {
+        //     direccion_img = archivo.name;
+        // }
 
         const nuevoProducto = {
             id_producto,
@@ -85,7 +107,7 @@ document.addEventListener("DOMContentLoaded", () => {
             descripcion,
             cantidad,
             id_sucursal: sucursal,
-            direccion_img,
+            direccion_img:rutaImagen,
             categoria_producto
         };
 
@@ -128,3 +150,16 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 
 });
+
+async function subirImagen(archivo) {
+    const datos = new FormData();
+    datos.append("foto", archivo);
+
+    const res = await fetch(`${API_URL}/administradores/subir-imagen`, {
+        method: "POST",
+        body: datos
+    });
+
+    const data = await res.json();
+    return data.ruta;  // devuelve "/imgs_productos/archivo.png"
+}
