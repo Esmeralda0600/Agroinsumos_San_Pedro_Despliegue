@@ -123,7 +123,7 @@ async function finalizarCompra() {
   const emailCliente = localStorage.getItem("correo") || "test_user@test.com";
 
   try {
-    const resp = await fetch("http://localhost:3000/pagos/crear-preferencia", {
+    const resp = await fetch("https://agroinsumos-san-pedro-despliegue.onrender.com/pagos/crear-preferencia", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
