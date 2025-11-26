@@ -10,60 +10,56 @@
 
 <body>
 
-   <header class="Header">
+    <!-- ==================== HEADER ==================== -->
+    <header class="Header">
 
-    <!-- Logo -->
-    <a href="index.html" class="logo">
-        <img src="imgs/logo.png" alt="Logo" class="logo__img" />
-    </a>
+        <!-- Logo -->
+        <a href="index.html" class="logo">
+            <img src="imgs/logo.png" alt="Logotipo de Agroinsumos San Pedro" class="logo__img" />
+        </a>
 
-    <!-- Buscador -->
-    <div class="buscador__contenedor">
-        <input id="input-busqueda" type="text" 
-            placeholder="Te ayudamos a encontrar el producto ideal..."
-            class="buscador__input" />
-        <img id="btn-buscar-ia" src="imgs/lupa.png" alt="Buscar" class="buscador__icono" />
-    </div>
+        <!-- Buscador -->
+        <div class="buscador__contenedor">
+            <input id="input-busqueda" type="text" placeholder="Te ayudamos a encontrar el producto ideal..."
+                class="buscador__input" />
+            <img id="btn-buscar-ia" src="imgs/lupa.png" alt="Buscar" class="buscador__icono">
+        </div>
 
-    <!-- Botones derecha -->
-    <div class="botones-derecha">
+        <!-- Botones derecha / login dinámico -->
+        <div class="botones-derecha">
 
-        <!-- Favoritos -->
-        <button class="carrito-de-compras" onclick="window.location.href='favoritos.html'">
-            <img src="imgs/favs.png" alt="Favoritos">
-        </button>
+            <button class="carrito-de-compras" onclick="window.location.href='favoritos.html'">
+                <img src="imgs/favs.png">
+            </button>
 
-        <!-- Carrito -->
-        <button class="carrito-de-compras" onclick="window.location.href='carrito.html'">
-            <img src="imgs/carrito.png" alt="Carrito">
-        </button>
+            <button class="carrito-de-compras" onclick="window.location.href='carrito.html'">
+                <img src="imgs/carrito.png">
+            </button>
 
-        <!-- Login -->
-        <button id="btn-login" class="btn-login" onclick="window.location.href='login.html'">
-            Iniciar sesión
-        </button>
+            <!-- Login -->
+            <button id="btn-login" class="btn-login" onclick="window.location.href='login.html'">
+                Iniciar sesión
+            </button>
 
-        <!-- Registro -->
-        <button id="btn-register" class="btn-registrarse" onclick="window.location.href='registro.html'">
-            Registrarse
-        </button>
+            <!-- Registro -->
+            <button id="btn-register" class="btn-registrarse" onclick="window.location.href='registro.html'">
+                Registrarse
+            </button>
 
-        <!-- Icono usuario (oculto por defecto) -->
-        <button id="btn-user" class="icono-user" style="display:none;">
-            <img src="imgs/usuario.png" alt="Usuario">
-        </button>
+            <!-- Icono usuario -->
+            <button id="btn-user" class="icono-user" style="display:none;">
+                <img src="imgs/usuario.png" alt="Usuario">
+            </button>
 
-        <!-- Cerrar sesión (oculto por defecto) -->
-        <button id="btn-logout" class="btn-registrarse" style="display:none;">
-            Cerrar sesión
-        </button>
+            <!-- Cerrar sesión -->
+            <button id="btn-logout" class="btn-registrarse" style="display:none;">
+                Cerrar sesión
+            </button>
+        </div>
 
-    </div>
-</header>
+    </header>
 
-
-
-    <!-- CONTENIDO PRINCIPAL -->
+    <!-- ==================== DETALLE DEL PRODUCTO ==================== -->
     <main>
         <div class="producto-detalle" id="productos">
 
@@ -76,20 +72,18 @@
 
         </div>
 
-        <!-- BOTÓN VOLVER -->
         <div class="volver">
             <a href="catalogo.html" class="btn volver-btn">Volver</a>
         </div>
     </main>
 
-    <!-- FOOTER -->
+    <!-- ==================== FOOTER ==================== -->
     <footer class="footer">
         <h2>Agroinsumos San Pedro</h2>
         <p>Todos los derechos reservados © 2025</p>
     </footer>
 
-    <!-- LÓGICA DEL PRODUCTO -->
-    <script src="javascript/auth.js" defer></script>
+    <!-- ==================== LÓGICA DEL PRODUCTO ==================== -->
     <script>
         document.addEventListener("DOMContentLoaded", () => {
 
@@ -120,18 +114,16 @@
                 </div>
             `;
 
-            // Función para agregar al carrito
+            // ===== FUNCIONES =====
             function agregarAlCarrito(prod) {
                 const usuarioId = localStorage.getItem("usuarioId");
+
                 if (!usuarioId) {
-                    alert("Debes iniciar sesión para agregar productos al carrito.");
-                    window.location.href = "login.html";
-                    return;
+                    alert("Inicia sesión para agregar al carrito.");
+                    return window.location.href = "login.html";
                 }
 
-                const claveCarrito = `carrito_${usuarioId}`;
-                let carrito = JSON.parse(localStorage.getItem(claveCarrito)) || [];
-
+                let carrito = JSON.parse(localStorage.getItem(`carrito_${usuarioId}`)) || [];
 
                 const existe = carrito.find(p => p.id_producto === prod.id_producto);
 
@@ -147,41 +139,21 @@
                     });
                 }
 
-                localStorage.setItem(claveCarrito, JSON.stringify(carrito));
+                localStorage.setItem(`carrito_${usuarioId}`, JSON.stringify(carrito));
             }
 
-
-             // Botón Agregar al carrito → flujo normal carrito
+            // Botones
             document.getElementById("btn-carrito").addEventListener("click", () => {
                 agregarAlCarrito(producto);
                 window.location.href = "carrito.html";
             });
 
-            // COMPRAR AHORA (solo este producto)
             document.getElementById("btn-comprar").addEventListener("click", () => {
-                const usuarioId = localStorage.getItem("usuarioId");
-
-                if (!usuarioId) {
-                    alert("Debes iniciar sesión para comprar.");
-                    return window.location.href = "login.html";
-                }
-
-                const item = {
-                    id_producto: producto.id_producto,
-                    nombre: producto.nombre_producto,
-                    precio: producto.precio,
-                    cantidad: 1,
-                    imagen: producto.direccion_img || "imgs/ingrediente.png"
-                };
-
-                // Marcamos que venimos de "comprar ahora"
-                localStorage.setItem("modo_compra", "directa");
-                localStorage.setItem("compra_directa", JSON.stringify([item]));
-
+                agregarAlCarrito(producto);
                 window.location.href = "pago.html";
             });
 
-            // Botón Favoritos (CORREGIDO)
+            // Favoritos
             document.getElementById("btn-fav").addEventListener("click", async () => {
 
                 const usuarioId = localStorage.getItem("usuarioId");
@@ -207,12 +179,10 @@
             });
 
         });
+    </script>
 
-
-        /* ============================================================
-            BUSCADOR INTELIGENTE CON IA PARA REDIRECCIÓN DE CATEGORÍAS
-        ============================================================ */
-
+    <!-- ==================== BUSCADOR IA ==================== -->
+    <script>
         const IA_URL = "https://agroinsumos-san-pedro-despliegue.onrender.com/api/ia/interpretar";
 
         document.getElementById("btn-buscar-ia").addEventListener("click", interpretarBusqueda);
@@ -228,8 +198,6 @@
                 return;
             }
 
-            console.log("Consultando IA para:", texto);
-
             try {
                 const response = await fetch(IA_URL, {
                     method: "POST",
@@ -238,8 +206,6 @@
                 });
 
                 const data = await response.json();
-                console.log("Respuesta IA:", data);
-
                 const categoria = data.categoria;
 
                 if (!categoria) {
@@ -247,10 +213,9 @@
                     return;
                 }
 
-                const URL_BASE = "https://agroinsumos-san-pedro-despliegue-ts.vercel.app";
+                const URL_BASE = "https://agroinsumos-san-pedro-despliegue-us-tau.vercel.app";
                 const destino = `${URL_BASE}/inven.html?categoria=${categoria}`;
 
-                console.log("Redirigiendo a:", destino);
                 window.location.href = destino;
 
             } catch (error) {
@@ -258,18 +223,10 @@
                 alert("Ocurrió un error al procesar la búsqueda.");
             }
         }
-
     </script>
-    
-<script>
-  document.addEventListener("DOMContentLoaded", () => {
-    console.log("btn-login →", document.getElementById("btn-login"));
-    console.log("btn-register →", document.getElementById("btn-register"));
-    console.log("btn-user →", document.getElementById("btn-user"));
-    console.log("btn-logout →", document.getElementById("btn-logout"));
-  });
-</script>
 
+    <!-- LOGIN DINÁMICO -->
+    <script src="javascript/auth.js"></script>
 
 </body>
 
