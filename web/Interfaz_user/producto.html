@@ -148,8 +148,27 @@
                 window.location.href = "carrito.html";
             });
 
+            // COMPRAR AHORA (solo este producto)
             document.getElementById("btn-comprar").addEventListener("click", () => {
-                agregarAlCarrito(producto);
+                const usuarioId = localStorage.getItem("usuarioId");
+
+                if (!usuarioId) {
+                    alert("Debes iniciar sesión para comprar.");
+                    return window.location.href = "login.html";
+                }
+
+                const item = {
+                    id_producto: producto.id_producto,
+                    nombre: producto.nombre_producto,
+                    precio: producto.precio,
+                    cantidad: 1,
+                    imagen: producto.direccion_img || "imgs/ingrediente.png"
+                };
+
+                // Marcamos que venimos de "comprar ahora"
+                localStorage.setItem("modo_compra", "directa");
+                localStorage.setItem("compra_directa", JSON.stringify([item]));
+
                 window.location.href = "pago.html";
             });
 
