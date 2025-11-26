@@ -11,21 +11,24 @@
 <body>
     <img src="imgs/fondoindex.jpg" class="fondo">
     <div class="Header">
-        <a href="principal.html" class="logo">
-            <img src="imgs/logo.png" alt="Logotipo de Agroinsumos San Pedro" class="logo__img" />
-        </a>
+        <div class="logo">
+            <img src="imgs/logo.png" alt="logo" class="logo-de-la-empresa">
+        </div>
 
         <div class="Nombre">Agroinsumos San Pedro</div>
 
         <div class="botones-derecha">
-            <button class="btn-start" type="button" onclick="window.location.href='principal.html'">Inicio</button>
-            <button class="btn-close" type="button" onclick="window.location.href='index.html'">Cerrar sesión</button>
+            <button class="campanita" type="button">
+                <img src="imgs/notificacion.png" alt="notificacion">
+            </button>
+            <button class="btn-start" type="button" onclick="window.location.href='index.html'">Inicio</button>
+            <button class="btn-close" type="button" onclick="window.location.href='login.html'">Cerrar sesión</button>
         </div>
     </div>
 
     <div class="botones-centro">
         <button class="inventario" type="button" onclick="window.location.href='inventario.html'">INVENTARIO</button>
-        <button class="historial activo" type="button" onclick="window.location.href='historial.html'">HISTORIAL COMPRAS</button>
+        <button class="historial activo" type="button" onclick="window.location.href='historial.html'">HISTORIAL USUARIOS</button>
     </div>
 
     <main class="contenido">
@@ -41,33 +44,13 @@
                         <th>Monto de compra</th>
                     </tr>
                 </thead>
-                <tbody>
-                    <tr>
-                        <td><span>Luis11</span></td>
-                        <td><span>Luis11@gmail.com</span></td>
-                        <td><span>Agrex-AB</span></td>
-                        <td><span>2</span></td>
-                        <td><span>$250</span></td>
-                    </tr>
-                    <tr>
-                        <td><span>Ana_0</span></td>
-                        <td><span>anita@gmail.com</span></td>
-                        <td><span>Semillas premium</span></td>
-                        <td><span>5</span></td>
-                        <td><span>$120</span></td>
-                    </tr>
-                    <tr>
-                        <td><span>Marcos4</span></td>
-                        <td><span>Marc_0@gmail.com</span></td>
-                        <td><span>Herbicida</span></td>
-                        <td><span>1</span></td>
-                        <td><span>$320</span></td>
-                    </tr>
+                <tbody id="tbody-historial">
+             
                 </tbody>
             </table>
         </div>
         <div>
-            <button class="volver" onclick="window.location.href='principal.html'">Volver</button>
+            <button class="volver" onclick="window.location.href='index.html'">Volver</button>
         </div>
         <a href="gestion.html" class="gestion">Gestión de productos</a>
     </main>
@@ -79,6 +62,6 @@
         </div>
     </footer>
 
-    <script src="js/notificacion.js"></script>
+    <script src="js/historial.js"></script>
 </body>
 </html>

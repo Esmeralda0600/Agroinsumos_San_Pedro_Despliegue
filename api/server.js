@@ -12,7 +12,7 @@ import swaggerJSDoc from "swagger-jsdoc";
 import swaggerUi from "swagger-ui-express";
 
 import pagoRoutes from "./routes/pagoRoutes.js";
-
+import ventaRoutes from "./routes/venta_routes.js";
 
 import geminiRoutes from "./routes/gemini_routes.js";
 
@@ -65,6 +65,7 @@ app.use("/favoritos", favoritoRoutes);
 app.use("/productos", producto_routes);
 app.use("/api/ia", geminiRoutes);
 app.use("/pagos", pagoRoutes);
+app.use("/ventas", ventaRoutes);
 
 // Swagger
 const swaggerDocs = swaggerJSDoc({

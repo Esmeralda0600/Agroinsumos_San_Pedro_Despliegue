@@ -1,30 +1,28 @@
-// api/models/Venta.js
 import mongoose from "mongoose";
 
-const itemSchema = new mongoose.Schema(
+const ItemSchema = new mongoose.Schema({
+  id_producto: { type: mongoose.Schema.Types.ObjectId, ref: "Producto", required: false },
+  nombre: String,
+  precio: Number,
+  cantidad: Number,
+});
+
+const VentaSchema = new mongoose.Schema(
   {
-    id_producto: { type: String },
-    nombre: { type: String },
-    precio: { type: Number },
-    cantidad: { type: Number },
-    imagen: { type: String },
+    usuarioId: { type: mongoose.Schema.Types.ObjectId, ref: "UsuarioMongo", required: false },
+    items: [ItemSchema],
+    total: { type: Number, required: true },
+    metodoPago: { type: String, default: "no_especificado" },
+
+    // Datos de Mercado Pago
+    mpStatus: String,
+    mpPaymentId: String,
+    mpPreferenceId: String,
   },
-  { _id: false }
+  {
+    timestamps: true, // createdAt, updatedAt
+  }
 );
 
-const ventaSchema = new mongoose.Schema(
-  {
-    usuarioId: { type: String, required: false }, // lo guardamos tal como viene de localStorage
-    items: [itemSchema],
-    total: { type: Number },
-    metodoPago: { type: String },
-    mpStatus: { type: String },
-    mpPaymentId: { type: String },
-    mpPreferenceId: { type: String },
-  },
-  { timestamps: true }
-);
-
-const Venta = mongoose.model("Venta", ventaSchema);
-
+const Venta = mongoose.model("Venta", VentaSchema);
 export default Venta;
