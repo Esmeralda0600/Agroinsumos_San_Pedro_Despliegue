@@ -545,3 +545,9 @@ main {
     object-fit: contain !important;
     margin: 0 12px !important;
 }
+
+/* Ocultar siempre el ícono de usuario por defecto */
+#btn-user {
+    display: none !important;
+}
+
