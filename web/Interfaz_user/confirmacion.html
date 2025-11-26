@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Confirmación de compra | Agroinsumos San Pedro</title>
+  <!-- <link rel="stylesheet" href="css/estiloconfirmacion.css">opcional -->
+</head>
+<body>
+  <!-- HEADER sencillo, si quieres puedes copiar el mismo de otras páginas -->
+  <header class="Header">
+    <h1>Agroinsumos San Pedro</h1>
+  </header>
+
+  <main class="contenedor-confirmacion">
+    <section id="mensaje-estado">
+      <h2 id="titulo-estado">Procesando tu pago...</h2>
+      <p id="descripcion-estado"></p>
+    </section>
+
+    <section id="resumen-compra">
+      <h3>Resumen de tu compra</h3>
+      <div id="lista-productos"></div>
+      <p class="total">
+        Total pagado: <strong id="total-pagado">$0.00</strong>
+      </p>
+      <p>
+        Método de pago: <strong id="metodo-pago">-</strong>
+      </p>
+    </section>
+
+    <section id="datos-pago">
+      <h3>Datos del pago</h3>
+      <p>ID de pago: <strong id="mp-payment-id">-</strong></p>
+      <p>Estado en Mercado Pago: <strong id="mp-status">-</strong></p>
+      <p>ID de preferencia: <strong id="mp-preference-id">-</strong></p>
+    </section>
+
+    <div class="acciones">
+      <a href="catalogo.html" class="btn">Volver al catálogo</a>
+      <a href="historial.html" class="btn">Ver mis compras</a> <!-- opcional -->
+    </div>
+  </main>
+
+  <footer class="footer">
+    <p>Todos los derechos reservados © 2025</p>
+  </footer>
+
+  <script src="javascript/confirmacion.js"></script>
+</body>
+</html>
