@@ -1,125 +1,143 @@
 <!DOCTYPE html>
 <html lang="es">
-<head>
+  <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Catálogo - Agroinsumos San Pedro</title>
 
     <!-- Hoja de estilos principal -->
     <link rel="stylesheet" href="css/estilocatalogo.css" />
-</head>
+  </head>
 
-<body>
-    <!-- ============================
-         HEADER
-    ============================ -->
+  <body>
+    <!-- ============================================================
+         ENCABEZADO PRINCIPAL
+         ============================================================ -->
     <header class="Header">
 
-        <!-- Logo -->
-        <a href="index.html" class="logo">
-            <img src="imgs/logo.png" alt="Logotipo de Agroinsumos San Pedro" class="logo__img" />
-        </a>
+    <!-- Logo -->
+      <a href="index.html" class="logo">
+  <img src="imgs/logo.png" alt="Logotipo de Agroinsumos San Pedro" class="logo__img" />
+</a>
+  
 
-        <!-- Buscador CORRECTO (versión estable) -->
-        <div class="header__buscador">
-            <div class="buscador__contenedor">
-                <input id="input-busqueda" type="text"
-                    placeholder="Te ayudamos a encontrar el producto ideal..."
-                    class="buscador__input" />
-                <img id="btn-buscar-ia" src="imgs/lupa.png" alt="Buscar" class="buscador__icono" />
-            </div>
-        </div>
+    
+      <!-- Buscador -->
+        <div class="buscador__contenedor">
+            <input id="input-busqueda" type="text" placeholder="Te ayudamos a encontrar el producto ideal..."
+                class="buscador__input" />
 
-        <!-- Botones derecha -->
-        <div class="botones-derecha">
-
-            <!-- Favoritos -->
-            <button class="carrito-de-compras" onclick="window.location.href='favoritos.html'">
-                <img src="imgs/favs.png" alt="Favoritos" />
-            </button>
-
-            <!-- Carrito -->
-            <button class="carrito-de-compras" onclick="window.location.href='carrito.html'">
-                <img src="imgs/carrito.png" alt="Carrito" />
-            </button>
-
-            <!-- Login -->
-            <button id="btn-login" class="btn-login" onclick="window.location.href='login.html'">
-                Iniciar sesión
-            </button>
-
-            <!-- Registro -->
-            <button id="btn-register" class="btn-registrarse"
-                onclick="window.location.href='registro.html'">
-                Registrarse
-            </button>
-
-            <!-- Icono usuario (inicia oculto) -->
-            <button id="btn-user" class="icono-user" style="display:none;">
-                <img src="imgs/usuario.png" alt="Usuario" />
-            </button>
-
-            <!-- Cerrar sesión (inicia oculto) -->
-            <button id="btn-logout" class="btn-registrarse" style="display:none;">
-                Cerrar sesión
-            </button>
+            <img id="btn-buscar-ia" src="imgs/lupa.png" alt="Buscar" class="buscador__icono">
 
         </div>
+
+
+      <!-- Botones de navegación (MODIFICADOS PARA LOGIN DINÁMICO) -->
+      <div class="botones-derecha">
+
+        <!-- Favoritos -->
+        <button
+          class="carrito-de-compras"
+          type="button"
+          onclick="window.location.href='favoritos.html'"
+        >
+          <img src="imgs/favs.png" alt="Icono favoritos" />
+        </button>
+
+        <!-- Carrito -->
+        <button
+          class="carrito-de-compras"
+          type="button"
+          onclick="window.location.href='carrito.html'"
+        >
+          <img src="imgs/carrito.png" alt="Icono carrito" />
+        </button>
+
+        <!-- 🔵 LOGIN -->
+        <button
+          id="btn-login"
+          class="btn-login"
+          type="button"
+          onclick="window.location.href='login.html'"
+        >
+          Iniciar sesión
+        </button>
+
+        <!-- 🟢 REGISTRO -->
+        <button
+          id="btn-register"
+          class="btn-registrarse"
+          type="button"
+          onclick="window.location.href='registro.html'"
+        >
+          Registrarse
+        </button>
+
+        <button id="btn-user" class="icono-user" style="display:none;">
+         <img src="imgs/usuario.png" alt="Usuario" />
+        </button>
+
+
+        <!-- 🔴 CERRAR SESIÓN (OCULTO) -->
+        <button id="btn-logout" style="display:none;" class="btn-registrarse">
+          Cerrar sesión
+        </button>
+
+      </div>
     </header>
 
-    <!-- ============================
+    <!-- ============================================================
          FILTROS
-    ============================ -->
+         ============================================================ -->
     <section class="barra-filtros-busqueda">
-        <label>
-            <input type="radio" name="tipo-busqueda" value="producto" checked />
-            Producto
-        </label>
+      <label>
+        <input type="radio" name="tipo-busqueda" value="producto" checked />
+        Producto
+      </label>
 
-        <label>
-            <input type="radio" name="tipo-busqueda" value="marca" />
-            Marca
-        </label>
+      <label>
+        <input type="radio" name="tipo-busqueda" value="marca" />
+        Marca
+      </label>
 
-        <label>
-            <input type="radio" name="tipo-busqueda" value="ingrediente" />
-            Ingrediente Activo
-        </label>
+      <label>
+        <input type="radio" name="tipo-busqueda" value="ingrediente" />
+        Ingrediente Activo
+      </label>
     </section>
 
-    <!-- ============================
+    <!-- ============================================================
          CATÁLOGO
-    ============================ -->
+         ============================================================ -->
     <main class="catalogo">
-        <h2 id="titulo-catalogo">CATÁLOGO DE PRODUCTOS</h2>
-        <div class="productos-grid" id="contenedor-tarjetas"></div>
+      <h2 id="titulo-catalogo">CATÁLOGO DE PRODUCTOS</h2>
+      <div class="productos-grid" id="contenedor-tarjetas"></div>
     </main>
 
-    <!-- ============================
-         VOLVER
-    ============================ -->
+    <!-- ============================================================
+         BOTÓN VOLVER
+         ============================================================ -->
     <div class="volver">
-        <button class="btn-volver" onclick="window.location.href='index.html'">
-            Volver
-        </button>
+      <button class="btn-volver" type="button" onclick="window.location.href='index.html'">
+        Volver
+      </button>
     </div>
 
-    <!-- ============================
+    <!-- ============================================================
          FOOTER
-    ============================ -->
+         ============================================================ -->
     <footer class="footer">
-        <div class="footer-contenido">
-            <h2>Agroinsumos San Pedro</h2>
-            <p>Todos los derechos reservados © 2025</p>
-        </div>
+      <div class="footer-contenido">
+        <h2>Agroinsumos San Pedro</h2>
+        <p>Todos los derechos reservados © 2025</p>
+      </div>
     </footer>
 
-    <!-- ============================
+    <!-- ============================================================
          SCRIPTS
-    ============================ -->
-    <script src="javascript/auth.js"></script>
+         ============================================================ -->
     <script type="module" src="javascript/logica.js"></script>
-    
+    <script src="javascript/auth.js"></script>
 
-</body>
+  </body>
 </html>
