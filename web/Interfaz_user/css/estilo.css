@@ -671,3 +671,28 @@ main {
   text-align: left;
   margin-top: 10px;
 }
+/* Botón Cerrar Sesión - Mismo estilo que Iniciar sesión / Registrarse */
+.acciones__btn--logout {
+  background-color: #0b6b47;     /* MISMO VERDE */
+  color: #fff;
+  border: none;
+  padding: 8px 14px;
+  border-radius: 6px;
+  font-size: 15px;
+  font-weight: bold;
+  cursor: pointer;
+  box-shadow: 0 3px 6px rgba(0,0,0,0.15);
+  transition: 0.25s ease;
+}
+
+/* Hover igual al estilo del carrusel */
+.acciones__btn--logout:hover {
+  background-color: #0a5c3d;    /* un tono más oscuro */
+  transform: scale(1.05);       /* efecto suave */
+  color: #fff;
+}
+
+.acciones__btn--logout:active {
+  transform: scale(0.97);
+}
+

@@ -656,3 +656,26 @@ main {
     margin-bottom: 8px;
     color: #114d30;
 }
+
+/* ==============================
+   🔐 PROTEGER ICONO DE USUARIO
+   ============================== */
+
+#btn-user {
+    display: none !important;
+    border: none;
+    background: transparent;
+    padding: 0;
+    margin: 0 10px;
+    cursor: pointer;
+}
+
+#btn-user img {
+    width: 40px !important;
+    height: 40px !important;
+    object-fit: contain !important;
+    border-radius: 0 !important;
+    box-shadow: none !important;
+    display: block !important;
+}
+
