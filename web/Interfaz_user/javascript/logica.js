@@ -345,7 +345,7 @@ async function interpretarBusqueda() {
       return;
     }
 
-    const URL_BASE = "https://agroinsumos-san-pedro-despliegue-us-gamma.vercel.app";
+    const URL_BASE = "https://agroinsumos-san-pedro-despliegue-us-eight.vercel.app";
 
     window.location.href = `${URL_BASE}/inven.html?categoria=${categoria}`;
 
