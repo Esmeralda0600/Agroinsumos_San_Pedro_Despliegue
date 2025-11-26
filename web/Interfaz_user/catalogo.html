@@ -1,14 +1,6 @@
 <!DOCTYPE html>
 <html lang="es">
   <head>
-    <!-- ============================================================
-         Agroinsumos San Pedro
-         Archivo: catalogo.html
-         Descripción: Página del catálogo de productos con filtros
-         Autor: [Tu Nombre o Equipo 3]
-         Cumple con el estándar de codificación HTML institucional
-         ============================================================ -->
-
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Catálogo - Agroinsumos San Pedro</title>
@@ -20,48 +12,50 @@
   <body>
     <!-- ============================================================
          ENCABEZADO PRINCIPAL
-         Contiene el logotipo, buscador y botones de navegación
          ============================================================ -->
     <header class="Header">
-      <!-- Logo -->
-      <a href="index.html" class="logo">
-  <img src="imgs/logo.png" alt="Logotipo de Agroinsumos San Pedro" class="logo__img" />
-</a>
 
+      <!-- Logo -->
+      <div class="logo">
+        <img src="imgs/logo.png" alt="Logotipo de Agroinsumos San Pedro" class="logo__img" />
+      </div>
 
       <!-- Buscador -->
-        <div class="buscador__contenedor">
-            <input id="input-busqueda" type="text" placeholder="Te ayudamos a encontrar el producto ideal..."
-                class="buscador__input" />
-
-            <img id="btn-buscar-ia" src="imgs/lupa.png" alt="Buscar" class="buscador__icono">
-
+      <div class="Buscador">
+        <div class="input-con-imagen">
+          <input
+            type="text"
+            placeholder="Buscar productos..."
+            aria-label="Buscar productos"
+          />
+          <img src="imgs/lupa.png" alt="Icono de búsqueda" class="icono-lupa" />
         </div>
+      </div>
 
-      <!-- Botones de navegación -->
+      <!-- Botones de navegación (MODIFICADOS PARA LOGIN DINÁMICO) -->
       <div class="botones-derecha">
-        <!-- Botón de Favoritos -->
+
+        <!-- Favoritos -->
         <button
           class="carrito-de-compras"
           type="button"
           onclick="window.location.href='favoritos.html'"
-          aria-label="Ir a favoritos"
         >
           <img src="imgs/favs.png" alt="Icono favoritos" />
         </button>
 
-        <!-- Botón del Carrito -->
+        <!-- Carrito -->
         <button
           class="carrito-de-compras"
           type="button"
           onclick="window.location.href='carrito.html'"
-          aria-label="Ir al carrito de compras"
         >
           <img src="imgs/carrito.png" alt="Icono carrito" />
         </button>
 
-        <!-- Botón Iniciar sesión -->
+        <!-- 🔵 LOGIN -->
         <button
+          id="btn-login"
           class="btn-login"
           type="button"
           onclick="window.location.href='login.html'"
@@ -69,29 +63,35 @@
           Iniciar sesión
         </button>
 
-        <!-- Botón Registrarse -->
+        <!-- 🟢 REGISTRO -->
         <button
+          id="btn-register"
           class="btn-registrarse"
           type="button"
           onclick="window.location.href='registro.html'"
         >
           Registrarse
         </button>
+
+        <button id="btn-user" class="icono-user" style="display:none;">
+         <img src="imgs/usuario.png" alt="Usuario" />
+        </button>
+
+
+        <!-- 🔴 CERRAR SESIÓN (OCULTO) -->
+        <button id="btn-logout" style="display:none;" class="btn-registrarse">
+          Cerrar sesión
+        </button>
+
       </div>
     </header>
 
     <!-- ============================================================
-         FILTROS DE BÚSQUEDA
-         Permiten cambiar el tipo de catálogo mostrado
+         FILTROS
          ============================================================ -->
     <section class="barra-filtros-busqueda">
       <label>
-        <input
-          type="radio"
-          name="tipo-busqueda"
-          value="producto"
-          checked
-        />
+        <input type="radio" name="tipo-busqueda" value="producto" checked />
         Producto
       </label>
 
@@ -107,31 +107,24 @@
     </section>
 
     <!-- ============================================================
-         CATÁLOGO DE PRODUCTOS
-         Las tarjetas se cargan dinámicamente con JavaScript
+         CATÁLOGO
          ============================================================ -->
     <main class="catalogo">
       <h2 id="titulo-catalogo">CATÁLOGO DE PRODUCTOS</h2>
-
-      <!-- Contenedor dinámico de tarjetas -->
       <div class="productos-grid" id="contenedor-tarjetas"></div>
     </main>
 
     <!-- ============================================================
-         BOTÓN VOLVER AL INICIO
+         BOTÓN VOLVER
          ============================================================ -->
     <div class="volver">
-      <button
-        class="btn-volver"
-        type="button"
-        onclick="window.location.href='index.html'"
-      >
+      <button class="btn-volver" type="button" onclick="window.location.href='index.html'">
         Volver
       </button>
     </div>
 
     <!-- ============================================================
-         PIE DE PÁGINA
+         FOOTER
          ============================================================ -->
     <footer class="footer">
       <div class="footer-contenido">
@@ -142,10 +135,9 @@
 
     <!-- ============================================================
          SCRIPTS
-         Enlaza el archivo JavaScript del catálogo
          ============================================================ -->
-    <!-- ⚠️ Corrección de nombre: "catalogo animaciones.js" → "catalogo-animaciones.js" -->
-    <!-- <script src="javascript/catalogo-animaciones.js"></script> -->
     <script type="module" src="javascript/logica.js"></script>
+    <script src="javascript/auth.js"></script>
+
   </body>
 </html>
