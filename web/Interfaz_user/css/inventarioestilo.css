@@ -235,8 +235,10 @@ body {
 
 .tarjeta img {
     width: 100%;
-    height: 180px;
-    object-fit: cover;
+    height: 220px;
+    object-fit: contain;
+    background-color: white;  /* evita espacios transparentes */
+    border-radius: 10px;
 }
 
 .tarjeta h3 {
@@ -420,6 +422,65 @@ body {
    🔐 PROTEGER ICONO DE USUARIO
    ============================== */
 
+
+.loader {
+    border: 6px solid #f3f3f3;
+    border-top: 6px solid #3498db;
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+    animation: girar 1s linear infinite;
+    margin: 40px auto;
+}
+
+@keyframes girar {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+.oculto {
+    display: none;
+}
+
+/* ================================
+   RESPONSIVIDAD ESPECÍFICA BUSCADOR
+   ================================ */
+
+/* Ajuste base — permitir que se adapte */
+.buscador__contenedor {
+    width: 100%;
+    max-width: 800px; /* antes era width: 800px fijo */
+}
+
+/* Tablets (hasta 992px) */
+@media (max-width: 992px) {
+    .buscador__contenedor {
+        max-width: 600px;
+        width: 90%;
+    }
+}
+
+/* Celulares grandes (hasta 768px) */
+@media (max-width: 768px) {
+    .Header {
+        justify-content: center;
+        flex-direction: column;
+        text-align: center;
+        gap: 10px;
+    }
+
+    .header__buscador {
+        width: 100%;
+        display: flex;
+        justify-content: center;
+    }
+
+    .buscador__contenedor {
+        width: 90%;
+        max-width: 500px;
+        padding: 6px 12px;
+    }
+  
 #btn-user {
     display: none; /* Lo controla auth.js */
     border: none;

@@ -166,7 +166,7 @@ async function mostrar_productos(categoria) {
             div.classList.add("tarjeta");
 
             const img = document.createElement("img");
-            img.src = "../imgs/default.png";
+            img.src = "../"+ e.direccion_img;
             img.width = 200;
 
             const n = document.createElement("h3");
