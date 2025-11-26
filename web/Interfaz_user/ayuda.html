@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Agroinsumos San Pedro</title>
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="imgs/logo.png">
+
+    <!-- Hoja de estilos principal -->
+    <link rel="stylesheet" href="css/ayuda.css">
+</head>
+
+<body>
+    <span id="bienvenida"></span>
+
+    <!-- HEADER -->
+    <header class="header">
+        <div class="header__logo">
+            <a href="index.html">
+                <img src="imgs/logo.png" alt="Logotipo de Agroinsumos San Pedro" class="header__logo-img">
+            </a>
+        </div>
+
+        <div class="header__buscador">
+            <form class="buscador__form" action="#" method="get">
+                <div class="buscador__contenedor">
+                    <input id="input-busqueda" type="text" placeholder="Te ayudamos a encontrar el producto ideal..."
+                        class="buscador__input" />
+
+                    <img id="btn-buscar-ia" src="imgs/lupa.png" alt="Buscar" class="buscador__icono">
+
+                </div>
+            </form>
+        </div>
+
+        <div class="header__acciones">
+            <button class="acciones__btn acciones__btn--favoritos" type="button"
+                onclick="window.location.href='favoritos.html'">
+                <img src="imgs/favs.png" alt="Favoritos" class="acciones__icono">
+            </button>
+
+            <button class="acciones__btn acciones__btn--carrito" type="button"
+                onclick="window.location.href='carrito.html'">
+                <img src="imgs/carrito.png" alt="Carrito" class="acciones__icono">
+            </button>
+
+            <button class="acciones__btn acciones__btn--login" type="button"
+                onclick="window.location.href='login.html'">
+                Iniciar sesión
+            </button>
+
+            <button class="acciones__btn acciones__btn--registro" type="button"
+                onclick="window.location.href='registro.html'">
+                Registrarse
+            </button>
+        </div>
+    </header>
+
+    <div class="faq-container">
+        <div class="faq-title">Preguntas Frecuentes</div>
+    
+        <div class="faq-item">
+            <div class="faq-question">
+                ¿Cómo puedo crear una cuenta?
+                <span class="arrow">▶</span>
+            </div>
+            <div class="faq-answer">
+                <p>Sigue estos pasos para crear tu cuenta:</p>
+                <ol>
+                    <li>Haz clic en el botón <strong>Registrarse</strong> ubicado en la parte superior derecha del sitio.</li>
+                    <li>Llena el formulario con la información solicitada (nombre y correo electrónico).</li>
+                    <li>Define una contraseña segura.</li>
+                    <li>Haz clic en el botón de <strong>Registrarse</strong></li>
+                </ol>
+            </div>
+        </div>
+        
+        <div class="faq-item">
+            <div class="faq-question">
+                ¿Cómo inicio sesión en mi cuenta?
+                <span class="arrow">▶</span>
+            </div>
+            <div class="faq-answer">
+                <p>Para acceder a tu cuenta:</p>
+                <ol>
+                    <li>Dirígete al botón <strong>Iniciar Sesión</strong> en la parte superior derecha.</li>
+                    <li>Ingresa tu correo electrónico y tu contraseña.</li>
+                    <li>Haz clic en <strong>Entrar</strong>.</li>
+                    <!-- <li>Si tienes problemas, usa la opción "¿Olvidaste tu contraseña?".</li> -->
+                </ol>
+            </div>
+        </div>
+    
+        <div class="faq-item">
+            <div class="faq-question">
+                ¿Cómo visualizo los detalles de un producto?
+                <span class="arrow">▶</span>
+            </div>
+            <div class="faq-answer">
+                <p>Puedes ver la información completa de un producto así:</p>
+                <ol>
+                    <li>Usa el buscador inteligente o navega por las categorías para encontrar el producto a travez del botón <strong>Catálogo</strong>.</li>
+                    <li>Haz clic en el botón <strong>Ver producto</strong></li>
+                    <li>Accederás a la página de detalles, donde verás descripción, ingrediente activo, precio, la categoria a la que pertenece y la cantidad en existencia.</li>
+                </ol>
+            </div>
+        </div>
+    
+        <div class="faq-item">
+            <div class="faq-question">
+                ¿Cómo agrego un producto a mi lista de favoritos?
+                <span class="arrow">▶</span>
+            </div>
+            <div class="faq-answer">
+                <p>Para añadir un producto a tu lista de deseos:</p>
+                <ol>
+                    <li>Ve a la página de detalles del producto deseado.</li>
+                    <li>Haz clic en el botón <strong>Agregar a favoritos</strong> que se encuentra debajo de la información del producto.</li>
+                    <li>El producto se añadirá automáticamente a tu lista.</li>
+                    <li>Puedes revisar tu lista haciendo clic en el botón con forma de <strong>corazón</strong> en la barra de navegación superior.</li>
+                </ol>
+            </div>
+        </div>
+    
+        <div class="faq-item">
+            <div class="faq-question">
+                ¿Cómo añado productos a mi carrito de compras?
+                <span class="arrow">▶</span>
+            </div>
+            <div class="faq-answer">
+                <p>Añade productos a tu carrito siguiendo estos pasos:</p>
+                <ol>
+                    <li>Ve a la página de detalles del producto deseado.</li>
+                    <li>Haz clic en el botón <strong>Agregar al carrito</strong> que se encuentra debajo de la información del producto.</li>
+                    <li>El producto se añadirá automáticamente a tu lista.</li>
+                    <li>Puedes revisar tu lista haciendo clic en el botón con forma de <strong>carrito de compras</strong> en la barra de navegación superior.</li>
+                </ol>
+            </div>
+        </div>
+    
+        <div class="faq-item">
+            <div class="faq-question">
+                ¿Cómo finalizo mi compra?
+                <span class="arrow">▶</span>
+            </div>
+            <div class="faq-answer">
+                <p>Finaliza tu pedido siguiendo el proceso de pago:</p>
+                <ol>
+                    <li>Haz **clic en el icono del carrito** en la barra superior.</li>
+                    <li>Revisa el resumen de tu pedido.</li>
+                    <li>Haz clic en **“Proceder al Pago”**.</li>
+                    <li>Ingresa tu dirección de envío y selecciona tu método de pago para finalizar.</li>
+                </ol>
+            </div>
+        </div>
+    
+    
+        <div class="faq-item">
+            <div class="faq-question">
+                ¿Cómo contacto al soporte técnico?
+                <span class="arrow">▶</span>
+            </div>
+            <div class="faq-answer">
+                <p>La forma de contactarnos:</p>
+                <ol>
+                    <!-- <li>Envíanos un correo electrónico a **soporte@agroinsumos.com**.</li> -->
+                    <li>Utiliza el botón flotante <strong>“💬 Contactar”</strong> en la parte inferior derecha para iniciar una conversación vía WhatsApp.</li>
+                </ol>
+            </div>
+        </div>
+    
+    </div>
+
+
+    <!-- FOOTER -->
+    <footer class="footer">
+        <div class="footer__contenido">
+            <h2 class="footer__titulo">Agroinsumos San Pedro</h2>
+            <p class="footer__texto">Todos los derechos reservados © 2025</p>
+        </div>
+    </footer>
+
+    <!-- BOTÓN FLOTANTE DE CONTACTO -->
+    <!-- <button class="btn btn--contacto" type="button">💬 Contactar</button> -->
+    <a class="btn btn--contacto" href="https://chat.whatsapp.com/IJY6hGHNQM3KOmJgJm5BJh?mode=hqrt3">💬 Contactar</a>
+
+    <script src="javascript/ayuda.js"></script>
+</body>
+
+</html>

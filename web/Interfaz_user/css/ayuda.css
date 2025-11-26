@@ -1,0 +1,394 @@
+/* ============================================================
+ * AGROINSUMOS SAN PEDRO
+ * Archivo: estilo.css
+ * Descripción: Estilos principales del sitio web
+ * ============================================================ */
+
+/* -----------------------------------------------------------------
+ * # BASE GLOBAL
+ * ----------------------------------------------------------------- */
+ body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    color: #111;
+    background-image: url("imgs/fondo.jpg");
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    overflow-x: hidden;
+    
+    /* === INICIO DE STICKY FOOTER === */
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    /* === FIN DE STICKY FOOTER === */
+}
+
+/* -----------------------------------------------------------------
+ * # CONTENIDO PRINCIPAL
+ * ----------------------------------------------------------------- */
+.faq-container {
+    /* === AÑADIDO PARA STICKY FOOTER === */
+    flex-grow: 1; 
+    /* ================================== */
+    
+    max-width: 800px;
+    margin: 40px auto;
+    padding: 20px;
+    background-color: var(--color-texto-claro); /* Usando tu paleta */
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+main {
+    flex: 1;
+}
+
+/* -----------------------------------------------------------------
+ * # HEADER
+ * ----------------------------------------------------------------- */
+.header {
+    background-color: #f9f9f9; /* Color respetado */
+    color: #001f3f; /* Color respetado */
+    font-size: 1.5rem;
+    display: flex;
+    align-items: center;
+    /* Espacio entre el logo, buscador y acciones */
+    justify-content: space-between;
+    padding: 0 40px;
+    height: 100px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+}
+
+.header__logo img {
+    height: 80px;
+    width: auto;
+}
+
+.header__acciones {
+    display: flex;
+    align-items: center;
+    gap: 25px;
+}
+
+/* -----------------------------------------------------------------
+ * # BOTONES DEL HEADER
+ * ----------------------------------------------------------------- */
+.acciones__btn {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+    transition: transform 0.2s ease;
+}
+
+.acciones__icono {
+    width: 40px;
+    height: 40px;
+}
+
+.acciones__btn:hover {
+    transform: scale(1.1);
+}
+
+/* Modificadores para login/registro - se usa .acciones_btn en HTML */
+.acciones_btn--login,
+.acciones_btn--registro {
+    padding: 8px 15px;
+    border-radius: 5px;
+    border: none;
+    font-size: 1rem;
+    color: #fff;
+    background-color: #0f684b; 
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    transition: background 0.3s, transform 0.2s ease;
+}
+
+.acciones_btn--login:hover,
+.acciones_btn--registro:hover {
+    background-color: #03484c; 
+    transform: scale(1.1);
+}
+
+/* -----------------------------------------------------------------
+ * # BUSCADOR
+ * ----------------------------------------------------------------- */
+.header__buscador {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 0 20px;
+}
+
+.buscador__form {
+    width: 100%;
+    max-width: 1000px;
+}
+
+.buscador__contenedor {
+    display: flex;
+    align-items: center;
+    background: #ffffff;
+    border-radius: 15px;
+    width: 95%;
+    padding: 8px 15px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+    height: 40px;
+    transition: all 0.25s ease;
+}
+
+.buscador__contenedor:hover {
+    transform: scale(1.02);
+}
+
+.buscador__input {
+    flex: 1;
+    border: none;
+    outline: none;
+    background: transparent;
+    font-size: 1rem;
+    color: #001f3f; /* Color respetado */
+}
+
+.buscador__input::placeholder {
+    color: rgba(0, 0, 128, 0.6); /* Color respetado */
+}
+
+.buscador__icono {
+    width: 22px;
+    height: 22px;
+    cursor: pointer;
+    transition: transform 0.2s ease;
+}
+
+.buscador__icono:hover {
+    transform: scale(1.1);
+}
+/* -----------------------------------------------------------------
+ * # Preguntas
+ * ----------------------------------------------------------------- */
+.faq-item {
+    border-bottom: 1px solid var(--color-borde);
+    margin-bottom: 15px;
+}
+
+.faq-question {
+    /* El botón clickeable */
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 0;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.faq-question .arrow {
+    /* Animación para el icono de la flecha */
+    font-size: 0.8rem;
+    transition: transform 0.3s ease;
+}
+
+/* 📌 LA CLAVE: Ocultar la respuesta y preparar la transición */
+.faq-answer {
+    padding: 0 15px 0 0; /* Padding superior e inferior a 0 */
+    max-height: 0; /* Ocultar el contenido */
+    overflow: hidden; /* Evitar que el texto se vea */
+    transition: max-height 0.4s ease-out, padding 0.4s ease-out; /* Transición para la animación */
+}
+
+/* 📌 LA CLAVE: Clases activas (agregadas por JavaScript) */
+
+.faq-question.active .arrow {
+    transform: rotate(90deg); /* Rota la flecha cuando está activo */
+}
+
+.faq-question.active + .faq-answer {
+    /* Cuando la pregunta está activa, expande la respuesta */
+    max-height: 500px; /* Suficientemente grande para cualquier respuesta */
+    padding-bottom: 15px; /* Restaura el padding inferior */
+}
+/* -----------------------------------------------------------------
+ * # FOOTER
+ * ----------------------------------------------------------------- */
+.footer {
+    width: 100%;
+    background-color: #3b8952; /* Color respetado */
+    color: #fff; /* Color respetado */
+    text-align: center;
+    padding: 10px 0;
+}
+
+.footer__titulo {
+    margin-bottom: 10px;
+}
+
+.footer__texto {
+    margin: 5px 0;
+    font-size: 14px;
+}
+
+/* -----------------------------------------------------------------
+ * # BOTÓN DE CONTACTO
+ * ----------------------------------------------------------------- */
+.btn--contacto {
+    text-decoration: none;
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background-color: #4caf50; /* Color respetado */
+    color: #fff; /* Color respetado */
+    border: none;
+    padding: 12px 20px;
+    border-radius: 8px;
+    font-size: 16px;
+    cursor: pointer;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    transition: transform 0.2s, background-color 0.2s;
+    z-index: 100;
+}
+
+.btn--contacto:hover {
+    background-color: #45a049; /* Color respetado */
+    transform: scale(1.05);
+}
+
+/* -----------------------------------------------------------------
+ * # MEDIA QUERIES (BREAKPOINTS OPTIMIZADOS)
+ * ----------------------------------------------------------------- */
+
+/* TABLET (max-width: 1024px) */
+@media (max-width: 1024px) {
+    /* El header se convierte en un diseño flexible de dos filas */
+    .header {
+        flex-wrap: wrap;
+        justify-content: space-between;
+        height: auto;
+        padding: 20px;
+        align-items: center;
+    }
+
+    .header__logo {
+        order: 1;
+    }
+
+    .header__logo img {
+        height: 70px;
+    }
+
+    /* El buscador se mueve a una nueva línea central */
+    /* Se usa la clase .header__buscador en el CSS de arriba */
+    .header__buscador { 
+        order: 3;
+        width: 100%;
+        margin: 15px 0 0;
+        text-align: center;
+    }
+
+    .buscador__contenedor {
+        width: 80%;
+        margin: 0 auto;
+        max-width: 450px;
+    }
+
+    .header__acciones {
+        order: 2;
+        margin-left: 0;
+        gap: 15px;
+    }
+}
+
+/* MOBILE (max-width: 768px) */
+@media (max-width: 768px) {
+    /* Header se convierte en una columna (logo, acciones, buscador) */
+    .header {
+        flex-direction: column;
+        height: auto;
+        padding: 15px 10px;
+        text-align: center;
+    }
+
+    .header__logo {
+        order: 1;
+        margin-bottom: 10px;
+    }
+
+    .header__logo img {
+        height: 65px;
+    }
+
+    /* Acciones primero, luego buscador, para mejor visibilidad */
+    .header__acciones {
+        order: 2;
+        width: 100%;
+        justify-content: space-around;
+        margin-top: 5px;
+    }
+
+    .acciones_btn--login,
+    .acciones_btn--registro {
+        font-size: 0.9rem;
+        padding: 6px 10px;
+    }
+
+    .header__buscador { /* Se usa la clase .header__buscador en el CSS de arriba */
+        order: 3;
+        width: 100%;
+        margin: 10px 0 0;
+    }
+
+    .buscador__contenedor {
+        width: 95%;
+        margin: 0 auto;
+        height: 35px;
+    }
+}
+
+@media (max-width: 480px) {
+    .header {
+        padding: 10px 5px;
+    }
+
+    .header__logo img {
+        height: 60px;
+    }
+
+    /* REPARACIÓN CLAVE: Aseguramos que todos los botones de acción sean visibles */
+    .acciones__btn {
+        display: block;
+        padding: 0;
+    }
+
+    .acciones__icono {
+        /* Reducimos el tamaño de los íconos para ahorrar espacio */
+        width: 25px;
+        height: 25px;
+    }
+
+    .acciones_btn--login,
+    .acciones_btn--registro {
+        padding: 5px 8px;
+        font-size: 0.8rem;
+        display: block;
+    }
+
+    /* Ajustamos el contenedor de acciones para que quepan todos */
+    .header__acciones {
+        gap: 8px;
+    }
+
+    .buscador__input {
+        font-size: 0.85rem;
+    }
+
+    .buscador__icono {
+        width: 18px;
+        height: 18px;
+    }
+
+    .btn--contacto {
+        font-size: 13px;
+        padding: 8px 12px;
+    }
+}
