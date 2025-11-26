@@ -851,13 +851,6 @@ main {
     justify-content: center !important;
 }
 
-#btn-user img {
-    width: 40px !important;
-    height: 40px !important;
-    display: inline-block !important;
-    object-fit: contain !important;
-    margin: 0 12px !important;
-}
 
 
 
