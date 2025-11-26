@@ -33,8 +33,9 @@ main {
     margin: 0;
     position: relative;
     display: flex;
-    justify-content: space-between;
     align-items: center;
+    flex-direction: row;
+    ;justify-content: space-between;
     flex-wrap: wrap;
     /* 🔹 permite que los elementos bajen */
     padding: 10px 20px;
@@ -50,8 +51,9 @@ main {
 .botones-derecha {
     display: flex;
     align-items: center;
-    gap: 15px;
-    margin-left: auto;
+    justify-content: center; /* ✔ centrado */
+    gap: 15px; /* ✔ que ocupen todo el ancho disponible */
+    margin: 0;   /* ✔ quitar el empuje */
 }
 
 /* Botones de íconos */
@@ -110,13 +112,11 @@ main {
 }
 
 .icono-lupa {
-    width: 25px;
-    height: 25px;
-    object-fit: contain;
-    margin-left: 10px;
+    width: 22px;
+    height: 22px;
+    margin-left: 8px;
     cursor: pointer;
 }
-
 
 /* ==================== BOTONES PRINCIPALES ==================== */
 .btn-login,
@@ -500,23 +500,280 @@ main {
     box-shadow: 0 0 10px rgba(76, 175, 80, 0.4);
 }
 
-/* 🔹 Responsividad */
-@media (max-width: 768px) {
-    .barra-filtros-busqueda {
+
+@media (max-width: 1024px) {
+    body {
+        background-size: cover;       /* asegúrate que cubra todo */
+        background-position: center;  /* centrado */
+        background-attachment: scroll; /* evita cortes en tablet/móvil */
+    }
+
+    .fondo {
+        width: 100vw;   /* toda la ventana horizontal */
+        height: 100vh;  /* toda la ventana vertical */
+        object-fit: cover;
+    }
+
+    .Header {
         flex-direction: column;
-        gap: 10px;
+        height: auto;
+        padding: 20px;
+        width: 100%;
+    }
+
+    .producto-detalle {
+        gap: 30px;
+        padding: 40px;
+    }
+
+    .tarjeta-producto {
+        width: 70%;
+    }
+
+    .info-producto {
+        width: 80%;
+        font-size: 1.1rem;
+    }
+}
+
+
+/* Tablets pequeñas / móviles grandes hasta 768px */
+@media (max-width: 768px) {
+    .Header {
+        flex-direction: column;
+        height: auto;
+        padding: 15px;
+        text-align: center;
+    }
+
+    .logo img {
+        margin: 0;
+        height: 80px;
+    }
+
+    .Buscador {
+        width: 90%;
+        margin: 15px 0;
+    }
+
+    .botones-derecha {
+        margin: 10px 0 0;
+        flex-wrap: wrap;
+        gap: 15px;
+        justify-content: center;
+    }
+
+    .btn-login,
+    .btn-registrarse {
+        font-size: 0.9rem;
+        padding: 6px 12px;
+    }
+
+    .producto-detalle {
+        flex-direction: column;
+        align-items: center;
+        gap: 20px;
+        padding: 20px;
+    }
+
+    .tarjeta-producto,
+    .info-producto {
         width: 90%;
     }
 
-    .barra-filtros-busqueda label {
+    .info-producto {
+        font-size: 1rem;
+        height: auto;
+    }
+
+    .acciones-producto,
+    .botones-acciones {
+        flex-direction: column;
+    }
+
+    .btn {
         width: 100%;
-        text-align: center;
+        padding: 10px;
+        font-size: 1rem;
+    }
+
+    .footer {
+        position: static;
+        padding: 10px;
+    }
+
+    .volver {
+        margin-bottom: 40px;
+    }
+
+    .boton-contactar {
+        right: 10px;
+        bottom: 10px;
+        padding: 10px 15px;
+        font-size: 14px;
     }
 }
-/* Botón Cerrar Sesión - Mismo estilo que Iniciar sesión / Registrarse */
 
+/* Móviles pequeños hasta 480px */
+@media (max-width: 480px) {
+    .Header {
+        padding: 10px;
+    }
+
+    .logo img {
+        height: 60px;
+    }
+
+    .Buscador {
+        width: 95%;
+    }
+
+    .botones-derecha {
+        gap: 10px;
+    }
+
+    .producto-detalle {
+        padding: 10px;
+        gap: 15px;
+    }
+
+    .tarjeta-producto,
+    .info-producto {
+        width: 100%;
+    }
+
+    .info-producto {
+        font-size: 0.9rem;
+    }
+
+    .btn {
+        padding: 8px;
+        font-size: 0.9rem;
+    }
+
+    .boton-contactar {
+        right: 5px;
+        bottom: 5px;
+        padding: 8px 12px;
+        font-size: 12px;
+    }
+}
+
+/* Fondo completo entre 768px y 1024px */
+@media (min-width: 769px) and (max-width: 1024px) {
+    body {
+        background-size: cover;       /* asegura que cubra toda la pantalla */
+        background-position: center;  /* centrado */
+        background-attachment: scroll; /* evita que se corte en tablet */
+    }
+
+    .Header {
+        flex-direction: column;
+        height: auto;
+        padding: 20px;
+        width: 100%;
+    }
+
+    .producto-detalle {
+        gap: 30px;
+        padding: 40px;
+    }
+
+    .tarjeta-producto {
+        width: 70%;
+    }
+
+    .info-producto {
+        width: 80%;
+        font-size: 1.1rem;
+    }
+}
+
+
+
+/* ============================
+   BUSCADOR DEL HEADER
+   ============================ */
+
+.header__buscador {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.buscador__form {
+    width: 100%;
+}
+
+.buscador__contenedor {
+    display: flex;
+    align-items: center;
+    background: #ffffff;
+    border-radius: 15px;
+    width: 700px;
+    padding: 8px 15px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+    height: 40px;
+    transition: all 0.25s ease;
+}
+
+.buscador__contenedor:hover {
+    transform: scale(1.02);
+}
+
+.buscador__input {
+    flex: 1;
+    border: none;
+    outline: none;
+    background: transparent;
+    font-size: 1rem;
+    color: #001f3f;
+}
+
+.buscador__input::placeholder {
+    color: rgba(0, 0, 128, 0.6);
+}
+
+.buscador__icono {
+    width: 22px;
+    height: 22px;
+    cursor: pointer;
+    transition: transform 0.2s ease;
+}
+
+.buscador__icono:hover {
+    transform: scale(1.1);
+}
+
+
+/* ============================
+   RESULTADO IA (Opcional)
+   ============================ */
+
+.buscador__resultado {
+    background: #ffffff;
+    width: 100%;
+    margin: 10px auto;
+    padding: 15px;
+    border-radius: 12px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    font-size: 1rem;
+    display: block;
+}
+
+.buscador__resultado ul {
+    padding-left: 20px;
+}
+
+.buscador__resultado li {
+    margin-bottom: 8px;
+    color: #114d30;
+}
+
+/* Botón Cerrar Sesión - Mismo estilo que Iniciar sesión / Registrarse */
 #btn-logout {
-  background-color: #0b6b47; /* tu verde */
+  background-color: #0b6b47;
   color: #fff;
   border: none;
   padding: 7px 16px;
@@ -534,17 +791,23 @@ main {
 }
 
 #btn-user {
-    background: none;
-    border: none;
+    display: none; /* Oculto por defecto */
     cursor: pointer;
-    display: none; /* Oculto por defecto, suficiente */
+    align-items: center;
+    justify-content: center;
+    
+    /* 🔥 ELIMINA BORDES Y ESTILO DE BOTÓN */
+    border: none;
+    background: transparent;
+    padding: 0;
+    margin: 0;
+    outline: none;
 }
 
-#btn-user img {
-    width: 40px !important;
-    height: 40px !important;
-    display: inline-block !important;
-    object-fit: contain !important;
-    margin: 0 12px !important;
-} 
 
+#btn-user img {
+    width: 40px;
+    height: 40px;
+    object-fit: contain;
+    margin: 0 12px;
+}
