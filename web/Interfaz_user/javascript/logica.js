@@ -141,15 +141,14 @@ async function mostrar_productos(categoria) {
     
     productos.innerHTML = "";
     productos.classList.add("catalogo");
-    console.log(categoria);
+
     try {
-        console.log(categoria);
         const resp = await fetch(`${API_URL}/usuarios/productos`, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ categoria, page })
         });
-        console.log(categoria,resp);
+
         const data = await resp.json();
         if (!resp.ok) return alert("Error: " + data.error);
 
@@ -167,7 +166,7 @@ async function mostrar_productos(categoria) {
             div.classList.add("tarjeta");
 
             const img = document.createElement("img");
-            img.src = "../imgs/default.png";
+            img.src = "../"+ e.direccion_img;
             img.width = 200;
 
             const n = document.createElement("h3");
@@ -190,35 +189,35 @@ async function mostrar_productos(categoria) {
             grid.appendChild(div);
         });
         productos.appendChild(grid);
-        if (data.totalPaginas > 1){
+
+        if (data.totalPaginas > 1) {
             const controles = document.createElement("div");
             controles.classList.add("volver");
-            if (data.paginaActual>1){
+
+            if (data.paginaActual > 1) {
                 const btnPrev = document.createElement("button");
-                btnPrev.classList.add("btn-volver")
+                btnPrev.classList.add("btn-volver");
                 btnPrev.innerText = "Anterior";
-                btnPrev.disabled = page === 1;
                 btnPrev.onclick = () => {
                     page--;
                     mostrar_productos(categoria);
                 };
                 controles.appendChild(btnPrev);
-            };
-            if (data.paginaActual!= data.totalPaginas){
+            }
+
+            if (data.paginaActual != data.totalPaginas) {
                 const btnNext = document.createElement("button");
-                btnNext.classList.add("btn-volver")
+                btnNext.classList.add("btn-volver");
                 btnNext.innerText = "Siguiente";
-                btnNext.disabled = page === data.totalPaginas;
                 btnNext.onclick = () => {
                     page++;
                     mostrar_productos(categoria);
                 };
                 controles.appendChild(btnNext);
             }
-            
+
             productos.appendChild(controles);
         }
-        
 
     } catch {
         alert("Error de conexión con la API");
@@ -226,7 +225,7 @@ async function mostrar_productos(categoria) {
 }
 
 // ============================================================
-// FUNCIÓN AÑADIR A FAVORITOS + REDIRECCIÓN
+// FUNCIÓN AÑADIR A FAVORITOS
 // ============================================================
 async function agregarAFavoritos(productoId) {
     const usuarioId = localStorage.getItem("usuarioId");
@@ -311,13 +310,10 @@ function agregarAlCarrito(producto) {
 
 
 /* ============================================================
-   BUSCADOR INTELIGENTE CON IA PARA REDIRECCIÓN DE CATEGORÍAS
+   BUSCADOR INTELIGENTE CON IA (VÍA BACKEND)
    ============================================================ */
 
-const API_KEY = "AIzaSyBysGS4NIAyd6Wvk2E42QRgcsDEgge71iw";
-const MODEL = "gemini-2.0-flash";
-
-const URL_GEMINI = `https://generativelanguage.googleapis.com/v1beta/models/${MODEL}:generateContent?key=${API_KEY}`;
+const URL_BACKEND_IA = "https://agroinsumos-san-pedro-despliegue.onrender.com/api/ia/interpretar";
 
 document.getElementById("btn-buscar-ia").addEventListener("click", interpretarBusqueda);
 document.getElementById("input-busqueda").addEventListener("keypress", e => {
@@ -332,65 +328,26 @@ async function interpretarBusqueda() {
     return;
   }
 
-  // Muestra estado opcional
-  console.log("Consultando IA para:", texto);
-
-  const prompt = `
-    Eres un sistema de búsqueda de una tienda de agroinsumos.
-    El usuario escribió: "${texto}".
-
-    Tu trabajo es identificar a qué categoría pertenece.
-
-    Las únicas categorías válidas son exactamente estas:
-    - SEMILLAS
-    - FERTILIZANTES
-    - PLAGUICIDAS
-    - HERBICIDAS
-    - FUNGICIDAS
-
-    Devuelve SOLO un objeto JSON con este formato exacto:
-
-    {
-      "categoria": "..."
-    }
-
-    Donde "categoria" debe ser una de las categorías listadas arriba.
-    No devuelvas explicaciones, no devuelvas texto extra.
-  `;
-
   try {
-    const response = await fetch(URL_GEMINI, {
+    const response = await fetch(URL_BACKEND_IA, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        contents: [{ parts: [{ text: prompt }] }],
-        generationConfig: {
-          temperature: 0.2,
-          responseMimeType: "application/json"
-        }
-      })
+      body: JSON.stringify({ texto })
     });
 
     const data = await response.json();
     console.log("Respuesta IA:", data);
 
-    const textResult = data?.candidates?.[0]?.content?.parts?.[0]?.text;
-
-    const json = JSON.parse(textResult);
-
-    const categoria = json.categoria;
+    const categoria = data.categoria;
 
     if (!categoria) {
       alert("No se pudo identificar la categoría.");
       return;
     }
 
-    // URL de tu catálogo (PROYECTO DEPLOYADO EN VERCEL)
-    const URL_BASE = "https://agroinsumos-san-pedro-despliegue-us-gamma.vercel.app";
-    const destino = `${URL_BASE}/inven.html?categoria=${categoria}`;
+    const URL_BASE = "https://agroinsumos-san-pedro-despliegue-us-eight.vercel.app";
 
-    console.log("Redirigiendo a:", destino);
-    window.location.href = destino;
+    window.location.href = `${URL_BASE}/inven.html?categoria=${categoria}`;
 
   } catch (error) {
     console.error("Error con IA:", error);

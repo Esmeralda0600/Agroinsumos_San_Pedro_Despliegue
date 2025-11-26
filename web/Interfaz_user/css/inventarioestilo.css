@@ -249,8 +249,10 @@ body {
 
 .tarjeta img {
     width: 100%;
-    height: 180px;
-    object-fit: cover;
+    height: 220px;
+    object-fit: contain;
+    background-color: white;  /* evita espacios transparentes */
+    border-radius: 10px;
 }
 
 .tarjeta h3 {
@@ -450,6 +452,7 @@ body {
 .oculto {
     display: none;
 }
+
 /* ================================
    RESPONSIVIDAD ESPECÍFICA BUSCADOR
    ================================ */
