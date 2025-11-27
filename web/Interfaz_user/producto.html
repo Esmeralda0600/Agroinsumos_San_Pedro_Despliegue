@@ -123,6 +123,7 @@
                     return window.location.href = "login.html";
                 }
 
+                const claveCarrito = `carrito_${usuarioId}`;
                 let carrito = JSON.parse(localStorage.getItem(claveCarrito)) || []; //`carrito_${usuarioId}`
 
                 const existe = carrito.find(p => p.id_producto === prod.id_producto);
