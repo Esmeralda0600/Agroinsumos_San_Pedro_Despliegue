@@ -53,8 +53,8 @@ async function cargarCategorias() {
 
                 const titulo =
                     e.target.value === "marca" ? "CATÁLOGO POR MARCA" :
-                    e.target.value === "ingrediente" ? "CATÁLOGO POR INGREDIENTE ACTIVO" :
-                    "CATÁLOGO DE PRODUCTOS";
+                        e.target.value === "ingrediente" ? "CATÁLOGO POR INGREDIENTE ACTIVO" :
+                            "CATÁLOGO DE PRODUCTOS";
 
                 mostrarTarjetas(data, titulo);
             } catch {
@@ -143,7 +143,7 @@ async function mostrar_productos(categoria) {
     const loader = document.getElementById("loader");
 
     loader.classList.remove("oculto");
-    
+
     productos.innerHTML = "";
     productos.classList.add("catalogo");
 
@@ -185,7 +185,7 @@ async function mostrar_productos(categoria) {
             div.classList.add("tarjeta");
 
             const img = document.createElement("img");
-            img.src = "../"+ e.direccion_img;
+            img.src = "../" + e.direccion_img;
             img.width = 200;
 
             const n = document.createElement("h3");
@@ -209,7 +209,11 @@ async function mostrar_productos(categoria) {
             }
 
             // Acción: usa la función ORIGINAL
-            imgFav.onclick = () => agregarAFavoritos(e.id_producto);
+            imgFav.onclick = () => {
+                imgFav.src = "imgs/corazon_lleno.png"; // 🔥 cambio inmediato
+                agregarAFavoritos(e.id_producto);      // tu función original
+            };
+
 
 
             const btnVer = document.createElement("button");
@@ -362,40 +366,40 @@ const URL_BACKEND_IA = "https://agroinsumos-san-pedro-despliegue.onrender.com/ap
 
 document.getElementById("btn-buscar-ia").addEventListener("click", interpretarBusqueda);
 document.getElementById("input-busqueda").addEventListener("keypress", e => {
-  if (e.key === "Enter") interpretarBusqueda();
+    if (e.key === "Enter") interpretarBusqueda();
 });
 
 async function interpretarBusqueda() {
-  const texto = document.getElementById("input-busqueda").value.trim();
+    const texto = document.getElementById("input-busqueda").value.trim();
 
-  if (!texto) {
-    alert("Por favor escribe lo que deseas buscar.");
-    return;
-  }
-
-  try {
-    const response = await fetch(URL_BACKEND_IA, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ texto })
-    });
-
-    const data = await response.json();
-    console.log("Respuesta IA:", data);
-
-    const categoria = data.categoria;
-
-    if (!categoria) {
-      alert("No se pudo identificar la categoría.");
-      return;
+    if (!texto) {
+        alert("Por favor escribe lo que deseas buscar.");
+        return;
     }
 
-    const URL_BASE = "https://agroinsumos-san-pedro-despliegue-us-eight.vercel.app";
+    try {
+        const response = await fetch(URL_BACKEND_IA, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ texto })
+        });
 
-    window.location.href = `${URL_BASE}/inven.html?categoria=${categoria}`;
+        const data = await response.json();
+        console.log("Respuesta IA:", data);
 
-  } catch (error) {
-    console.error("Error con IA:", error);
-    alert("Ocurrió un error al procesar la búsqueda.");
-  }
+        const categoria = data.categoria;
+
+        if (!categoria) {
+            alert("No se pudo identificar la categoría.");
+            return;
+        }
+
+        const URL_BASE = "https://agroinsumos-san-pedro-despliegue-us-eight.vercel.app";
+
+        window.location.href = `${URL_BASE}/inven.html?categoria=${categoria}`;
+
+    } catch (error) {
+        console.error("Error con IA:", error);
+        alert("Ocurrió un error al procesar la búsqueda.");
+    }
 }
