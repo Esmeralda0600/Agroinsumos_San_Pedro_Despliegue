@@ -1,5 +1,5 @@
 // ============================================================
-// Archivo: logica.js (versión producción con favoritos + redirect + icono PNG)
+// Archivo: logica.js (CATÁLOGO + FAVORITOS CON CORAZÓN PNG)
 // ============================================================
 
 const paginaActual = window.location.pathname;
@@ -53,8 +53,8 @@ async function cargarCategorias() {
 
                 const titulo =
                     e.target.value === "marca" ? "CATÁLOGO POR MARCA" :
-                        e.target.value === "ingrediente" ? "CATÁLOGO POR INGREDIENTE ACTIVO" :
-                            "CATÁLOGO DE PRODUCTOS";
+                    e.target.value === "ingrediente" ? "CATÁLOGO POR INGREDIENTE ACTIVO" :
+                    "CATÁLOGO DE PRODUCTOS";
 
                 mostrarTarjetas(data, titulo);
             } catch {
@@ -119,6 +119,7 @@ async function login() {
 }
 
 
+
 // ============================================================
 // BIENVENIDA
 // ============================================================
@@ -128,6 +129,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     if (usuario && span) span.innerText = `Bienvenido, ${usuario.nombre_usuario} 👋`;
 });
+
 
 
 // ============================================================
@@ -143,7 +145,7 @@ async function mostrar_productos(categoria) {
     const loader = document.getElementById("loader");
 
     loader.classList.remove("oculto");
-
+    
     productos.innerHTML = "";
     productos.classList.add("catalogo");
 
@@ -166,20 +168,30 @@ async function mostrar_productos(categoria) {
         const grid = document.createElement("div");
         grid.classList.add("productos-grid");
 
+
+        // ================================
+        // OBTENER FAVORITOS DEL BACKEND
+        // ================================
         const usuarioId = localStorage.getItem("usuarioId");
         let favoritosBackend = [];
 
-        // Obtener favoritos del backend si está logueado
         if (usuarioId) {
             try {
                 const favResp = await fetch(`${API_URL}/favoritos/${usuarioId}`);
                 const favData = await favResp.json();
+
+                // Lista de ids favoritos
                 favoritosBackend = favData.favoritos.map(f => f.producto.id_producto);
-            } catch (err) {
+            } catch (error) {
                 console.log("Error cargando favoritos backend");
             }
         }
 
+
+
+        // ================================
+        // CREAR TARJETAS
+        // ================================
         data.productos.forEach((e) => {
             const div = document.createElement("div");
             div.classList.add("tarjeta");
@@ -194,28 +206,27 @@ async function mostrar_productos(categoria) {
             const precio = document.createElement("p");
             precio.innerText = ` $${e.precio}`;
 
-            // ======================================================
-            // ⭐ ÍCONO PNG DE FAVORITO (VACÍO O LLENO)
-            // ======================================================
+
+            // ===============================================
+            // CORAZÓN PNG (VACÍO / LLENO)
+            // ===============================================
             const imgFav = document.createElement("img");
             imgFav.classList.add("btn-favorito");
             imgFav.dataset.id = e.id_producto;
 
-            // Si ya está en favoritos (desde backend)
             if (favoritosBackend.includes(e.id_producto)) {
                 imgFav.src = "imgs/corazon_lleno.png";
             } else {
                 imgFav.src = "imgs/corazon_vacio.png";
             }
 
-            // Acción: usa la función ORIGINAL
-            imgFav.onclick = () => {
-                imgFav.src = "imgs/corazon_lleno.png"; // 🔥 cambio inmediato
-                agregarAFavoritos(e.id_producto);      // tu función original
+            imgFav.onclick = async () => {
+                imgFav.src = "imgs/corazon_lleno.png";
+                await agregarAFavoritos(e.id_producto);
             };
 
 
-
+            // VER PRODUCTO
             const btnVer = document.createElement("button");
             btnVer.innerText = "Ver producto";
             btnVer.classList.add("btn", "comprar");
@@ -227,9 +238,9 @@ async function mostrar_productos(categoria) {
 
         productos.appendChild(grid);
 
-        // ===============================
+
+
         // PAGINACIÓN
-        // ===============================
         if (data.totalPaginas > 1) {
             const controles = document.createElement("div");
             controles.classList.add("volver");
@@ -265,6 +276,7 @@ async function mostrar_productos(categoria) {
 }
 
 
+
 // ============================================================
 // FUNCIÓN AÑADIR A FAVORITOS
 // ============================================================
@@ -286,13 +298,13 @@ async function agregarAFavoritos(productoId) {
         const data = await resp.json();
         if (!resp.ok) return alert("Error: " + data.error);
 
-        alert("Producto agregado a favoritos ❤️");
-        window.location.href = "favoritos.html";
-
+        console.log("Favorito agregado");
+        
     } catch {
         alert("Error al conectar con la API");
     }
 }
+
 
 
 // ============================================================
@@ -304,8 +316,9 @@ function cambiar_pagina(producto) {
 }
 
 
+
 // ============================================================
-// TARJETAS DE CATÁLOGO
+// TARJETAS DE CATÁLOGO PRINCIPAL
 // ============================================================
 function mostrarTarjetas(lista, tituloTexto) {
     const contenedor = document.getElementById("contenedor-tarjetas");
@@ -323,13 +336,13 @@ function mostrarTarjetas(lista, tituloTexto) {
 
         tarjeta.style.cursor = "pointer";
         tarjeta.addEventListener("click", () => {
-            window.location.href = `
-inven.html?categoria=${item.nombre.toUpperCase()}`;
+            window.location.href = `inven.html?categoria=${item.nombre.toUpperCase()}`;
         });
 
         contenedor.appendChild(tarjeta);
     });
 }
+
 
 
 // ============================================================
@@ -366,40 +379,40 @@ const URL_BACKEND_IA = "https://agroinsumos-san-pedro-despliegue.onrender.com/ap
 
 document.getElementById("btn-buscar-ia").addEventListener("click", interpretarBusqueda);
 document.getElementById("input-busqueda").addEventListener("keypress", e => {
-    if (e.key === "Enter") interpretarBusqueda();
+  if (e.key === "Enter") interpretarBusqueda();
 });
 
 async function interpretarBusqueda() {
-    const texto = document.getElementById("input-busqueda").value.trim();
+  const texto = document.getElementById("input-busqueda").value.trim();
 
-    if (!texto) {
-        alert("Por favor escribe lo que deseas buscar.");
-        return;
+  if (!texto) {
+    alert("Por favor escribe lo que deseas buscar.");
+    return;
+  }
+
+  try {
+    const response = await fetch(URL_BACKEND_IA, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ texto })
+    });
+
+    const data = await response.json();
+    console.log("Respuesta IA:", data);
+
+    const categoria = data.categoria;
+
+    if (!categoria) {
+      alert("No se pudo identificar la categoría.");
+      return;
     }
 
-    try {
-        const response = await fetch(URL_BACKEND_IA, {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ texto })
-        });
+    const URL_BASE = "https://agroinsumos-san-pedro-despliegue-us-eight.vercel.app";
 
-        const data = await response.json();
-        console.log("Respuesta IA:", data);
+    window.location.href = `${URL_BASE}/inven.html?categoria=${categoria}`;
 
-        const categoria = data.categoria;
-
-        if (!categoria) {
-            alert("No se pudo identificar la categoría.");
-            return;
-        }
-
-        const URL_BASE = "https://agroinsumos-san-pedro-despliegue-us-eight.vercel.app";
-
-        window.location.href = `${URL_BASE}/inven.html?categoria=${categoria}`;
-
-    } catch (error) {
-        console.error("Error con IA:", error);
-        alert("Ocurrió un error al procesar la búsqueda.");
-    }
+  } catch (error) {
+    console.error("Error con IA:", error);
+    alert("Ocurrió un error al procesar la búsqueda.");
+  }
 }
