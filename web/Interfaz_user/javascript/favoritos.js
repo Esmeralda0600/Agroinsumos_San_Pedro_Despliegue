@@ -1,5 +1,5 @@
 // ============================================================
-// Archivo: logica.js (CATÁLOGO + FAVORITOS CON CORAZÓN PNG)
+// Archivo: logica.js (CATÁLOGO + FAVORITOS COMPLETOS LOCALSTORAGE)
 // ============================================================
 
 const paginaActual = window.location.pathname;
@@ -145,7 +145,6 @@ async function mostrar_productos(categoria) {
     const loader = document.getElementById("loader");
 
     loader.classList.remove("oculto");
-    
     productos.innerHTML = "";
     productos.classList.add("catalogo");
 
@@ -168,7 +167,6 @@ async function mostrar_productos(categoria) {
         const grid = document.createElement("div");
         grid.classList.add("productos-grid");
 
-        // Favoritos locales
         let favoritosLS = JSON.parse(localStorage.getItem("favoritosLS")) || [];
 
         data.productos.forEach((e) => {
@@ -185,29 +183,26 @@ async function mostrar_productos(categoria) {
             const precio = document.createElement("p");
             precio.innerText = ` $${e.precio}`;
 
-
-            // ===============================================
-            // CORAZÓN PNG (VACÍO / LLENO)
-            // ===============================================
             const imgFav = document.createElement("img");
             imgFav.classList.add("btn-favorito");
-            imgFav.dataset.id = e.id_producto;
 
-            if (favoritosLS.includes(e.nombre_producto)) {
+            const productoInfo = {
+                id: e.id_producto,
+                nombre: e.nombre_producto,
+                precio: e.precio,
+                imagen: "../" + e.direccion_img
+            };
+
+            imgFav.dataset.producto = JSON.stringify(productoInfo);
+
+            if (favoritosLS.some(f => f.id === e.id_producto)) {
                 imgFav.src = "imgs/corazon_lleno.png";
             } else {
                 imgFav.src = "imgs/corazon_vacio.png";
             }
 
-            imgFav.onclick = () => toggleFavorito(
-                e.id_producto,
-                imgFav,
-                e.nombre_producto
-            );
+            imgFav.onclick = () => toggleFavorito(imgFav);
 
-
-
-            // VER PRODUCTO
             const btnVer = document.createElement("button");
             btnVer.innerText = "Ver producto";
             btnVer.classList.add("btn", "comprar");
@@ -219,8 +214,6 @@ async function mostrar_productos(categoria) {
 
         productos.appendChild(grid);
 
-
-        // PAGINACIÓN
         if (data.totalPaginas > 1) {
             const controles = document.createElement("div");
             controles.classList.add("volver");
@@ -256,49 +249,25 @@ async function mostrar_productos(categoria) {
 }
 
 
-
 // ============================================================
-// FAVORITOS AGREGAR / ELIMINAR
+// FAVORITOS COMPLETOS LOCALSTORAGE
 // ============================================================
-async function toggleFavorito(productoId, imgElem, nombre_producto) {
-    const usuarioId = localStorage.getItem("usuarioId");
+function toggleFavorito(imgElem) {
+    let favoritos = JSON.parse(localStorage.getItem("favoritosLS")) || [];
+    const producto = JSON.parse(imgElem.dataset.producto);
 
-    if (!usuarioId) {
-        alert("Debes iniciar sesión para gestionar favoritos.");
-        return window.location.href = "login.html";
-    }
+    const existe = favoritos.some(f => f.id === producto.id);
 
-    let favoritosLS = JSON.parse(localStorage.getItem("favoritosLS")) || [];
-    const yaEsta = favoritosLS.includes(nombre_producto);
-
-    if (yaEsta) {
-        // QUITAR FAVORITO
-        favoritosLS = favoritosLS.filter(n => n !== nombre_producto);
-        localStorage.setItem("favoritosLS", JSON.stringify(favoritosLS));
+    if (existe) {
+        favoritos = favoritos.filter(f => f.id !== producto.id);
         imgElem.src = "imgs/corazon_vacio.png";
-
-        // Eliminar del backend por nombre
-        await fetch(`${API_URL}/favoritos/eliminar-por-nombre`, {
-            method: "DELETE",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ usuarioId, nombre: nombre_producto })
-        });
-
-        return;
+    } else {
+        favoritos.push(producto);
+        imgElem.src = "imgs/corazon_lleno.png";
     }
 
-    // AGREGAR FAVORITO
-    favoritosLS.push(nombre_producto);
-    localStorage.setItem("favoritosLS", JSON.stringify(favoritosLS));
-    imgElem.src = "imgs/corazon_lleno.png";
-
-    await fetch(`${API_URL}/favoritos`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ usuarioId, productoId })
-    });
+    localStorage.setItem("favoritosLS", JSON.stringify(favoritos));
 }
-
 
 
 // ============================================================
@@ -310,9 +279,8 @@ function cambiar_pagina(producto) {
 }
 
 
-
 // ============================================================
-// TARJETAS DE CATÁLOGO PRINCIPAL
+// TARJETAS CATÁLOGO PRINCIPAL
 // ============================================================
 function mostrarTarjetas(lista, tituloTexto) {
     const contenedor = document.getElementById("contenedor-tarjetas");
@@ -336,7 +304,6 @@ function mostrarTarjetas(lista, tituloTexto) {
         contenedor.appendChild(tarjeta);
     });
 }
-
 
 
 // ============================================================
@@ -364,49 +331,47 @@ function agregarAlCarrito(producto) {
 }
 
 
-
 /* ============================================================
-   BUSCADOR INTELIGENTE CON IA (VÍA BACKEND)
+   BUSCADOR IA
    ============================================================ */
 
 const URL_BACKEND_IA = "https://agroinsumos-san-pedro-despliegue.onrender.com/api/ia/interpretar";
 
 document.getElementById("btn-buscar-ia").addEventListener("click", interpretarBusqueda);
 document.getElementById("input-busqueda").addEventListener("keypress", e => {
-  if (e.key === "Enter") interpretarBusqueda();
+    if (e.key === "Enter") interpretarBusqueda();
 });
 
 async function interpretarBusqueda() {
-  const texto = document.getElementById("input-busqueda").value.trim();
+    const texto = document.getElementById("input-busqueda").value.trim();
 
-  if (!texto) {
-    alert("Por favor escribe lo que deseas buscar.");
-    return;
-  }
-
-  try {
-    const response = await fetch(URL_BACKEND_IA, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ texto })
-    });
-
-    const data = await response.json();
-    console.log("Respuesta IA:", data);
-
-    const categoria = data.categoria;
-
-    if (!categoria) {
-      alert("No se pudo identificar la categoría.");
-      return;
+    if (!texto) {
+        alert("Por favor escribe lo que deseas buscar.");
+        return;
     }
 
-    const URL_BASE = "https://agroinsumos-san-pedro-despliegue-us-eight.vercel.app";
+    try {
+        const response = await fetch(URL_BACKEND_IA, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ texto })
+        });
 
-    window.location.href = `${URL_BASE}/inven.html?categoria=${categoria}`;
+        const data = await response.json();
+        console.log("Respuesta IA:", data);
 
-  } catch (error) {
-    console.error("Error con IA:", error);
-    alert("Ocurrió un error al procesar la búsqueda.");
-  }
+        const categoria = data.categoria;
+
+        if (!categoria) {
+            alert("No se pudo identificar la categoría.");
+            return;
+        }
+
+        const URL_BASE = "https://agroinsumos-san-pedro-despliegue-us-eight.vercel.app";
+        window.location.href = `${URL_BASE}/inven.html?categoria=${categoria}`;
+
+    } catch (error) {
+        console.error("Error con IA:", error);
+        alert("Ocurrió un error al procesar la búsqueda.");
+    }
 }
