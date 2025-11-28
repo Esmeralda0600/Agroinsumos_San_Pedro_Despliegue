@@ -426,3 +426,44 @@ main {
 
     }
 }
+
+
+/* ============================================
+   ❤️  ESTILO BONITO PARA EL ÍCONO DE FAVORITOS
+   ============================================ */
+
+.btn-favorito {
+    width: 32px;               /* tamaño moderado */
+    height: 32px;
+    margin-top: 8px;
+    cursor: pointer;
+    transition: transform 0.2s ease-in-out, 
+                filter 0.2s ease-in-out;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    user-select: none;
+}
+
+.btn-favorito:hover {
+    transform: scale(1.18);
+    filter: drop-shadow(0 0 5px rgba(46, 204, 113, 0.6));
+}
+
+.btn-favorito:active {
+    transform: scale(0.95);
+}
+
+/* Cuando está lleno: más bonito */
+.favorito-activo {
+    filter: drop-shadow(0 0 6px rgba(0, 180, 90, 0.8));
+}
+
+/* Ajuste especial móvil */
+@media (max-width: 480px) {
+    .btn-favorito {
+        width: 28px;
+        height: 28px;
+    }
+}
+
