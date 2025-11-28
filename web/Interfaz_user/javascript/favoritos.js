@@ -48,23 +48,39 @@ document.addEventListener("DOMContentLoaded", async () => {
         totalFavoritos.textContent = `${favoritos.length} productos`;
 
         document.querySelectorAll(".btn-eliminar").forEach(btn => {
-            btn.addEventListener("click", async () => {
-                const id = btn.dataset.id;
+    btn.addEventListener("click", async () => {
+        const id = btn.dataset.id;
 
-                await fetch(`${API_URL}/favoritos/${id}`, {
-                    method: "DELETE"
-                });
-
-                btn.closest(".item-carrito").remove();
-
-                const restantes = document.querySelectorAll(".item-carrito").length;
-                totalFavoritos.textContent = `${restantes} productos`;
-            });
+        // 1. ELIMINAR EN BACKEND
+        await fetch(`${API_URL}/favoritos/${id}`, {
+            method: "DELETE"
         });
+
+        // 2. ELIMINAR EN LOCALSTORAGE
+        let favsLS = JSON.parse(localStorage.getItem("favoritosLS")) || [];
+
+        // obtener el nombre del producto desde el DOM
+        let nombreProducto = btn.closest(".item-carrito").querySelector("h3").innerText;
+
+        // quitarlo del array
+        favsLS = favsLS.filter(f => f !== nombreProducto);
+
+        // guardar cambios
+        localStorage.setItem("favoritosLS", JSON.stringify(favsLS));
+
+        // 3. ACTUALIZAR LISTA EN FAVORITOS.HTML
+        btn.closest(".item-carrito").remove();
+
+        const restantes = document.querySelectorAll(".item-carrito").length;
+        totalFavoritos.textContent = `${restantes} productos`;
+    });
+});
+
 
     } catch (err) {
         console.error("ERROR FAVORITOS:", err);
         lista.innerHTML = "<p>Error al cargar tus favoritos.</p>";
     }
 });
+
 
