@@ -204,19 +204,41 @@ async function mostrar_productos(categoria) {
                 imgFav.src = "imgs/corazon_vacio.png";
             }
 
-            imgFav.onclick = () => {
-                let favs = JSON.parse(localStorage.getItem("favoritosLS")) || [];
+            imgFav.onclick = async () => {
+    let favs = JSON.parse(localStorage.getItem("favoritosLS")) || [];
 
-                if (favs.includes(e.nombre_producto)) {
-                    favs = favs.filter(f => f !== e.nombre_producto);
-                    imgFav.src = "imgs/corazon_vacio.png";
-                } else {
-                    favs.push(e.nombre_producto);
-                    imgFav.src = "imgs/corazon_lleno.png";
-                }
+    const yaExiste = favs.includes(e.nombre_producto);
 
-                localStorage.setItem("favoritosLS", JSON.stringify(favs));
-            };
+    if (yaExiste) {
+        // quitar de favs locales
+        favs = favs.filter(f => f !== e.nombre_producto);
+        imgFav.src = "imgs/corazon_vacio.png";
+    } else {
+        // agregar a favs locales
+        favs.push(e.nombre_producto);
+        imgFav.src = "imgs/corazon_lleno.png";
+
+
+        const usuarioId = localStorage.getItem("usuarioId");
+        if (usuarioId) {
+            try {
+                await fetch(`${API_URL}/favoritos`, {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({
+                        usuarioId,
+                        productoId: e.id_producto  // aunque no lo guarde, no afecta
+                    })
+                });
+            } catch (error) {
+                console.log("⚠ No se pudo registrar favorito en el backend");
+            }
+        }
+    }
+
+    localStorage.setItem("favoritosLS", JSON.stringify(favs));
+};
+
 
 
             // VER PRODUCTO
