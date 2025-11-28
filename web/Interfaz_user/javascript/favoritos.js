@@ -1,9 +1,9 @@
 document.addEventListener("DOMContentLoaded", async () => {
+
     const usuarioId = localStorage.getItem("usuarioId");
     const lista = document.getElementById("lista-favoritos");
     const totalFavoritos = document.getElementById("total-favoritos");
 
-    // URL BASE DE PRODUCCIÓN
     const API_URL = "https://agroinsumos-san-pedro-despliegue.onrender.com";
 
     if (!usuarioId) {
@@ -38,7 +38,9 @@ document.addEventListener("DOMContentLoaded", async () => {
                 </div>
 
                 <div class="acciones-item">
-                    <button class="btn-eliminar" data-id="${fav._id}">Eliminar</button>
+                    <button class="btn-eliminar" data-id="${fav._id}" data-nombre="${fav.nombre}">
+                        Eliminar
+                    </button>
                 </div>
             `;
 
@@ -47,14 +49,28 @@ document.addEventListener("DOMContentLoaded", async () => {
 
         totalFavoritos.textContent = `${favoritos.length} productos`;
 
+        /** ================================
+         *  ELIMINAR FAVORITO
+         *  - Backend
+         *  - LocalStorage (favoritosLS)
+         *  ================================ */
         document.querySelectorAll(".btn-eliminar").forEach(btn => {
             btn.addEventListener("click", async () => {
-                const id = btn.dataset.id;
 
-                await fetch(`${API_URL}/favoritos/${id}`, {
+                const idFavorito = btn.dataset.id;
+                const nombreProducto = btn.dataset.nombre;
+
+                // 1. ELIMINAR EN BACKEND
+                await fetch(`${API_URL}/favoritos/${idFavorito}`, {
                     method: "DELETE"
                 });
 
+                // 2. ELIMINAR EN LOCALSTORAGE PARA SINCRONIZAR INVENTARIO Y PRODUCTO
+                let favsLS = JSON.parse(localStorage.getItem("favoritosLS")) || [];
+                favsLS = favsLS.filter(n => n !== nombreProducto);
+                localStorage.setItem("favoritosLS", JSON.stringify(favsLS));
+
+                // 3. QUITAR DEL DOM
                 btn.closest(".item-carrito").remove();
 
                 const restantes = document.querySelectorAll(".item-carrito").length;
@@ -67,4 +83,3 @@ document.addEventListener("DOMContentLoaded", async () => {
         lista.innerHTML = "<p>Error al cargar tus favoritos.</p>";
     }
 });
-
