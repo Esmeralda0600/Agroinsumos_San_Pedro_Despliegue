@@ -1,5 +1,5 @@
 // ============================================================
-// Archivo: logica.js (versión producción con favoritos + redirect)
+// Archivo: logica.js (versión producción con favoritos + redirect + icono PNG)
 // ============================================================
 
 const paginaActual = window.location.pathname;
@@ -21,8 +21,9 @@ if (btn_login && paginaActual.includes("login")) {
     btn_login.addEventListener("click", login);
 }
 
+
 // ============================================================
-// FUNCIONES DE CATÁLOGO
+// FUNCIONES DE CATÁLOGO (CATEGORÍAS, MARCAS, INGREDIENTES)
 // ============================================================
 const radios = document.querySelectorAll('input[name="tipo-busqueda"]');
 if (radios.length != 0) cargarCategorias();
@@ -52,8 +53,8 @@ async function cargarCategorias() {
 
                 const titulo =
                     e.target.value === "marca" ? "CATÁLOGO POR MARCA" :
-                    e.target.value === "ingrediente" ? "CATÁLOGO POR INGREDIENTE ACTIVO" :
-                    "CATÁLOGO DE PRODUCTOS";
+                        e.target.value === "ingrediente" ? "CATÁLOGO POR INGREDIENTE ACTIVO" :
+                            "CATÁLOGO DE PRODUCTOS";
 
                 mostrarTarjetas(data, titulo);
             } catch {
@@ -62,6 +63,8 @@ async function cargarCategorias() {
         });
     });
 }
+
+
 
 // ============================================================
 // REGISTRO
@@ -87,6 +90,8 @@ async function registrar_usuario() {
         alert("Error de conexión con la API");
     }
 }
+
+
 
 // ============================================================
 // LOGIN
@@ -115,6 +120,8 @@ async function login() {
     }
 }
 
+
+
 // ============================================================
 // BIENVENIDA
 // ============================================================
@@ -124,6 +131,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
     if (usuario && span) span.innerText = `Bienvenido, ${usuario.nombre_usuario} 👋`;
 });
+
+
 
 // ============================================================
 // MOSTRAR PRODUCTOS POR CATEGORÍA
@@ -138,7 +147,7 @@ async function mostrar_productos(categoria) {
     const loader = document.getElementById("loader");
 
     loader.classList.remove("oculto");
-    
+
     productos.innerHTML = "";
     productos.classList.add("catalogo");
 
@@ -161,12 +170,15 @@ async function mostrar_productos(categoria) {
         const grid = document.createElement("div");
         grid.classList.add("productos-grid");
 
+        const favoritosLocal = JSON.parse(localStorage.getItem("favoritos")) || [];
+
         data.productos.forEach((e) => {
+
             const div = document.createElement("div");
             div.classList.add("tarjeta");
 
             const img = document.createElement("img");
-            img.src = "../"+ e.direccion_img;
+            img.src = "../" + e.direccion_img;
             img.width = 200;
 
             const n = document.createElement("h3");
@@ -175,21 +187,36 @@ async function mostrar_productos(categoria) {
             const precio = document.createElement("p");
             precio.innerText = ` $${e.precio}`;
 
-            const btnFav = document.createElement("button");
-            btnFav.innerText = "Añadir a favoritos";
-            btnFav.classList.add("btn");
-            btnFav.onclick = () => agregarAFavoritos(e.id_producto);
+            // ===============================================
+            // CORAZÓN PNG (VACÍO / LLENO)
+            // ===============================================
+            const imgFav = document.createElement("img");
+            imgFav.classList.add("btn-favorito");
+            imgFav.dataset.id = e.id_producto;
 
+            if (favoritosLocal.includes(e.id_producto)) {
+                imgFav.src = "imgs/corazon_lleno.png";
+                imgFav.classList.add("favorito-activo");
+            } else {
+                imgFav.src = "imgs/corazon_vacio.png";
+            }
+
+            imgFav.addEventListener("click", () => toggleFavorito(e.id_producto, imgFav));
+
+
+            // Botón ver producto
             const btnVer = document.createElement("button");
             btnVer.innerText = "Ver producto";
             btnVer.classList.add("btn", "comprar");
             btnVer.onclick = () => cambiar_pagina(e);
 
-            div.append(img, n, precio, btnFav, btnVer);
+            div.append(img, n, precio, imgFav, btnVer);
             grid.appendChild(div);
         });
+
         productos.appendChild(grid);
 
+        // PAGINACIÓN
         if (data.totalPaginas > 1) {
             const controles = document.createElement("div");
             controles.classList.add("volver");
@@ -224,34 +251,51 @@ async function mostrar_productos(categoria) {
     }
 }
 
+
+
 // ============================================================
-// FUNCIÓN AÑADIR A FAVORITOS
+// NUEVA FUNCIÓN: FAVORITOS CON CORAZÓN PNG
+// (localStorage + API si el usuario está logueado)
 // ============================================================
-async function agregarAFavoritos(productoId) {
+async function toggleFavorito(idProducto, imgElem) {
+
     const usuarioId = localStorage.getItem("usuarioId");
 
-    if (!usuarioId) {
-        alert("Debes iniciar sesión para agregar favoritos.");
-        return window.location.href = "login.html";
+    let favoritos = JSON.parse(localStorage.getItem("favoritos")) || [];
+    const existe = favoritos.includes(idProducto);
+
+    // ================================
+    // MANEJO VISUAL
+    // ================================
+    if (existe) {
+        favoritos = favoritos.filter(id => id !== idProducto);
+        imgElem.src = "imgs/corazon_vacio.png";
+        imgElem.classList.remove("favorito-activo");
+    } else {
+        favoritos.push(idProducto);
+        imgElem.src = "imgs/corazon_lleno.png";
+        imgElem.classList.add("favorito-activo");
     }
 
-    try {
-        const resp = await fetch(`${API_URL}/favoritos`, {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ usuarioId, productoId })
-        });
+    localStorage.setItem("favoritos", JSON.stringify(favoritos));
 
-        const data = await resp.json();
-        if (!resp.ok) return alert("Error: " + data.error);
-
-        alert("Producto agregado a favoritos ❤️");
-        window.location.href = "favoritos.html";
-
-    } catch {
-        alert("Error al conectar con la API");
+    // ========================================================
+    // SI ESTÁ LOGUEADO: GUARDAR TAMBIÉN EN BACKEND
+    // ========================================================
+    if (usuarioId) {
+        try {
+            await fetch(`${API_URL}/favoritos`, {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ usuarioId, productoId: idProducto })
+            });
+        } catch {
+            console.log("Error al registrar favorito en la API");
+        }
     }
 }
+
+
 
 // ============================================================
 // VER PRODUCTO
@@ -261,8 +305,10 @@ function cambiar_pagina(producto) {
     window.location.href = "producto.html";
 }
 
+
+
 // ============================================================
-// TARJETAS DE CATÁLOGO
+// TARJETAS DE CATÁLOGO PRINCIPAL
 // ============================================================
 function mostrarTarjetas(lista, tituloTexto) {
     const contenedor = document.getElementById("contenedor-tarjetas");
@@ -287,6 +333,11 @@ function mostrarTarjetas(lista, tituloTexto) {
     });
 }
 
+
+
+// ============================================================
+// AGREGAR AL CARRITO
+// ============================================================
 function agregarAlCarrito(producto) {
     let carrito = JSON.parse(localStorage.getItem("carrito")) || [];
 
@@ -309,48 +360,47 @@ function agregarAlCarrito(producto) {
 }
 
 
-/* ============================================================
-   BUSCADOR INTELIGENTE CON IA (VÍA BACKEND)
-   ============================================================ */
 
+// ============================================================
+// BUSCADOR INTELIGENTE IA
+// ============================================================
 const URL_BACKEND_IA = "https://agroinsumos-san-pedro-despliegue.onrender.com/api/ia/interpretar";
 
 document.getElementById("btn-buscar-ia").addEventListener("click", interpretarBusqueda);
 document.getElementById("input-busqueda").addEventListener("keypress", e => {
-  if (e.key === "Enter") interpretarBusqueda();
+    if (e.key === "Enter") interpretarBusqueda();
 });
 
 async function interpretarBusqueda() {
-  const texto = document.getElementById("input-busqueda").value.trim();
+    const texto = document.getElementById("input-busqueda").value.trim();
 
-  if (!texto) {
-    alert("Por favor escribe lo que deseas buscar.");
-    return;
-  }
-
-  try {
-    const response = await fetch(URL_BACKEND_IA, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ texto })
-    });
-
-    const data = await response.json();
-    console.log("Respuesta IA:", data);
-
-    const categoria = data.categoria;
-
-    if (!categoria) {
-      alert("No se pudo identificar la categoría.");
-      return;
+    if (!texto) {
+        alert("Por favor escribe lo que deseas buscar.");
+        return;
     }
 
-    const URL_BASE = "https://agroinsumos-san-pedro-despliegue-us-eight.vercel.app";
+    try {
+        const response = await fetch(URL_BACKEND_IA, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ texto })
+        });
 
-    window.location.href = `${URL_BASE}/inven.html?categoria=${categoria}`;
+        const data = await response.json();
+        console.log("Respuesta IA:", data);
 
-  } catch (error) {
-    console.error("Error con IA:", error);
-    alert("Ocurrió un error al procesar la búsqueda.");
-  }
+        const categoria = data.categoria;
+
+        if (!categoria) {
+            alert("No se pudo identificar la categoría.");
+            return;
+        }
+
+        const URL_BASE = "https://agroinsumos-san-pedro-despliegue-us-eight.vercel.app";
+        window.location.href = `${URL_BASE}/inven.html?categoria=${categoria}`;
+
+    } catch (error) {
+        console.error("Error con IA:", error);
+        alert("Ocurrió un error al procesar la búsqueda.");
+    }
 }
