@@ -1,5 +1,5 @@
 // ============================================================
-// Archivo: logica.js (versión producción con favoritos + redirect)
+// Archivo: logica.js (versión producción con favoritos + redirect + icono PNG)
 // ============================================================
 
 const paginaActual = window.location.pathname;
@@ -20,6 +20,7 @@ const btn_login = document.getElementById("boton-login");
 if (btn_login && paginaActual.includes("login")) {
     btn_login.addEventListener("click", login);
 }
+
 
 // ============================================================
 // FUNCIONES DE CATÁLOGO
@@ -63,6 +64,7 @@ async function cargarCategorias() {
     });
 }
 
+
 // ============================================================
 // REGISTRO
 // ============================================================
@@ -87,6 +89,7 @@ async function registrar_usuario() {
         alert("Error de conexión con la API");
     }
 }
+
 
 // ============================================================
 // LOGIN
@@ -115,6 +118,7 @@ async function login() {
     }
 }
 
+
 // ============================================================
 // BIENVENIDA
 // ============================================================
@@ -124,6 +128,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     if (usuario && span) span.innerText = `Bienvenido, ${usuario.nombre_usuario} 👋`;
 });
+
 
 // ============================================================
 // MOSTRAR PRODUCTOS POR CATEGORÍA
@@ -161,6 +166,20 @@ async function mostrar_productos(categoria) {
         const grid = document.createElement("div");
         grid.classList.add("productos-grid");
 
+        const usuarioId = localStorage.getItem("usuarioId");
+        let favoritosBackend = [];
+
+        // Obtener favoritos del backend si está logueado
+        if (usuarioId) {
+            try {
+                const favResp = await fetch(`${API_URL}/favoritos/${usuarioId}`);
+                const favData = await favResp.json();
+                favoritosBackend = favData.favoritos.map(f => f.producto.id_producto);
+            } catch (err) {
+                console.log("Error cargando favoritos backend");
+            }
+        }
+
         data.productos.forEach((e) => {
             const div = document.createElement("div");
             div.classList.add("tarjeta");
@@ -175,21 +194,38 @@ async function mostrar_productos(categoria) {
             const precio = document.createElement("p");
             precio.innerText = ` $${e.precio}`;
 
-            const btnFav = document.createElement("button");
-            btnFav.innerText = "Añadir a favoritos";
-            btnFav.classList.add("btn");
-            btnFav.onclick = () => agregarAFavoritos(e.id_producto);
+            // ======================================================
+            // ⭐ ÍCONO PNG DE FAVORITO (VACÍO O LLENO)
+            // ======================================================
+            const imgFav = document.createElement("img");
+            imgFav.classList.add("btn-favorito");
+            imgFav.dataset.id = e.id_producto;
+
+            // Si ya está en favoritos (desde backend)
+            if (favoritosBackend.includes(e.id_producto)) {
+                imgFav.src = "imgs/corazon_lleno.png";
+            } else {
+                imgFav.src = "imgs/corazon_vacio.png";
+            }
+
+            // Acción: usa la función ORIGINAL
+            imgFav.onclick = () => agregarAFavoritos(e.id_producto);
+
 
             const btnVer = document.createElement("button");
             btnVer.innerText = "Ver producto";
             btnVer.classList.add("btn", "comprar");
             btnVer.onclick = () => cambiar_pagina(e);
 
-            div.append(img, n, precio, btnFav, btnVer);
+            div.append(img, n, precio, imgFav, btnVer);
             grid.appendChild(div);
         });
+
         productos.appendChild(grid);
 
+        // ===============================
+        // PAGINACIÓN
+        // ===============================
         if (data.totalPaginas > 1) {
             const controles = document.createElement("div");
             controles.classList.add("volver");
@@ -224,6 +260,7 @@ async function mostrar_productos(categoria) {
     }
 }
 
+
 // ============================================================
 // FUNCIÓN AÑADIR A FAVORITOS
 // ============================================================
@@ -253,6 +290,7 @@ async function agregarAFavoritos(productoId) {
     }
 }
 
+
 // ============================================================
 // VER PRODUCTO
 // ============================================================
@@ -260,6 +298,7 @@ function cambiar_pagina(producto) {
     localStorage.setItem("productoSeleccionado", JSON.stringify(producto));
     window.location.href = "producto.html";
 }
+
 
 // ============================================================
 // TARJETAS DE CATÁLOGO
@@ -288,6 +327,10 @@ inven.html?categoria=${item.nombre.toUpperCase()}`;
     });
 }
 
+
+// ============================================================
+// CARRITO
+// ============================================================
 function agregarAlCarrito(producto) {
     let carrito = JSON.parse(localStorage.getItem("carrito")) || [];
 
@@ -308,6 +351,7 @@ function agregarAlCarrito(producto) {
     localStorage.setItem("carrito", JSON.stringify(carrito));
     alert("Producto agregado al carrito 🛒");
 }
+
 
 
 /* ============================================================
