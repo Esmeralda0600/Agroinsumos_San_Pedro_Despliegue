@@ -168,9 +168,7 @@ async function mostrar_productos(categoria) {
         const grid = document.createElement("div");
         grid.classList.add("productos-grid");
 
-        // ============================================
-        // FAVORITOS LOCAL (NO DEPENDEN DE BACKEND)
-        // ============================================
+        // Favoritos locales
         let favoritosLS = JSON.parse(localStorage.getItem("favoritosLS")) || [];
 
         data.productos.forEach((e) => {
@@ -189,55 +187,23 @@ async function mostrar_productos(categoria) {
 
 
             // ===============================================
-            // CORAZÓN PNG (LOCALSTORAGE)
+            // CORAZÓN PNG (VACÍO / LLENO)
             // ===============================================
             const imgFav = document.createElement("img");
             imgFav.classList.add("btn-favorito");
-            imgFav.style.width = "26px";
-            imgFav.style.height = "26px";
-            imgFav.style.cursor = "pointer";
+            imgFav.dataset.id = e.id_producto;
 
-            // marcar si ya está en favoritos
             if (favoritosLS.includes(e.nombre_producto)) {
                 imgFav.src = "imgs/corazon_lleno.png";
             } else {
                 imgFav.src = "imgs/corazon_vacio.png";
             }
 
-            imgFav.onclick = async () => {
-    let favs = JSON.parse(localStorage.getItem("favoritosLS")) || [];
-
-    const yaExiste = favs.includes(e.nombre_producto);
-
-    if (yaExiste) {
-        // quitar de favs locales
-        favs = favs.filter(f => f !== e.nombre_producto);
-        imgFav.src = "imgs/corazon_vacio.png";
-    } else {
-        // agregar a favs locales
-        favs.push(e.nombre_producto);
-        imgFav.src = "imgs/corazon_lleno.png";
-
-
-        const usuarioId = localStorage.getItem("usuarioId");
-        if (usuarioId) {
-            try {
-                await fetch(`${API_URL}/favoritos`, {
-                    method: "POST",
-                    headers: { "Content-Type": "application/json" },
-                    body: JSON.stringify({
-                        usuarioId,
-                        productoId: e.id_producto  // aunque no lo guarde, no afecta
-                    })
-                });
-            } catch (error) {
-                console.log("⚠ No se pudo registrar favorito en el backend");
-            }
-        }
-    }
-
-    localStorage.setItem("favoritosLS", JSON.stringify(favs));
-};
+            imgFav.onclick = () => toggleFavorito(
+                e.id_producto,
+                imgFav,
+                e.nombre_producto
+            );
 
 
 
@@ -252,7 +218,6 @@ async function mostrar_productos(categoria) {
         });
 
         productos.appendChild(grid);
-
 
 
         // PAGINACIÓN
@@ -288,6 +253,50 @@ async function mostrar_productos(categoria) {
     } catch {
         alert("Error de conexión con la API");
     }
+}
+
+
+
+// ============================================================
+// FAVORITOS AGREGAR / ELIMINAR
+// ============================================================
+async function toggleFavorito(productoId, imgElem, nombre_producto) {
+    const usuarioId = localStorage.getItem("usuarioId");
+
+    if (!usuarioId) {
+        alert("Debes iniciar sesión para gestionar favoritos.");
+        return window.location.href = "login.html";
+    }
+
+    let favoritosLS = JSON.parse(localStorage.getItem("favoritosLS")) || [];
+    const yaEsta = favoritosLS.includes(nombre_producto);
+
+    if (yaEsta) {
+        // QUITAR FAVORITO
+        favoritosLS = favoritosLS.filter(n => n !== nombre_producto);
+        localStorage.setItem("favoritosLS", JSON.stringify(favoritosLS));
+        imgElem.src = "imgs/corazon_vacio.png";
+
+        // Eliminar del backend por nombre
+        await fetch(`${API_URL}/favoritos/eliminar-por-nombre`, {
+            method: "DELETE",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ usuarioId, nombre: nombre_producto })
+        });
+
+        return;
+    }
+
+    // AGREGAR FAVORITO
+    favoritosLS.push(nombre_producto);
+    localStorage.setItem("favoritosLS", JSON.stringify(favoritosLS));
+    imgElem.src = "imgs/corazon_lleno.png";
+
+    await fetch(`${API_URL}/favoritos`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ usuarioId, productoId })
+    });
 }
 
 
