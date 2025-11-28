@@ -500,3 +500,25 @@ body {
     box-shadow: none !important;
     display: block !important;
 }
+
+
+
+/* ================================
+   ICONO DE FAVORITO (CORAZÓN)
+================================ */
+.btn-favorito {
+    width: 35px;
+    height: 35px;
+    cursor: pointer;
+    margin-top: 10px;
+    transition: transform 0.2s ease-in-out;
+}
+
+.btn-favorito:hover {
+    transform: scale(1.15);
+}
+
+.favorito-activo {
+    filter: drop-shadow(0 0 5px #2ecc71);
+}
+
