@@ -9,7 +9,7 @@ const API_URL = "https://agroinsumos-san-pedro-despliegue.onrender.com";
 
 
 // ============================================================
-// BOTONES LOGIN Y REGISTRO
+// BOTONES LOGIN AND REGISTRO
 // ============================================================
 const btn_registro = document.getElementById("boton_registro");
 if (btn_registro && paginaActual.includes("registro")) {
@@ -21,8 +21,9 @@ if (btn_login && paginaActual.includes("login")) {
     btn_login.addEventListener("click", login);
 }
 
+
 // ============================================================
-// FUNCIONES DE CATÁLOGO
+// FUNCIONES DE CATÁLOGO (CATEGORÍAS / MARCAS / INGREDIENTES)
 // ============================================================
 const radios = document.querySelectorAll('input[name="tipo-busqueda"]');
 if (radios.length != 0) cargarCategorias();
@@ -63,6 +64,7 @@ async function cargarCategorias() {
     });
 }
 
+
 // ============================================================
 // REGISTRO
 // ============================================================
@@ -87,6 +89,7 @@ async function registrar_usuario() {
         alert("Error de conexión con la API");
     }
 }
+
 
 // ============================================================
 // LOGIN
@@ -115,6 +118,7 @@ async function login() {
     }
 }
 
+
 // ============================================================
 // BIENVENIDA
 // ============================================================
@@ -125,8 +129,9 @@ document.addEventListener("DOMContentLoaded", () => {
     if (usuario && span) span.innerText = `Bienvenido, ${usuario.nombre_usuario} 👋`;
 });
 
+
 // ============================================================
-// MOSTRAR PRODUCTOS POR CATEGORÍA
+// MOSTRAR PRODUCTOS POR CATEGORÍA (INVEN.HTML)
 // ============================================================
 let page = 1;
 const params = new URLSearchParams(window.location.search);
@@ -161,7 +166,7 @@ async function mostrar_productos(categoria) {
         const grid = document.createElement("div");
         grid.classList.add("productos-grid");
 
-        // Leer favoritos locales (por NOMBRE)
+        // Leer favoritos locales (por nombre)
         let favoritosLS = JSON.parse(localStorage.getItem("favoritosLS")) || [];
 
         data.productos.forEach((e) => {
@@ -169,7 +174,7 @@ async function mostrar_productos(categoria) {
             div.classList.add("tarjeta");
 
             const img = document.createElement("img");
-            img.src = "../"+ e.direccion_img;
+            img.src = "../" + e.direccion_img;
             img.width = 200;
 
             const n = document.createElement("h3");
@@ -178,21 +183,24 @@ async function mostrar_productos(categoria) {
             const precio = document.createElement("p");
             precio.innerText = ` $${e.precio}`;
 
-            // ============================
-            // CORAZÓN PNG (VACÍO / LLENO)
-            // ============================
+            // =======================================
+            // CORAZÓN FAVORITO (PNG + ESTADO LOCAL)
+            // =======================================
             const imgFav = document.createElement("img");
             imgFav.classList.add("btn-favorito");
             imgFav.alt = "Favorito";
 
             if (favoritosLS.includes(e.nombre_producto)) {
                 imgFav.src = "imgs/corazon_lleno.png";
+                imgFav.classList.add("favorito-activo");
             } else {
                 imgFav.src = "imgs/corazon_vacio.png";
             }
 
-            imgFav.onclick = () => toggleFavorito(e.id_producto, e.nombre_producto, imgFav);
+            imgFav.onclick = () =>
+                toggleFavorito(e.id_producto, e.nombre_producto, imgFav);
 
+            // BOTÓN VER PRODUCTO
             const btnVer = document.createElement("button");
             btnVer.innerText = "Ver producto";
             btnVer.classList.add("btn", "comprar");
@@ -201,6 +209,7 @@ async function mostrar_productos(categoria) {
             div.append(img, n, precio, imgFav, btnVer);
             grid.appendChild(div);
         });
+
         productos.appendChild(grid);
 
         // PAGINACIÓN
@@ -238,8 +247,9 @@ async function mostrar_productos(categoria) {
     }
 }
 
+
 // ============================================================
-// FAVORITOS: AGREGAR / QUITAR (SIN TOCAR LA BASE AL QUITAR)
+// FAVORITOS: AGREGAR / QUITAR (INVEN + BACKEND)
 // ============================================================
 async function toggleFavorito(productoId, nombreProducto, imgElem) {
     const usuarioId = localStorage.getItem("usuarioId");
@@ -252,23 +262,53 @@ async function toggleFavorito(productoId, nombreProducto, imgElem) {
     let favsLS = JSON.parse(localStorage.getItem("favoritosLS")) || [];
     const yaEsta = favsLS.includes(nombreProducto);
 
+    // ==========================
+    // SI YA ESTÁ: QUITAR FAVORITO
+    // ==========================
     if (yaEsta) {
-        // Quitar del localStorage y cambiar icono
+        // 1. Quitar del localStorage
         favsLS = favsLS.filter(n => n !== nombreProducto);
         localStorage.setItem("favoritosLS", JSON.stringify(favsLS));
-        imgElem.src = "imgs/corazon_vacio.png";
 
-        // NOTA: aquí NO hacemos DELETE al backend.
-        // El DELETE se hace desde favoritos.html con el código:
-        // await fetch(`${API_URL}/favoritos/${id}`, { method: "DELETE" });
+        // 2. Cambiar icono a vacío
+        imgElem.src = "imgs/corazon_vacio.png";
+        imgElem.classList.remove("favorito-activo");
+
+        // 3. Borrar también del backend
+        try {
+            const resp = await fetch(`${API_URL}/favoritos/${usuarioId}`);
+            const data = await resp.json();
+            const lista = data.favoritos || [];
+
+            const favorito = lista.find(f =>
+                f.producto &&
+                (f.producto.id_producto === productoId ||
+                 f.producto.nombre === nombreProducto ||
+                 f.producto.nombre_producto === nombreProducto)
+            );
+
+            if (favorito && favorito._id) {
+                await fetch(`${API_URL}/favoritos/${favorito._id}`, {
+                    method: "DELETE"
+                });
+            }
+        } catch (err) {
+            console.error("Error al eliminar favorito en backend:", err);
+        }
+
         return;
     }
 
-    // Agregar a favoritos
+    // ==========================
+    // SI NO ESTÁ: AGREGAR FAVORITO
+    // ==========================
     favsLS.push(nombreProducto);
     localStorage.setItem("favoritosLS", JSON.stringify(favsLS));
-    imgElem.src = "imgs/corazon_lleno.png";
 
+    imgElem.src = "imgs/corazon_lleno.png";
+    imgElem.classList.add("favorito-activo");
+
+    // Guardar también en el backend
     try {
         await fetch(`${API_URL}/favoritos`, {
             method: "POST",
@@ -280,6 +320,7 @@ async function toggleFavorito(productoId, nombreProducto, imgElem) {
     }
 }
 
+
 // ============================================================
 // VER PRODUCTO
 // ============================================================
@@ -288,8 +329,9 @@ function cambiar_pagina(producto) {
     window.location.href = "producto.html";
 }
 
+
 // ============================================================
-// TARJETAS DE CATÁLOGO
+// TARJETAS DEL CATÁLOGO PRINCIPAL
 // ============================================================
 function mostrarTarjetas(lista, tituloTexto) {
     const contenedor = document.getElementById("contenedor-tarjetas");
@@ -314,6 +356,10 @@ function mostrarTarjetas(lista, tituloTexto) {
     });
 }
 
+
+// ============================================================
+// CARRITO
+// ============================================================
 function agregarAlCarrito(producto) {
     let carrito = JSON.parse(localStorage.getItem("carrito")) || [];
 
@@ -342,10 +388,15 @@ function agregarAlCarrito(producto) {
 
 const URL_BACKEND_IA = "https://agroinsumos-san-pedro-despliegue.onrender.com/api/ia/interpretar";
 
-document.getElementById("btn-buscar-ia").addEventListener("click", interpretarBusqueda);
-document.getElementById("input-busqueda").addEventListener("keypress", e => {
-  if (e.key === "Enter") interpretarBusqueda();
-});
+const btnBuscarIA = document.getElementById("btn-buscar-ia");
+const inputBusqueda = document.getElementById("input-busqueda");
+
+if (btnBuscarIA && inputBusqueda) {
+    btnBuscarIA.addEventListener("click", interpretarBusqueda);
+    inputBusqueda.addEventListener("keypress", e => {
+        if (e.key === "Enter") interpretarBusqueda();
+    });
+}
 
 async function interpretarBusqueda() {
   const texto = document.getElementById("input-busqueda").value.trim();
