@@ -254,8 +254,8 @@ async function mostrar_productos(categoria) {
 
 
 // ============================================================
-// NUEVA FUNCIÓN: FAVORITOS CON CORAZÓN PNG
-// (localStorage + API si el usuario está logueado)
+// FUNCIÓN COMPLETA DE FAVORITOS:
+// VISUAL + LOCALSTORAGE + BACKEND (agregar y eliminar)
 // ============================================================
 async function toggleFavorito(idProducto, imgElem) {
 
@@ -268,31 +268,45 @@ async function toggleFavorito(idProducto, imgElem) {
     // MANEJO VISUAL
     // ================================
     if (existe) {
+        // QUITAR FAVORITO (visual)
         favoritos = favoritos.filter(id => id !== idProducto);
         imgElem.src = "imgs/corazon_vacio.png";
         imgElem.classList.remove("favorito-activo");
+
+        // QUITAR EN BACKEND
+        if (usuarioId) {
+            try {
+                await fetch(`${API_URL}/favoritos/eliminar`, {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ usuarioId, productoId: idProducto })
+                });
+            } catch {
+                console.log("Error al eliminar favorito en backend");
+            }
+        }
+
     } else {
+        // AGREGAR FAVORITO (visual)
         favoritos.push(idProducto);
         imgElem.src = "imgs/corazon_lleno.png";
         imgElem.classList.add("favorito-activo");
+
+        // AGREGAR EN BACKEND
+        if (usuarioId) {
+            try {
+                await fetch(`${API_URL}/favoritos`, {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ usuarioId, productoId: idProducto })
+                });
+            } catch {
+                console.log("Error al agregar favorito en backend");
+            }
+        }
     }
 
     localStorage.setItem("favoritos", JSON.stringify(favoritos));
-
-    // ========================================================
-    // SI ESTÁ LOGUEADO: GUARDAR TAMBIÉN EN BACKEND
-    // ========================================================
-    if (usuarioId) {
-        try {
-            await fetch(`${API_URL}/favoritos`, {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ usuarioId, productoId: idProducto })
-            });
-        } catch {
-            console.log("Error al registrar favorito en la API");
-        }
-    }
 }
 
 
