@@ -1,58 +1,70 @@
 document.addEventListener("DOMContentLoaded", async () => {
-
+    const usuarioId = localStorage.getItem("usuarioId");
     const lista = document.getElementById("lista-favoritos");
     const totalFavoritos = document.getElementById("total-favoritos");
 
-    // Cargar favoritos desde localStorage
-    let favoritos = JSON.parse(localStorage.getItem("favoritosLS")) || [];
+    // URL BASE DE PRODUCCIÓN
+    const API_URL = "https://agroinsumos-san-pedro-despliegue.onrender.com";
 
-    lista.innerHTML = "";
-
-    if (favoritos.length === 0) {
-        lista.innerHTML = `<p class="sin-favoritos">No tienes productos favoritos aún.</p>`;
-        totalFavoritos.textContent = "0 productos";
+    if (!usuarioId) {
+        lista.innerHTML = '<p class="sin-sesion">Debes iniciar sesión para ver tus favoritos.</p>';
         return;
     }
 
-    favoritos.forEach(prod => {
-        const articulo = document.createElement("article");
-        articulo.classList.add("item-carrito");
+    try {
+        const resp = await fetch(`${API_URL}/favoritos/${usuarioId}`);
+        const data = await resp.json();
 
-        articulo.innerHTML = `
-            <img src="${prod.imagen}" class="producto-img">
+        const favoritos = data.favoritos || [];
 
-            <div class="info-producto-carrito">
-                <h3>${prod.nombre}</h3>
-                <p>Precio: $${prod.precio}</p>
-            </div>
+        lista.innerHTML = "";
 
-            <div class="acciones-item">
-                <button class="btn-eliminar" data-id="${prod.id}">Eliminar</button>
-            </div>
-        `;
+        if (favoritos.length === 0) {
+            lista.innerHTML = `<p class="sin-favoritos">No tienes productos favoritos aún.</p>`;
+            totalFavoritos.textContent = "0 productos";
+            return;
+        }
 
-        lista.appendChild(articulo);
-    });
+        favoritos.forEach(fav => {
+            const articulo = document.createElement("article");
+            articulo.classList.add("item-carrito");
 
-    totalFavoritos.textContent = `${favoritos.length} productos`;
+            articulo.innerHTML = `
+                <img src="${fav.imagen || 'imgs/ingrediente.png'}" class="producto-img">
 
+                <div class="info-producto-carrito">
+                    <h3>${fav.nombre}</h3>
+                    <p>Precio: $${fav.precio}</p>
+                </div>
 
-    // FUNCIONALIDAD DE ELIMINAR FAVORITOS
-    document.querySelectorAll(".btn-eliminar").forEach(btn => {
-        btn.addEventListener("click", () => {
+                <div class="acciones-item">
+                    <button class="btn-eliminar" data-id="${fav._id}">Eliminar</button>
+                </div>
+            `;
 
-            const idProducto = btn.dataset.id;
-
-            // Remover del localStorage
-            favoritos = favoritos.filter(f => f.id !== idProducto);
-            localStorage.setItem("favoritosLS", JSON.stringify(favoritos));
-
-            // Remover del DOM
-            btn.closest(".item-carrito").remove();
-
-            const restantes = document.querySelectorAll(".item-carrito").length;
-            totalFavoritos.textContent = `${restantes} productos`;
+            lista.appendChild(articulo);
         });
-    });
 
+        totalFavoritos.textContent = `${favoritos.length} productos`;
+
+        document.querySelectorAll(".btn-eliminar").forEach(btn => {
+            btn.addEventListener("click", async () => {
+                const id = btn.dataset.id;
+
+                await fetch(`${API_URL}/favoritos/${id}`, {
+                    method: "DELETE"
+                });
+
+                btn.closest(".item-carrito").remove();
+
+                const restantes = document.querySelectorAll(".item-carrito").length;
+                totalFavoritos.textContent = `${restantes} productos`;
+            });
+        });
+
+    } catch (err) {
+        console.error("ERROR FAVORITOS:", err);
+        lista.innerHTML = "<p>Error al cargar tus favoritos.</p>";
+    }
 });
+
