@@ -168,30 +168,11 @@ async function mostrar_productos(categoria) {
         const grid = document.createElement("div");
         grid.classList.add("productos-grid");
 
+        // ============================================
+        // FAVORITOS LOCAL (NO DEPENDEN DE BACKEND)
+        // ============================================
+        let favoritosLS = JSON.parse(localStorage.getItem("favoritosLS")) || [];
 
-        // ================================
-        // OBTENER FAVORITOS DEL BACKEND
-        // ================================
-        const usuarioId = localStorage.getItem("usuarioId");
-        let favoritosBackend = [];
-
-        if (usuarioId) {
-            try {
-                const favResp = await fetch(`${API_URL}/favoritos/${usuarioId}`);
-                const favData = await favResp.json();
-
-                // Lista de ids favoritos
-                favoritosBackend = favData.favoritos.map(f => f.producto.id_producto);
-            } catch (error) {
-                console.log("Error cargando favoritos backend");
-            }
-        }
-
-
-
-        // ================================
-        // CREAR TARJETAS
-        // ================================
         data.productos.forEach((e) => {
             const div = document.createElement("div");
             div.classList.add("tarjeta");
@@ -208,21 +189,33 @@ async function mostrar_productos(categoria) {
 
 
             // ===============================================
-            // CORAZÓN PNG (VACÍO / LLENO)
+            // CORAZÓN PNG (LOCALSTORAGE)
             // ===============================================
             const imgFav = document.createElement("img");
             imgFav.classList.add("btn-favorito");
-            imgFav.dataset.id = e.id_producto;
+            imgFav.style.width = "26px";
+            imgFav.style.height = "26px";
+            imgFav.style.cursor = "pointer";
 
-            if (favoritosBackend.includes(e.id_producto)) {
+            // marcar si ya está en favoritos
+            if (favoritosLS.includes(e.nombre_producto)) {
                 imgFav.src = "imgs/corazon_lleno.png";
             } else {
                 imgFav.src = "imgs/corazon_vacio.png";
             }
 
-            imgFav.onclick = async () => {
-                imgFav.src = "imgs/corazon_lleno.png";
-                await agregarAFavoritos(e.id_producto);
+            imgFav.onclick = () => {
+                let favs = JSON.parse(localStorage.getItem("favoritosLS")) || [];
+
+                if (favs.includes(e.nombre_producto)) {
+                    favs = favs.filter(f => f !== e.nombre_producto);
+                    imgFav.src = "imgs/corazon_vacio.png";
+                } else {
+                    favs.push(e.nombre_producto);
+                    imgFav.src = "imgs/corazon_lleno.png";
+                }
+
+                localStorage.setItem("favoritosLS", JSON.stringify(favs));
             };
 
 
@@ -272,36 +265,6 @@ async function mostrar_productos(categoria) {
 
     } catch {
         alert("Error de conexión con la API");
-    }
-}
-
-
-
-// ============================================================
-// FUNCIÓN AÑADIR A FAVORITOS
-// ============================================================
-async function agregarAFavoritos(productoId) {
-    const usuarioId = localStorage.getItem("usuarioId");
-
-    if (!usuarioId) {
-        alert("Debes iniciar sesión para agregar favoritos.");
-        return window.location.href = "login.html";
-    }
-
-    try {
-        const resp = await fetch(`${API_URL}/favoritos`, {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ usuarioId, productoId })
-        });
-
-        const data = await resp.json();
-        if (!resp.ok) return alert("Error: " + data.error);
-
-        console.log("Favorito agregado");
-        
-    } catch {
-        alert("Error al conectar con la API");
     }
 }
 
