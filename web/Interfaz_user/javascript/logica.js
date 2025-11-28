@@ -21,7 +21,6 @@ if (btn_login && paginaActual.includes("login")) {
     btn_login.addEventListener("click", login);
 }
 
-
 // ============================================================
 // FUNCIONES DE CATÁLOGO
 // ============================================================
@@ -64,7 +63,6 @@ async function cargarCategorias() {
     });
 }
 
-
 // ============================================================
 // REGISTRO
 // ============================================================
@@ -89,7 +87,6 @@ async function registrar_usuario() {
         alert("Error de conexión con la API");
     }
 }
-
 
 // ============================================================
 // LOGIN
@@ -118,8 +115,6 @@ async function login() {
     }
 }
 
-
-
 // ============================================================
 // BIENVENIDA
 // ============================================================
@@ -129,8 +124,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
     if (usuario && span) span.innerText = `Bienvenido, ${usuario.nombre_usuario} 👋`;
 });
-
-
 
 // ============================================================
 // MOSTRAR PRODUCTOS POR CATEGORÍA
@@ -168,7 +161,7 @@ async function mostrar_productos(categoria) {
         const grid = document.createElement("div");
         grid.classList.add("productos-grid");
 
-        // Favoritos locales
+        // Leer favoritos locales (por NOMBRE)
         let favoritosLS = JSON.parse(localStorage.getItem("favoritosLS")) || [];
 
         data.productos.forEach((e) => {
@@ -176,7 +169,7 @@ async function mostrar_productos(categoria) {
             div.classList.add("tarjeta");
 
             const img = document.createElement("img");
-            img.src = "../" + e.direccion_img;
+            img.src = "../"+ e.direccion_img;
             img.width = 200;
 
             const n = document.createElement("h3");
@@ -185,13 +178,12 @@ async function mostrar_productos(categoria) {
             const precio = document.createElement("p");
             precio.innerText = ` $${e.precio}`;
 
-
-            // ===============================================
+            // ============================
             // CORAZÓN PNG (VACÍO / LLENO)
-            // ===============================================
+            // ============================
             const imgFav = document.createElement("img");
             imgFav.classList.add("btn-favorito");
-            imgFav.dataset.id = e.id_producto;
+            imgFav.alt = "Favorito";
 
             if (favoritosLS.includes(e.nombre_producto)) {
                 imgFav.src = "imgs/corazon_lleno.png";
@@ -199,15 +191,8 @@ async function mostrar_productos(categoria) {
                 imgFav.src = "imgs/corazon_vacio.png";
             }
 
-            imgFav.onclick = () => toggleFavorito(
-                e.id_producto,
-                imgFav,
-                e.nombre_producto
-            );
+            imgFav.onclick = () => toggleFavorito(e.id_producto, e.nombre_producto, imgFav);
 
-
-
-            // VER PRODUCTO
             const btnVer = document.createElement("button");
             btnVer.innerText = "Ver producto";
             btnVer.classList.add("btn", "comprar");
@@ -216,9 +201,7 @@ async function mostrar_productos(categoria) {
             div.append(img, n, precio, imgFav, btnVer);
             grid.appendChild(div);
         });
-
         productos.appendChild(grid);
-
 
         // PAGINACIÓN
         if (data.totalPaginas > 1) {
@@ -255,51 +238,47 @@ async function mostrar_productos(categoria) {
     }
 }
 
-
-
 // ============================================================
-// FAVORITOS AGREGAR / ELIMINAR
+// FAVORITOS: AGREGAR / QUITAR (SIN TOCAR LA BASE AL QUITAR)
 // ============================================================
-async function toggleFavorito(productoId, imgElem, nombre_producto) {
+async function toggleFavorito(productoId, nombreProducto, imgElem) {
     const usuarioId = localStorage.getItem("usuarioId");
 
     if (!usuarioId) {
-        alert("Debes iniciar sesión para gestionar favoritos.");
+        alert("Debes iniciar sesión para agregar favoritos.");
         return window.location.href = "login.html";
     }
 
-    let favoritosLS = JSON.parse(localStorage.getItem("favoritosLS")) || [];
-    const yaEsta = favoritosLS.includes(nombre_producto);
+    let favsLS = JSON.parse(localStorage.getItem("favoritosLS")) || [];
+    const yaEsta = favsLS.includes(nombreProducto);
 
     if (yaEsta) {
-        // QUITAR FAVORITO
-        favoritosLS = favoritosLS.filter(n => n !== nombre_producto);
-        localStorage.setItem("favoritosLS", JSON.stringify(favoritosLS));
+        // Quitar del localStorage y cambiar icono
+        favsLS = favsLS.filter(n => n !== nombreProducto);
+        localStorage.setItem("favoritosLS", JSON.stringify(favsLS));
         imgElem.src = "imgs/corazon_vacio.png";
 
-        // Eliminar del backend por nombre
-        await fetch(`${API_URL}/favoritos/eliminar-por-nombre`, {
-            method: "DELETE",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ usuarioId, nombre: nombre_producto })
-        });
-
+        // NOTA: aquí NO hacemos DELETE al backend.
+        // El DELETE se hace desde favoritos.html con el código:
+        // await fetch(`${API_URL}/favoritos/${id}`, { method: "DELETE" });
         return;
     }
 
-    // AGREGAR FAVORITO
-    favoritosLS.push(nombre_producto);
-    localStorage.setItem("favoritosLS", JSON.stringify(favoritosLS));
+    // Agregar a favoritos
+    favsLS.push(nombreProducto);
+    localStorage.setItem("favoritosLS", JSON.stringify(favsLS));
     imgElem.src = "imgs/corazon_lleno.png";
 
-    await fetch(`${API_URL}/favoritos`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ usuarioId, productoId })
-    });
+    try {
+        await fetch(`${API_URL}/favoritos`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ usuarioId, productoId })
+        });
+    } catch (err) {
+        console.error("Error al agregar favorito en backend:", err);
+    }
 }
-
-
 
 // ============================================================
 // VER PRODUCTO
@@ -309,10 +288,8 @@ function cambiar_pagina(producto) {
     window.location.href = "producto.html";
 }
 
-
-
 // ============================================================
-// TARJETAS DE CATÁLOGO PRINCIPAL
+// TARJETAS DE CATÁLOGO
 // ============================================================
 function mostrarTarjetas(lista, tituloTexto) {
     const contenedor = document.getElementById("contenedor-tarjetas");
@@ -337,11 +314,6 @@ function mostrarTarjetas(lista, tituloTexto) {
     });
 }
 
-
-
-// ============================================================
-// CARRITO
-// ============================================================
 function agregarAlCarrito(producto) {
     let carrito = JSON.parse(localStorage.getItem("carrito")) || [];
 
@@ -362,7 +334,6 @@ function agregarAlCarrito(producto) {
     localStorage.setItem("carrito", JSON.stringify(carrito));
     alert("Producto agregado al carrito 🛒");
 }
-
 
 
 /* ============================================================
