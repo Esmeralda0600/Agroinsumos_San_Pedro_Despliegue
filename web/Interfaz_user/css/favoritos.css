@@ -10,34 +10,18 @@ body {
     background-attachment: fixed;
     overflow-x: hidden; 
     
-    /* --- CORRECCIÓN FOOTER ABAJO (Sticky Footer) --- */
     display: flex;
     flex-direction: column;
     min-height: 100vh; 
 }
 
-/* Contenedor principal para que ocupe todo el espacio sobrante */
+/* Zona principal que empuja el footer */
 main { 
-    flex-grow: 1; /* Permite que el contenido principal empuje el footer hacia abajo */
-    /* Aseguramos que el main no se desborde */
+    flex-grow: 1;
     width: 100%; 
     box-sizing: border-box;
-    /* Margin top para separarlo del header */
     margin-top: 20px; 
 }
-
-/* CORRECCIÓN: Eliminamos la clase .fondo que creaba la doble imagen */
-/*
-.fondo {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    z-index: -1;
-}
-*/
 
 /* ==================== HEADER ==================== */
 .Header {
@@ -59,36 +43,9 @@ main {
     margin-right: 20px;
 }
 
-/* ==================== ESTILOS PARA MENSAJES DE ESTADO ==================== */
+/* ==================== MENSAJES DE ESTADO ==================== */
 
-.sin-sesion {
-    color: #03484c; 
-    font-size: 1.5rem; 
-    font-weight: bold;
-    text-align: center;
-    margin: 40px auto; 
-    padding: 30px;
-    background: #e9f7ef; 
-    border: 2px solid #3c8c40; 
-    border-radius: 15px;
-    max-width: 600px; 
-    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
-    width: 90%; 
-    box-sizing: border-box;
-}
-
-.sin-sesion a {
-    color: #0f684b;
-    text-decoration: none;
-    font-weight: 700;
-    border-bottom: 2px solid #0f684b;
-    transition: color 0.3s;
-}
-
-.sin-sesion a:hover {
-    color: #03484c;
-    border-bottom-color: #03484c;
-}
+.sin-sesion,
 .sin-favoritos {
     color: #03484c; 
     font-size: 1.5rem; 
@@ -105,6 +62,7 @@ main {
     box-sizing: border-box;
 }
 
+.sin-sesion a,
 .sin-favoritos a {
     color: #0f684b;
     text-decoration: none;
@@ -113,11 +71,11 @@ main {
     transition: color 0.3s;
 }
 
+.sin-sesion a:hover,
 .sin-favoritos a:hover {
     color: #03484c;
     border-bottom-color: #03484c;
 }
-
 
 /* ==================== SECCIÓN PRINCIPAL ==================== */
 .carrito-container {
@@ -189,7 +147,7 @@ main {
     min-width: 100px; 
 }
 
-/* Botones (sin cambios) */
+/* botones */
 .btn-eliminar, .btn-comprar {
     border: none;
     border-radius: 5px;
@@ -200,21 +158,11 @@ main {
     color: white;
 }
 
-.btn-eliminar {
-    background-color: #c0392b;
-}
+.btn-eliminar { background-color: #c0392b; }
+.btn-eliminar:hover { background-color: #a93226; }
 
-.btn-eliminar:hover {
-    background-color: #a93226;
-}
-
-.btn-comprar {
-    background-color: #2ecc71;
-}
-
-.btn-comprar:hover {
-    background-color: #27ae60;
-}
+.btn-comprar { background-color: #2ecc71; }
+.btn-comprar:hover { background-color: #27ae60; }
 
 /* ==================== RESUMEN ==================== */
 .resumen-compra {
@@ -227,7 +175,6 @@ main {
     max-width: 400px;
 }
 
-/* ... (Resto de estilos de resumen sin cambios) ... */
 .resumen-compra h3 {
     color: #2f5d3d;
     text-align: center;
@@ -271,178 +218,79 @@ main {
 
 /* ==================== FOOTER ==================== */
 .footer {
-    width: 100%; 
+    width: 100%;
     background-color: #3B8952;
     color: white;
     text-align: center;
     padding: 20px;
-    box-shadow: 0 -4px 8px rgba(0, 0, 0, 0.1); 
-    margin-top: auto; /* CRÍTICO: Asegura que el footer se pegue al fondo usando flexbox */
+    box-shadow: 0 -4px 8px rgba(0, 0, 0, 0.1);
+    margin-top: auto;
 }
 
 .footer-contenido h2 {
     margin-bottom: 5px;
 }
 
-/* ==================== RESPONSIVIDAD OPTIMIZADA ==================== */
-
-/* Tablets (max-width: 992px) */
+/* ==================== RESPONSIVIDAD ==================== */
 @media (max-width: 992px) {
     .carrito-container {
-        flex-direction: column; 
+        flex-direction: column;
         align-items: center;
         padding: 30px 20px;
-        gap: 25px;
     }
 
     .carrito-productos {
-        width: 100%; 
-        max-width: 600px; 
+        width: 100%;
+        max-width: 600px;
     }
 
     .resumen-compra {
         width: 100%;
-        max-width: 500px; 
+        max-width: 500px;
         margin-top: 20px;
-    }
-
-    .item-carrito img {
-        width: 90px;
-        height: 90px;
     }
 }
 
-/* Celulares grandes (max-width: 768px) */
 @media (max-width: 768px) {
-    .Header {
-        flex-direction: column;
-        padding: 10px;
-    }
 
-    .logo img {
-        height: 60px;
-        margin: 10px 0;
-    }
-
-    .carrito-container {
-        padding: 15px;
-        gap: 20px;
-    }
-    
-    .carrito-productos {
-        width: 100%; 
-        max-width: 100%;
-    }
+    .Header { flex-direction: column; }
 
     .item-carrito {
-        flex-direction: column; 
-        align-items: center;
+        flex-direction: column;
         text-align: center;
         padding: 15px 10px;
-        gap: 10px; /* Reducimos el espacio entre elementos */
-    }
-
-    .item-carrito img {
-        width: 95%; /* Ligeramente más ancho */
-        max-width: 300px; /* Un poco más de ancho */
-        height: 160px;
-        margin-bottom: 5px;
-    }
-
-    .info-producto-carrito {
-        text-align: center;
-        margin-bottom: 10px; 
     }
 
     .acciones-item {
-        flex-direction: row; 
-        justify-content: space-around; /* Usamos space-around para mejor distribución */
         width: 100%;
-        gap: 5px; /* Reducimos el gap */
+        flex-direction: row;
+        justify-content: space-around;
+    }
+}
+
+@media (max-width: 480px) {
+
+    .item-carrito {
+        padding: 10px;
     }
 
     .btn-eliminar, .btn-comprar {
-        flex: 1; 
-        max-width: 150px;
-    }
-
-    .resumen-compra {
-        width: 100%;
-        min-width: auto;
-    }
-    
-    .sin-favoritos {
-        width: 95%; /* Asegura que no haya desbordamiento */
+        padding: 6px 8px;
+        font-size: 0.8rem;
     }
 }
-
-/* Celulares pequeños (max-width: 480px) */
-@media (max-width: 480px) {
-    .Header h2 {
-        font-size: 1.2rem;
-        margin: 10px 0;
-    }
-    
-    .logo img {
-        height: 50px;
-    }
-    
-    .carrito-container {
-        padding: 10px 5px; /* Menor padding para ganar espacio */
-    }
-    
-    .item-carrito {
-        padding: 10px; /* Reducimos el padding de la tarjeta */
-    }
-    
-    .item-carrito img {
-        height: 120px; 
-    }
-    
-    .info-producto-carrito h3 {
-        font-size: 1.1rem;
-    }
-    
-    /* Botones más compactos */
-    .btn-eliminar,
-    .btn-comprar {
-        padding: 6px 8px; /* Reducimos el padding de los botones */
-        font-size: 0.75rem; /* Fuente más pequeña */
-    }
-
-    .btn-volver {
-        padding: 8px 12px;
-        font-size: 0.85rem;
-    }
-
-    .resumen-compra {
-        padding: 15px;
-    }
-    
-    .sin-favoritos {
-        font-size: 1rem;
-        padding: 15px;
-        margin: 15px auto;
-
-    }
-}
-
 
 /* ============================================
-   ❤️  ESTILO BONITO PARA EL ÍCONO DE FAVORITOS
-   ============================================ */
-
+   ❤️ ÍCONO BONITO DE FAVORITOS
+============================================= */
 .btn-favorito {
-    width: 32px;               /* tamaño moderado */
-    height: 32px;
-    margin-top: 8px;
+    width: 32px !important;
+    height: 32px !important;
     cursor: pointer;
-    transition: transform 0.2s ease-in-out, 
-                filter 0.2s ease-in-out;
     display: block;
-    margin-left: auto;
-    margin-right: auto;
-    user-select: none;
+    margin: 10px auto 0 auto;
+    object-fit: contain !important;
+    transition: transform 0.2s ease-in-out, filter 0.2s ease-in-out;
 }
 
 .btn-favorito:hover {
@@ -450,20 +298,13 @@ main {
     filter: drop-shadow(0 0 5px rgba(46, 204, 113, 0.6));
 }
 
-.btn-favorito:active {
-    transform: scale(0.95);
-}
-
-/* Cuando está lleno: más bonito */
 .favorito-activo {
     filter: drop-shadow(0 0 6px rgba(0, 180, 90, 0.8));
 }
 
-/* Ajuste especial móvil */
 @media (max-width: 480px) {
     .btn-favorito {
-        width: 28px;
-        height: 28px;
+        width: 28px !important;
+        height: 28px !important;
     }
 }
-
