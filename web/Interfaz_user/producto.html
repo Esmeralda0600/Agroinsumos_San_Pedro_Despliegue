@@ -85,121 +85,190 @@
 
     <!-- ==================== LÓGICA DEL PRODUCTO ==================== -->
     <script>
-        document.addEventListener("DOMContentLoaded", () => {
+document.addEventListener("DOMContentLoaded", async () => {
 
-            const producto = JSON.parse(localStorage.getItem("productoSeleccionado"));
+    const API_URL = "https://agroinsumos-san-pedro-despliegue.onrender.com";
 
-            if (!producto) {
-                alert("No se pudo cargar el producto.");
-                return window.location.href = "catalogo.html";
-            }
+    const producto = JSON.parse(localStorage.getItem("productoSeleccionado"));
 
-            // Insertar datos
-            document.getElementById("img-producto").src = producto.direccion_img || "imgs/ingrediente.png";
-            document.getElementById("nombre-producto").innerText = producto.nombre_producto;
+    if (!producto) {
+        alert("No se pudo cargar el producto.");
+        return window.location.href = "catalogo.html";
+    }
 
-            document.getElementById("info-producto").innerHTML = `
-                <p>🌽 <strong>Descripción:</strong> ${producto.descripcion}</p>
-                <p>🧴 <strong>Categoría:</strong> ${producto.categoria_producto}</p>
-                <p>🚜 <strong>Ingrediente Activo:</strong> ${producto.ingrediente_activo}</p>
-                <p><strong>Cantidad disponible:</strong> ${producto.cantidad}</p>
-                <p><strong>Precio:</strong> $${producto.precio}</p>
+    // Insertar datos del producto
+    document.getElementById("img-producto").src = producto.direccion_img || "imgs/ingrediente.png";
+    document.getElementById("nombre-producto").innerText = producto.nombre_producto;
 
-                <div class="acciones-producto">
-                    <div class="botones-acciones">
-                        <button id="btn-carrito" class="btn">Agregar al carrito</button>
-                        <button id="btn-fav" class="btn">Agregar a favoritos</button>
-                    </div>
-                    <button id="btn-comprar" class="btn comprar">Comprar ahora</button>
-                </div>
-            `;
+    document.getElementById("info-producto").innerHTML = `
+        <p>🌽 <strong>Descripción:</strong> ${producto.descripcion}</p>
+        <p>🧴 <strong>Categoría:</strong> ${producto.categoria_producto}</p>
+        <p>🚜 <strong>Ingrediente Activo:</strong> ${producto.ingrediente_activo}</p>
+        <p><strong>Cantidad disponible:</strong> ${producto.cantidad}</p>
+        <p><strong>Precio:</strong> $${producto.precio}</p>
 
-            // ===== FUNCIONES =====
-            function agregarAlCarrito(prod) {
-                const usuarioId = localStorage.getItem("usuarioId");
+        <div class="acciones-producto">
+            <div class="botones-acciones">
+                <button id="btn-carrito" class="btn">Agregar al carrito</button>
 
-                if (!usuarioId) {
-                    alert("Inicia sesión para agregar al carrito.");
-                    return window.location.href = "login.html";
-                }
+                <!-- CORAZÓN PNG -->
+                <img id="btn-fav-icono"
+                     src="imgs/corazon_vacio.png"
+                     class="btn-favorito"
+                     style="width:45px;cursor:pointer;margin-top:10px;">
+            </div>
 
-                const claveCarrito = `carrito_${usuarioId}`;
-                let carrito = JSON.parse(localStorage.getItem(claveCarrito)) || []; //`carrito_${usuarioId}`
+            <button id="btn-comprar" class="btn comprar">Comprar ahora</button>
+        </div>
+    `;
 
-                const existe = carrito.find(p => p.id_producto === prod.id_producto);
 
-                if (existe) {
-                    existe.cantidad++;
-                } else {
-                    carrito.push({
-                        id_producto: prod.id_producto,
-                        nombre: prod.nombre_producto,
-                        precio: prod.precio,
-                        cantidad: 1,
-                        imagen: prod.direccion_img || "imgs/ingrediente.png"
-                    });
-                }
+    /* ============================================================
+            🟢 FAVORITOS SINCRONIZADOS (igual que inven.html)
+       ============================================================ */
 
-                localStorage.setItem(claveCarrito, JSON.stringify(carrito)); //`carrito_${usuarioId}`
-            }
+    // Actualiza el ícono dependiendo si está o no en favoritos LS
+    function actualizarIconoFavorito() {
+        const favsLS = JSON.parse(localStorage.getItem("favoritosLS")) || [];
+        const btnFav = document.getElementById("btn-fav-icono");
 
-            // Botones
-            document.getElementById("btn-carrito").addEventListener("click", () => {
-                agregarAlCarrito(producto);
-                window.location.href = "carrito.html";
-            });
+        if (favsLS.includes(producto.nombre_producto)) {
+            btnFav.src = "imgs/corazon_lleno.png";
+            btnFav.classList.add("favorito-activo");
+        } else {
+            btnFav.src = "imgs/corazon_vacio.png";
+            btnFav.classList.remove("favorito-activo");
+        }
+    }
 
-            // COMPRAR AHORA (solo este producto)
-            document.getElementById("btn-comprar").addEventListener("click", () => {
-                const usuarioId = localStorage.getItem("usuarioId");
+    async function toggleFavoritoDetalle() {
+        const usuarioId = localStorage.getItem("usuarioId");
+        if (!usuarioId) {
+            alert("Debes iniciar sesión para gestionar favoritos.");
+            return window.location.href = "login.html";
+        }
 
-                if (!usuarioId) {
-                    alert("Debes iniciar sesión para comprar.");
-                    return window.location.href = "login.html";
-                }
+        let favsLS = JSON.parse(localStorage.getItem("favoritosLS")) || [];
+        const btnFav = document.getElementById("btn-fav-icono");
+        const yaEsta = favsLS.includes(producto.nombre_producto);
 
-                const item = {
-                    id_producto: producto.id_producto,
-                    nombre: producto.nombre_producto,
-                    precio: producto.precio,
-                    cantidad: 1,
-                    imagen: producto.direccion_img || "imgs/ingrediente.png"
-                };
+        // =========================
+        // ❌ SI YA ESTÁ → QUITAR
+        // =========================
+        if (yaEsta) {
+            favsLS = favsLS.filter(n => n !== producto.nombre_producto);
+            localStorage.setItem("favoritosLS", JSON.stringify(favsLS));
 
-                // Marcamos que venimos de "comprar ahora"
-                localStorage.setItem("modo_compra", "directa");
-                localStorage.setItem("compra_directa", JSON.stringify([item]));
-
-                window.location.href = "pago.html";
-            });
-
-            // Favoritos
-            document.getElementById("btn-fav").addEventListener("click", async () => {
-
-                const usuarioId = localStorage.getItem("usuarioId");
-                if (!usuarioId) {
-                    alert("Inicia sesión para guardar favoritos.");
-                    return window.location.href = "login.html";
-                }
-
-                const resp = await fetch("https://agroinsumos-san-pedro-despliegue.onrender.com/favoritos", {
-                    method: "POST",
-                    headers: { "Content-Type": "application/json" },
-                    body: JSON.stringify({ usuarioId, productoId: producto.id_producto })
-                });
-
+            // Eliminar del backend
+            try {
+                const resp = await fetch(`${API_URL}/favoritos/${usuarioId}`);
                 const data = await resp.json();
 
-                if (resp.ok) {
-                    alert("Producto agregado ❤️");
-                    window.location.href = "favoritos.html";
-                } else {
-                    alert("Error: " + data.error);
-                }
-            });
+                const favorito = data.favoritos.find(f =>
+                    f.producto?.id_producto === producto.id_producto
+                );
 
+                if (favorito) {
+                    await fetch(`${API_URL}/favoritos/${favorito._id}`, {
+                        method: "DELETE"
+                    });
+                }
+            } catch (err) {
+                console.error("Error eliminando favorito backend:", err);
+            }
+
+            actualizarIconoFavorito();
+            return;
+        }
+
+        // =========================
+        // ❤️ SI NO ESTÁ → AGREGAR
+        // =========================
+        favsLS.push(producto.nombre_producto);
+        localStorage.setItem("favoritosLS", JSON.stringify(favsLS));
+
+        // backend
+        await fetch(`${API_URL}/favoritos`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ usuarioId, productoId: producto.id_producto })
         });
-    </script>
+
+        actualizarIconoFavorito();
+    }
+
+    document.getElementById("btn-fav-icono")
+        .addEventListener("click", toggleFavoritoDetalle);
+
+    actualizarIconoFavorito();
+
+
+
+    /* ============================================================
+                            CARRITO
+       ============================================================ */
+    function agregarAlCarrito(prod) {
+        const usuarioId = localStorage.getItem("usuarioId");
+
+        if (!usuarioId) {
+            alert("Inicia sesión para agregar al carrito.");
+            return window.location.href = "login.html";
+        }
+
+        const claveCarrito = `carrito_${usuarioId}`;
+        let carrito = JSON.parse(localStorage.getItem(claveCarrito)) || [];
+
+        const existe = carrito.find(p => p.id_producto === prod.id_producto);
+
+        if (existe) {
+            existe.cantidad++;
+        } else {
+            carrito.push({
+                id_producto: prod.id_producto,
+                nombre: prod.nombre_producto,
+                precio: prod.precio,
+                cantidad: 1,
+                imagen: prod.direccion_img || "imgs/ingrediente.png"
+            });
+        }
+
+        localStorage.setItem(claveCarrito, JSON.stringify(carrito));
+    }
+
+    document.getElementById("btn-carrito").addEventListener("click", () => {
+        agregarAlCarrito(producto);
+        window.location.href = "carrito.html";
+    });
+
+
+    /* ============================================================
+                        COMPRAR AHORA
+       ============================================================ */
+    document.getElementById("btn-comprar").addEventListener("click", () => {
+        const usuarioId = localStorage.getItem("usuarioId");
+
+        if (!usuarioId) {
+            alert("Debes iniciar sesión para comprar.");
+            return window.location.href = "login.html";
+        }
+
+        const item = {
+            id_producto: producto.id_producto,
+            nombre: producto.nombre_producto,
+            precio: producto.precio,
+            cantidad: 1,
+            imagen: producto.direccion_img || "imgs/ingrediente.png"
+        };
+
+        localStorage.setItem("modo_compra", "directa");
+        localStorage.setItem("compra_directa", JSON.stringify([item]));
+
+        window.location.href = "pago.html";
+    });
+
+});
+</script>
+
 
     <!-- ==================== BUSCADOR IA ==================== -->
     <script>
