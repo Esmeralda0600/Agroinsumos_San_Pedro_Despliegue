@@ -502,23 +502,42 @@ body {
 }
 
 
-
 /* ================================
    ICONO DE FAVORITO (CORAZÓN)
 ================================ */
 .btn-favorito {
-    width: 35px;
-    height: 35px;
+    width: 32px !important;       /* tamaño correcto */
+    height: 32px !important;
     cursor: pointer;
-    margin-top: 10px;
-    transition: transform 0.2s ease-in-out;
+    margin-top: 8px;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    object-fit: contain !important;
+
+    /* transiciones para animación */
+    transition: transform 0.20s ease-in-out,
+                filter 0.25s ease-in-out;
 }
 
+/* Hover bonito */
 .btn-favorito:hover {
-    transform: scale(1.15);
+    transform: scale(1.18);
+    filter: drop-shadow(0 0 5px rgba(46, 204, 113, 0.6));
 }
 
+/* Cuando está lleno */
 .favorito-activo {
-    filter: drop-shadow(0 0 5px #2ecc71);
+    filter: drop-shadow(0 0 6px rgba(0, 180, 90, 0.8));
 }
+
+/* En móviles */
+@media (max-width: 480px) {
+    .btn-favorito {
+        width: 28px !important;
+        height: 28px !important;
+    }
+}
+
+
 
