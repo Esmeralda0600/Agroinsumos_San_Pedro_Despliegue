@@ -85,9 +85,7 @@
 
     <!-- ==================== LÓGICA DEL PRODUCTO ==================== -->
     <script>
-document.addEventListener("DOMContentLoaded", async () => {
-
-    const API_URL = "https://agroinsumos-san-pedro-despliegue.onrender.com";
+document.addEventListener("DOMContentLoaded", () => {
 
     const producto = JSON.parse(localStorage.getItem("productoSeleccionado"));
 
@@ -97,8 +95,11 @@ document.addEventListener("DOMContentLoaded", async () => {
     }
 
     // Insertar datos del producto
-    document.getElementById("img-producto").src = producto.direccion_img || "imgs/ingrediente.png";
-    document.getElementById("nombre-producto").innerText = producto.nombre_producto;
+    document.getElementById("img-producto").src =
+        producto.direccion_img || "imgs/ingrediente.png";
+
+    document.getElementById("nombre-producto").innerText =
+        producto.nombre_producto;
 
     document.getElementById("info-producto").innerHTML = `
         <p>🌽 <strong>Descripción:</strong> ${producto.descripcion}</p>
@@ -110,103 +111,15 @@ document.addEventListener("DOMContentLoaded", async () => {
         <div class="acciones-producto">
             <div class="botones-acciones">
                 <button id="btn-carrito" class="btn">Agregar al carrito</button>
-
-                <!-- CORAZÓN PNG -->
-                <img id="btn-fav-icono"
-                     src="imgs/corazon_vacio.png"
-                     class="btn-favorito"
-                     style="width:45px;cursor:pointer;margin-top:10px;">
+                <button id="btn-fav" class="btn">Agregar a favoritos</button>
             </div>
-
             <button id="btn-comprar" class="btn comprar">Comprar ahora</button>
         </div>
     `;
 
-
-    /* ============================================================
-            🟢 FAVORITOS SINCRONIZADOS (igual que inven.html)
-       ============================================================ */
-
-    // Actualiza el ícono dependiendo si está o no en favoritos LS
-    function actualizarIconoFavorito() {
-        const favsLS = JSON.parse(localStorage.getItem("favoritosLS")) || [];
-        const btnFav = document.getElementById("btn-fav-icono");
-
-        if (favsLS.includes(producto.nombre_producto)) {
-            btnFav.src = "imgs/corazon_lleno.png";
-            btnFav.classList.add("favorito-activo");
-        } else {
-            btnFav.src = "imgs/corazon_vacio.png";
-            btnFav.classList.remove("favorito-activo");
-        }
-    }
-
-    async function toggleFavoritoDetalle() {
-        const usuarioId = localStorage.getItem("usuarioId");
-        if (!usuarioId) {
-            alert("Debes iniciar sesión para gestionar favoritos.");
-            return window.location.href = "login.html";
-        }
-
-        let favsLS = JSON.parse(localStorage.getItem("favoritosLS")) || [];
-        const btnFav = document.getElementById("btn-fav-icono");
-        const yaEsta = favsLS.includes(producto.nombre_producto);
-
-        // =========================
-        // ❌ SI YA ESTÁ → QUITAR
-        // =========================
-        if (yaEsta) {
-            favsLS = favsLS.filter(n => n !== producto.nombre_producto);
-            localStorage.setItem("favoritosLS", JSON.stringify(favsLS));
-
-            // Eliminar del backend
-            try {
-                const resp = await fetch(`${API_URL}/favoritos/${usuarioId}`);
-                const data = await resp.json();
-
-                const favorito = data.favoritos.find(f =>
-                    f.producto?.id_producto === producto.id_producto
-                );
-
-                if (favorito) {
-                    await fetch(`${API_URL}/favoritos/${favorito._id}`, {
-                        method: "DELETE"
-                    });
-                }
-            } catch (err) {
-                console.error("Error eliminando favorito backend:", err);
-            }
-
-            actualizarIconoFavorito();
-            return;
-        }
-
-        // =========================
-        // ❤️ SI NO ESTÁ → AGREGAR
-        // =========================
-        favsLS.push(producto.nombre_producto);
-        localStorage.setItem("favoritosLS", JSON.stringify(favsLS));
-
-        // backend
-        await fetch(`${API_URL}/favoritos`, {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ usuarioId, productoId: producto.id_producto })
-        });
-
-        actualizarIconoFavorito();
-    }
-
-    document.getElementById("btn-fav-icono")
-        .addEventListener("click", toggleFavoritoDetalle);
-
-    actualizarIconoFavorito();
-
-
-
-    /* ============================================================
-                            CARRITO
-       ============================================================ */
+    // ============================
+    // FUNCIÓN PARA AGREGAR CARRITO
+    // ============================
     function agregarAlCarrito(prod) {
         const usuarioId = localStorage.getItem("usuarioId");
 
@@ -235,15 +148,17 @@ document.addEventListener("DOMContentLoaded", async () => {
         localStorage.setItem(claveCarrito, JSON.stringify(carrito));
     }
 
+    // ============================
+    // BOTÓN "AGREGAR AL CARRITO"
+    // ============================
     document.getElementById("btn-carrito").addEventListener("click", () => {
         agregarAlCarrito(producto);
         window.location.href = "carrito.html";
     });
 
-
-    /* ============================================================
-                        COMPRAR AHORA
-       ============================================================ */
+    // ============================
+    // COMPRAR AHORA
+    // ============================
     document.getElementById("btn-comprar").addEventListener("click", () => {
         const usuarioId = localStorage.getItem("usuarioId");
 
@@ -266,53 +181,36 @@ document.addEventListener("DOMContentLoaded", async () => {
         window.location.href = "pago.html";
     });
 
+    // ============================
+    // AGREGAR A FAVORITOS
+    // ============================
+    document.getElementById("btn-fav").addEventListener("click", async () => {
+
+        const usuarioId = localStorage.getItem("usuarioId");
+        if (!usuarioId) {
+            alert("Inicia sesión para guardar favoritos.");
+            return window.location.href = "login.html";
+        }
+
+        const resp = await fetch("https://agroinsumos-san-pedro-despliegue.onrender.com/favoritos", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ usuarioId, productoId: producto.id_producto })
+        });
+
+        const data = await resp.json();
+
+        if (resp.ok) {
+            alert("Producto agregado ❤️");
+            window.location.href = "favoritos.html";
+        } else {
+            alert("Error: " + data.error);
+        }
+    });
+
 });
 </script>
 
-
-    <!-- ==================== BUSCADOR IA ==================== -->
-    <script>
-        const IA_URL = "https://agroinsumos-san-pedro-despliegue.onrender.com/api/ia/interpretar";
-
-        document.getElementById("btn-buscar-ia").addEventListener("click", interpretarBusqueda);
-        document.getElementById("input-busqueda").addEventListener("keypress", e => {
-            if (e.key === "Enter") interpretarBusqueda();
-        });
-
-        async function interpretarBusqueda() {
-            const texto = document.getElementById("input-busqueda").value.trim();
-
-            if (!texto) {
-                alert("Por favor escribe lo que deseas buscar.");
-                return;
-            }
-
-            try {
-                const response = await fetch(IA_URL, {
-                    method: "POST",
-                    headers: { "Content-Type": "application/json" },
-                    body: JSON.stringify({ texto })
-                });
-
-                const data = await response.json();
-                const categoria = data.categoria;
-
-                if (!categoria) {
-                    alert("No se pudo identificar la categoría.");
-                    return;
-                }
-
-                const URL_BASE = "https://agroinsumos-san-pedro-despliegue-us-eight.vercel.app";
-                const destino = `${URL_BASE}/inven.html?categoria=${categoria}`;
-
-                window.location.href = destino;
-
-            } catch (error) {
-                console.error("Error con IA:", error);
-                alert("Ocurrió un error al procesar la búsqueda.");
-            }
-        }
-    </script>
 
     <!-- LOGIN DINÁMICO -->
     <script type="module" src="javascript/logica.js"></script>
