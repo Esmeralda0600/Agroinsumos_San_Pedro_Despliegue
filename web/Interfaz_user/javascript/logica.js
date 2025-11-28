@@ -432,3 +432,12 @@ async function interpretarBusqueda() {
     alert("Ocurrió un error al procesar la búsqueda.");
   }
 }
+// ===========================
+// FORZAR REFRESCO AL VOLVER
+// ===========================
+window.addEventListener("pageshow", function (event) {
+    if (event.persisted) {
+        location.reload();
+    }
+});
+
