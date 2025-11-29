@@ -1,20 +1,25 @@
 // ============================================================
-// FAVORITOS.HTML – sincronizado con inventario
+// FAVORITOS.HTML – BASADO EN BACKEND REAL
 // ============================================================
 
 const API_URL = "https://agroinsumos-san-pedro-despliegue.onrender.com";
 
 
 // ============================================================
-// 1. Recibir eliminación desde inven.html
+// 1. Si inven.html eliminó ⇒ sincronizar aquí
 // ============================================================
 if (localStorage.getItem("actualizarFavoritos") === "1") {
 
-    const eliminado = localStorage.getItem("productoEliminado");
+    const nombreEliminado = localStorage.getItem("productoEliminado");
 
-    let favsLS = JSON.parse(localStorage.getItem("favoritosLS")) || [];
-    favsLS = favsLS.filter(f => f.id !== eliminado);
-    localStorage.setItem("favoritosLS", JSON.stringify(favsLS));
+    if (nombreEliminado) {
+        let favsLS = JSON.parse(localStorage.getItem("favoritosLS")) || [];
+
+        // ❗ Backend NO envía ID, solo nombre
+        favsLS = favsLS.filter(f => f.nombre !== nombreEliminado);
+
+        localStorage.setItem("favoritosLS", JSON.stringify(favsLS));
+    }
 
     localStorage.removeItem("actualizarFavoritos");
     localStorage.removeItem("productoEliminado");
@@ -23,82 +28,97 @@ if (localStorage.getItem("actualizarFavoritos") === "1") {
 }
 
 
+
 // ============================================================
-// 2. Cargar favoritos del backend
+// 2. CARGA DE FAVORITOS.HTML
 // ============================================================
 document.addEventListener("DOMContentLoaded", async () => {
 
     const usuarioId = localStorage.getItem("usuarioId");
     const lista = document.getElementById("lista-favoritos");
-    const total = document.getElementById("total-favoritos");
+    const totalFavoritos = document.getElementById("total-favoritos");
 
     if (!usuarioId) {
-        lista.innerHTML = `<p>Debes iniciar sesión.</p>`;
+        lista.innerHTML = `<p>Debes iniciar sesión para ver tus favoritos.</p>`;
         return;
     }
 
-    const resp = await fetch(`${API_URL}/favoritos/${usuarioId}`);
-    const data = await resp.json();
-    const favoritos = data.favoritos || [];
+    try {
+        const resp = await fetch(`${API_URL}/favoritos/${usuarioId}`);
+        const data = await resp.json();
 
-    lista.innerHTML = "";
+        const favoritos = data.favoritos || [];
 
-    if (favoritos.length === 0) {
-        lista.innerHTML = `<p class="sin-favoritos">No tienes favoritos aún.</p>`;
-        total.textContent = "0 productos";
-        return;
-    }
+        lista.innerHTML = "";
 
-    favoritos.forEach(f => {
-        const idProducto = String(f.producto.id_producto);
+        if (favoritos.length === 0) {
+            lista.innerHTML = `<p>No tienes productos favoritos aún.</p>`;
+            totalFavoritos.textContent = "0 productos";
+            return;
+        }
 
-        const card = document.createElement("article");
-        card.classList.add("item-carrito");
+        favoritos.forEach(fav => {
+            const item = document.createElement("article");
+            item.classList.add("item-carrito");
 
-        card.innerHTML = `
-            <img src="${f.imagen || 'imgs/ingrediente.png'}" class="producto-img">
+            item.innerHTML = `
+                <img src="${fav.imagen}" class="producto-img">
 
-            <div class="info-producto-carrito">
-                <h3>${f.nombre}</h3>
-                <p>Precio: $${f.precio}</p>
-            </div>
+                <div class="info-producto-carrito">
+                    <h3>${fav.nombre}</h3>
+                    <p>Precio: $${fav.precio}</p>
+                </div>
 
-            <button class="btn-eliminar"
-                    data-idfav="${f._id}"
-                    data-productoid="${idProducto}">
-                Eliminar
-            </button>
-        `;
+                <div class="acciones-item">
+                    <button class="btn-eliminar"
+                            data-id="${fav._id}"
+                            data-nombre="${fav.nombre}">
+                        Eliminar
+                    </button>
+                </div>
+            `;
 
-        lista.appendChild(card);
-    });
-
-    total.textContent = `${favoritos.length} productos`;
-
-
-    // ============================================================
-    // 3. Eliminar desde favoritos.html
-    // ============================================================
-    document.querySelectorAll(".btn-eliminar").forEach(btn => {
-        btn.addEventListener("click", async () => {
-
-            const idFav = btn.dataset.idfav;
-            const idProd = btn.dataset.productoid;
-
-            // backend
-            await fetch(`${API_URL}/favoritos/${idFav}`, { method: "DELETE" });
-
-            // localStorage
-            let favsLS = JSON.parse(localStorage.getItem("favoritosLS")) || [];
-            favsLS = favsLS.filter(f => f.id !== idProd);
-            localStorage.setItem("favoritosLS", JSON.stringify(favsLS));
-
-            // avisar a inventario
-            localStorage.setItem("actualizarInventario", "1");
-            localStorage.setItem("productoEliminado", idProd);
-
-            btn.closest(".item-carrito").remove();
+            lista.appendChild(item);
         });
-    });
 
+        totalFavoritos.textContent = `${favoritos.length} productos`;
+
+
+        // ============================================================
+        // 3. ELIMINAR FAVORITO DESDE favoritos.html
+        // ============================================================
+        document.querySelectorAll(".btn-eliminar").forEach(btn => {
+
+            btn.addEventListener("click", async () => {
+
+                const idFavorito = btn.dataset.id;
+                const nombre = btn.dataset.nombre;
+
+                // Backend
+                await fetch(`${API_URL}/favoritos/${idFavorito}`, {
+                    method: "DELETE"
+                });
+
+                // LocalStorage por nombre (backend NO envía id_producto)
+                let favsLS = JSON.parse(localStorage.getItem("favoritosLS")) || [];
+                favsLS = favsLS.filter(f => f.nombre !== nombre);
+                localStorage.setItem("favoritosLS", JSON.stringify(favsLS));
+
+                // Avisar al inventario que quite el corazón
+                localStorage.setItem("actualizarInventario", "1");
+                localStorage.setItem("productoEliminado", nombre);
+
+                // Quitar visualmente
+                btn.closest(".item-carrito").remove();
+
+                const count = document.querySelectorAll(".item-carrito").length;
+                totalFavoritos.textContent = `${count} productos`;
+            });
+        });
+
+
+    } catch (err) {
+        console.error("ERROR FAVORITOS:", err);
+        lista.innerHTML = "<p>Error cargando favoritos.</p>";
+    }
 });
