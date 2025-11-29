@@ -152,8 +152,8 @@ async function mostrar_productos(categoria) {
         const data = await resp.json();
         if (!resp.ok) return alert("Error: " + data.error);
 
-        // =============== Cargar favoritos del usuario ===============
-        let favoritosSet = new Set();
+                // =============== NUEVO: Cargar favoritos del usuario ===============
+        let nombresFavoritos = new Set();
         const usuarioId = localStorage.getItem("usuarioId");
 
         if (usuarioId) {
@@ -163,12 +163,13 @@ async function mostrar_productos(categoria) {
                 const favoritos = dataFav.favoritos || [];
 
                 // Guardamos solo los nombres de los productos en un Set
-                favoritosSet = new Set(favoritos.map(f => f.id_producto));
+                nombresFavoritos = new Set(favoritos.map(f => f.nombre));
             } catch (err) {
                 console.error("No se pudieron cargar los favoritos:", err);
             }
         }
-        // =================== FIN BLOQUE FAVORITOS ===================
+        // =================== FIN BLOQUE NUEVO ===================
+
 
         loader.classList.add("oculto");
 
@@ -179,16 +180,18 @@ async function mostrar_productos(categoria) {
         const grid = document.createElement("div");
         grid.classList.add("productos-grid");
 
-        // ========= SVG ICONOS PRO =========
-        const iconoFavoritoOff = `
-        <svg width="26" height="26" viewBox="0 0 24 24" fill="none"
-             stroke="#666" stroke-width="2" stroke-linecap="round"
-             stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg">
-          <path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.6l-1-1a5.5 5.5 0 0 0-7.8
-                   7.8l1 1L12 21l7.8-7.8 1-1a5.5 5.5 0 0 0 0-7.8z"/>
-        </svg>`;
+        data.productos.forEach((e) => {
+            const div = document.createElement("div");
+            div.classList.add("tarjeta");
 
-        const iconoFavoritoOn = `
+                // ===== NUEVO: Indicador de favorito =====
+            const indicadorFav = document.createElement("div");
+            indicadorFav.classList.add("favorito-indicador");
+
+    // Si el nombre del producto está en la lista de favoritos, mostramos 💚
+            if (nombresFavoritos.has(e.nombre_producto)) {
+    // Corazón PRO verde lleno
+    indicadorFav.innerHTML = `
         <svg width="26" height="26" viewBox="0 0 24 24" fill="#28a745"
              xmlns="http://www.w3.org/2000/svg">
           <path d="M12 21s-6.716-4.686-10-9.428C-1.243 7.52 1.238 2 6.364 2
@@ -196,58 +199,21 @@ async function mostrar_productos(categoria) {
                    22.762 2 25.243 7.52 22 11.572 18.716 16.314 12
                    21 12 21z"/>
         </svg>`;
+} else {
+    // Corazón PRO gris delineado
+    indicadorFav.innerHTML = `
+        <svg width="26" height="26" viewBox="0 0 24 24" fill="none"
+             stroke="#666" stroke-width="2" stroke-linecap="round"
+             stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg">
+          <path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.6l-1-1a5.5 5.5 0 0 0-7.8
+                   7.8l1 1L12 21l7.8-7.8 1-1a5.5 5.5 0 0 0 0-7.8z"/>
+        </svg>`;
+}
 
-        data.productos.forEach((e) => {
-            const div = document.createElement("div");
-            div.classList.add("tarjeta");
-
-            // ===== Indicador de favorito =====
-            const indicadorFav = document.createElement("div");
-            indicadorFav.classList.add("favorito-indicador");
-            indicadorFav.dataset.id = e.id_producto;
-
-            const esFavorito = favoritosSet.has(e.id_producto);
 
 
-            if (esFavorito) {
-                indicadorFav.classList.add("activo");
-                indicadorFav.innerHTML = iconoFavoritoOn;
-            } else {
-                indicadorFav.innerHTML = iconoFavoritoOff;
-            }
-
-            // ===== CLICK en el corazón (toggle) =====
-            indicadorFav.addEventListener("click", async (ev) => {
-                ev.stopPropagation(); // por si la tarjeta tiene otros clicks
-
-                if (!usuarioId) {
-                    alert("Debes iniciar sesión para guardar favoritos.");
-                    return;
-                }
-
-                const productoId = e.id_producto;
-
-                // Si ya es favorito → quitar
-                if (indicadorFav.classList.contains("activo")) {
-                    await eliminarFavorito(productoId);
-                    indicadorFav.classList.remove("activo");
-                    indicadorFav.innerHTML = iconoFavoritoOff;
-                    return;
-                }
-
-                // Si NO es favorito → usar la función que ya tienes y funciona
-                try {
-                    await agregarAFavoritos(productoId); // 👈 REUSAMOS TU LÓGICA
-                    indicadorFav.classList.add("activo");
-                    indicadorFav.innerHTML = iconoFavoritoOn;
-                } catch (err) {
-                    console.error("Error al agregar favorito desde el corazón:", err);
-                }
-            });
-
-            // ===== Resto de la tarjeta =====
             const img = document.createElement("img");
-            img.src = "../" + e.direccion_img;
+            img.src = "../"+ e.direccion_img;
             img.width = 200;
 
             const n = document.createElement("h3");
@@ -269,7 +235,6 @@ async function mostrar_productos(categoria) {
             div.append(indicadorFav, img, n, precio, btnFav, btnVer);
             grid.appendChild(div);
         });
-
         productos.appendChild(grid);
 
         if (data.totalPaginas > 1) {
@@ -306,8 +271,6 @@ async function mostrar_productos(categoria) {
     }
 }
 
-
-
 // ============================================================
 // FUNCIÓN AÑADIR A FAVORITOS
 // ============================================================
@@ -336,25 +299,6 @@ async function agregarAFavoritos(productoId) {
         alert("Error al conectar con la API");
     }
 }
-
-async function eliminarFavorito(id_producto) {
-    const usuarioId = localStorage.getItem("usuarioId");
-    if (!usuarioId) return;
-
-    try {
-        const resp = await fetch(`${API_URL}/favoritos/${usuarioId}/${id_producto}`, {
-            method: "DELETE",
-        });
-
-        const data = await resp.json();
-        if (!resp.ok) {
-            console.error("Error al eliminar favorito:", data);
-        }
-    } catch (err) {
-        console.error("Error al eliminar favorito (fetch):", err);
-    }
-}
-
 
 // ============================================================
 // VER PRODUCTO
