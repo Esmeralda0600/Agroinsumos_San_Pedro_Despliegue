@@ -235,9 +235,12 @@ body {
     position: absolute;
     top: 8px;
     right: 10px;
-    font-size: 22px;
-    pointer-events: none; /* para que no estorbe los clics */
+    width: 28px;
+    height: 28px;
+    cursor: pointer;
+    user-select: none;
 }
+
 
 
 .tarjeta:hover {
