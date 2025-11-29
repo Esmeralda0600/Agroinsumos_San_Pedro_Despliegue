@@ -7,18 +7,115 @@ const API_URL = "https://agroinsumos-san-pedro-despliegue.onrender.com";
 
 
 // ============================================================
-// LOGIN / REGISTRO
+// DOMContentLoaded ÚNICO PARA TODO
 // ============================================================
-const btn_registro = document.getElementById("boton_registro");
-if (btn_registro && paginaActual.includes("registro"))
-    btn_registro.addEventListener("click", registrar_usuario);
+document.addEventListener("DOMContentLoaded", () => {
 
-const btn_login = document.getElementById("boton-login");
-if (btn_login && paginaActual.includes("login"))
-    btn_login.addEventListener("click", login);
+    // =============================
+    // 1. Cargar catálogo principal
+    // =============================
+    if (document.getElementById("contenedor-tarjetas")) {
+        cargarCategorias(); // carga categorías al entrar
+        activarRadiosCatalogo(); // activa cambios producto/marca/ingrediente
+    }
+
+    // =============================
+    // 2. Mostrar bienvenida
+    // =============================
+    const usuario = JSON.parse(localStorage.getItem("usuario"));
+    const span = document.getElementById("bienvenida");
+    if (usuario && span) span.innerText = `Bienvenido, ${usuario.nombre_usuario} 👋`;
+
+});
 
 
-// ================== REGISTRO ==================
+
+// ============================================================
+// ACTIVAR RADIOS PARA FILTRAR CATALOGO
+// ============================================================
+function activarRadiosCatalogo() {
+    const radios = document.querySelectorAll('input[name="tipo-busqueda"]');
+
+    radios.forEach(radio => {
+        radio.addEventListener("change", async (e) => {
+
+            let url = "";
+            if (e.target.value === "producto") url = "categorias";
+            if (e.target.value === "marca") url = "marcas";
+            if (e.target.value === "ingrediente") url = "ingrediente";
+
+            try {
+                const resp = await fetch(`${API_URL}/usuarios/${url}`);
+                const data = await resp.json();
+
+                const titulo =
+                    e.target.value === "marca" ? "CATÁLOGO POR MARCA" :
+                    e.target.value === "ingrediente" ? "CATÁLOGO POR INGREDIENTE ACTIVO" :
+                    "CATÁLOGO DE PRODUCTOS";
+
+                mostrarTarjetas(data, titulo);
+
+            } catch (err) {
+                console.error(err);
+                alert("Error de conexión.");
+            }
+        });
+    });
+}
+
+
+
+// ============================================================
+// FUNCIÓN: cargar categorías desde la API
+// ============================================================
+async function cargarCategorias() {
+    try {
+        const resp = await fetch(`${API_URL}/usuarios/categorias`);
+        const data = await resp.json();
+        mostrarTarjetas(data, "CATÁLOGO DE PRODUCTOS");
+    } catch (err) {
+        console.error(err);
+    }
+}
+
+
+
+// ============================================================
+// FUNCIÓN: MOSTRAR TARJETAS DEL CATÁLOGO PRINCIPAL
+// ============================================================
+function mostrarTarjetas(lista, tituloTexto) {
+
+    const contenedor = document.getElementById("contenedor-tarjetas");
+    const titulo = document.getElementById("titulo-catalogo");
+    if (!contenedor) return;
+
+    contenedor.innerHTML = "";
+    titulo.textContent = tituloTexto;
+
+    lista.forEach(item => {
+        const tarjeta = document.createElement("div");
+        tarjeta.classList.add("tarjeta");
+        tarjeta.style.backgroundImage = `url('${item.img}')`;
+
+        tarjeta.innerHTML = `
+            <div class="overlay">
+                <p>${item.nombre}</p>
+            </div>
+        `;
+
+        tarjeta.addEventListener("click", () => {
+            window.location.href = `inven.html?categoria=${item.nombre.toUpperCase()}`;
+        });
+
+        contenedor.appendChild(tarjeta);
+    });
+}
+
+
+
+// ============================================================
+// REGISTRO
+// ============================================================
 async function registrar_usuario() {
     const nombre_usuario = document.getElementById("usuario").value.trim();
     const correo = document.getElementById("correo").value.trim();
@@ -43,7 +140,10 @@ async function registrar_usuario() {
 }
 
 
-// ================== LOGIN ==================
+
+// ============================================================
+// LOGIN
+// ============================================================
 async function login() {
     const correo = document.getElementById("correo").value.trim();
     const password = document.getElementById("password").value.trim();
@@ -61,7 +161,6 @@ async function login() {
         localStorage.setItem("usuario", JSON.stringify(data.usuario));
         localStorage.setItem("usuarioId", data.usuario._id);
 
-        alert("Inicio de sesión exitoso 👌");
         window.location.href = "index.html";
 
     } catch {
@@ -69,15 +168,6 @@ async function login() {
     }
 }
 
-
-// ============================================================
-// BIENVENIDA
-// ============================================================
-document.addEventListener("DOMContentLoaded", () => {
-    const usuario = JSON.parse(localStorage.getItem("usuario"));
-    const span = document.getElementById("bienvenida");
-    if (usuario && span) span.innerText = `Bienvenido, ${usuario.nombre_usuario} 👋`;
-});
 
 
 // ============================================================
@@ -105,9 +195,8 @@ async function mostrar_productos(categoria) {
 
         const data = await resp.json();
         loader.classList.add("oculto");
-        productos.innerHTML = "";
 
-        // 🔥 TÍTULO RESTAURADO (antes lo habías eliminado sin querer)
+        // título de categoría
         const titulo = document.createElement("h2");
         titulo.innerText = categoria.toUpperCase();
         productos.appendChild(titulo);
@@ -132,7 +221,6 @@ async function mostrar_productos(categoria) {
 
             const imgFav = document.createElement("img");
             imgFav.classList.add("btn-favorito");
-
             imgFav.src = favoritosLS.includes(e.nombre_producto)
                 ? "imgs/corazon_lleno.png"
                 : "imgs/corazon_vacio.png";
@@ -155,6 +243,7 @@ async function mostrar_productos(categoria) {
         alert("Error de conexión con API");
     }
 }
+
 
 
 // ============================================================
@@ -180,29 +269,24 @@ async function toggleFavorito(productoId, nombreProducto, imgElem) {
         try {
             const resp = await fetch(`${API_URL}/favoritos/${usuarioId}`);
             const data = await resp.json();
-            const lista = data.favoritos || [];
 
-            const favOriginal = lista.find(f =>
-                f.producto && f.producto.id_producto === productoId
+            const favorito = data.favoritos.find(f =>
+                f.producto.id_producto === productoId
             );
 
-            if (favOriginal)
-                await fetch(`${API_URL}/favoritos/${favOriginal._id}`, {
-                    method: "DELETE"
-                });
+            if (favorito)
+                await fetch(`${API_URL}/favoritos/${favorito._id}`, { method: "DELETE" });
 
-        } catch (err) {
-            console.log("Error backend:", err);
+        } catch (error) {
+            console.error(error);
         }
 
-        // 🔥 Notificar a favoritos.html
         localStorage.setItem("actualizarFavoritos", "1");
         localStorage.setItem("productoEliminado", nombreProducto);
 
         return;
     }
 
-    // AGREGAR FAVORITO
     favsLS.push(nombreProducto);
     localStorage.setItem("favoritosLS", JSON.stringify(favsLS));
 
@@ -216,6 +300,7 @@ async function toggleFavorito(productoId, nombreProducto, imgElem) {
 }
 
 
+
 // ============================================================
 // VER PRODUCTO
 // ============================================================
@@ -223,6 +308,7 @@ function cambiar_pagina(producto) {
     localStorage.setItem("productoSeleccionado", JSON.stringify(producto));
     window.location.href = "producto.html";
 }
+
 
 
 // ============================================================
@@ -258,7 +344,10 @@ async function interpretarBusqueda() {
 }
 
 
-// Reload al volver de historial
+
+// ============================================================
+// RELOAD AL VOLVER DEL HISTORIAL
+// ============================================================
 window.addEventListener("pageshow", (e) => {
     if (e.persisted) location.reload();
 });
