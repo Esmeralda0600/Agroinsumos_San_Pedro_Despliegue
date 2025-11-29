@@ -138,7 +138,7 @@ async function mostrar_productos(categoria) {
     const loader = document.getElementById("loader");
 
     loader.classList.remove("oculto");
-
+    
     productos.innerHTML = "";
     productos.classList.add("catalogo");
 
@@ -152,9 +152,7 @@ async function mostrar_productos(categoria) {
         const data = await resp.json();
         if (!resp.ok) return alert("Error: " + data.error);
 
-        /* ======================================================
-           CARGAR FAVORITOS DEL USUARIO
-        ====================================================== */
+        // =============== Cargar favoritos del usuario ===============
         let favoritosSet = new Set();
         const usuarioId = localStorage.getItem("usuarioId");
 
@@ -162,15 +160,15 @@ async function mostrar_productos(categoria) {
             try {
                 const respFav = await fetch(`${API_URL}/favoritos/${usuarioId}`);
                 const dataFav = await respFav.json();
-
                 const favoritos = dataFav.favoritos || [];
 
-                // Guardamos nombres para comparación
+                // Guardamos solo los nombres de los productos en un Set
                 favoritosSet = new Set(favoritos.map(f => f.nombre));
             } catch (err) {
-                console.error("Error al cargar favoritos:", err);
+                console.error("No se pudieron cargar los favoritos:", err);
             }
         }
+        // =================== FIN BLOQUE FAVORITOS ===================
 
         loader.classList.add("oculto");
 
@@ -181,37 +179,32 @@ async function mostrar_productos(categoria) {
         const grid = document.createElement("div");
         grid.classList.add("productos-grid");
 
-        /* ======================================================
-           SVG ICONOS PRO
-        ====================================================== */
+        // ========= SVG ICONOS PRO =========
         const iconoFavoritoOff = `
         <svg width="26" height="26" viewBox="0 0 24 24" fill="none"
-        stroke="#666" stroke-width="2" stroke-linecap="round"
-        stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg">
+             stroke="#666" stroke-width="2" stroke-linecap="round"
+             stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg">
           <path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.6l-1-1a5.5 5.5 0 0 0-7.8
                    7.8l1 1L12 21l7.8-7.8 1-1a5.5 5.5 0 0 0 0-7.8z"/>
         </svg>`;
 
         const iconoFavoritoOn = `
         <svg width="26" height="26" viewBox="0 0 24 24" fill="#28a745"
-        xmlns="http://www.w3.org/2000/svg">
+             xmlns="http://www.w3.org/2000/svg">
           <path d="M12 21s-6.716-4.686-10-9.428C-1.243 7.52 1.238 2 6.364 2
                    8.925 2 11 3.75 12 5.09 13 3.75 15.075 2 17.636 2
                    22.762 2 25.243 7.52 22 11.572 18.716 16.314 12
                    21 12 21z"/>
         </svg>`;
 
-        /* ======================================================
-           RECORRER PRODUCTOS
-        ====================================================== */
         data.productos.forEach((e) => {
             const div = document.createElement("div");
             div.classList.add("tarjeta");
 
-            /* =========== INDICADOR FAVORITO =========== */
+            // ===== Indicador de favorito =====
             const indicadorFav = document.createElement("div");
             indicadorFav.classList.add("favorito-indicador");
-            indicadorFav.dataset.id = e.id_producto; // ← importante
+            indicadorFav.dataset.id = e.id_producto;
 
             const esFavorito = favoritosSet.has(e.nombre_producto);
 
@@ -222,51 +215,36 @@ async function mostrar_productos(categoria) {
                 indicadorFav.innerHTML = iconoFavoritoOff;
             }
 
-            /* =========== CLICK PARA AGREGAR/QUITAR FAVORITO =========== */
-            indicadorFav.addEventListener("click", async () => {
+            // ===== CLICK en el corazón (toggle) =====
+            indicadorFav.addEventListener("click", async (ev) => {
+                ev.stopPropagation(); // por si la tarjeta tiene otros clicks
+
                 if (!usuarioId) {
-                    return alert("Debes iniciar sesión para guardar favoritos.");
-                }
-
-                const productoId = indicadorFav.dataset.id;
-
-                // 🔴 Si ya es favorito → eliminar
-                if (indicadorFav.classList.contains("activo")) {
-                    try {
-                        await fetch(`${API_URL}/favoritos/${usuarioId}/${productoId}`, {
-                            method: "DELETE"
-                        });
-
-                        indicadorFav.classList.remove("activo");
-                        indicadorFav.innerHTML = iconoFavoritoOff;
-
-                    } catch (err) {
-                        console.error("Error al eliminar favorito:", err);
-                    }
-
+                    alert("Debes iniciar sesión para guardar favoritos.");
                     return;
                 }
 
-                // 🟢 Si NO es favorito → agregar
-                try {
-                    await fetch(`${API_URL}/favoritos`, {
-                        method: "POST",
-                        headers: { "Content-Type": "application/json" },
-                        body: JSON.stringify({
-                            id_usuario: usuarioId,
-                            id_producto: productoId
-                        })
-                    });
+                const productoId = e.id_producto;
 
+                // Si ya es favorito → quitar
+                if (indicadorFav.classList.contains("activo")) {
+                    await eliminarFavorito(productoId);
+                    indicadorFav.classList.remove("activo");
+                    indicadorFav.innerHTML = iconoFavoritoOff;
+                    return;
+                }
+
+                // Si NO es favorito → usar la función que ya tienes y funciona
+                try {
+                    await agregarAFavoritos(productoId); // 👈 REUSAMOS TU LÓGICA
                     indicadorFav.classList.add("activo");
                     indicadorFav.innerHTML = iconoFavoritoOn;
-
                 } catch (err) {
-                    console.error("Error al agregar favorito:", err);
+                    console.error("Error al agregar favorito desde el corazón:", err);
                 }
             });
 
-            /* =========== RESTO DE LA TARJETA =========== */
+            // ===== Resto de la tarjeta =====
             const img = document.createElement("img");
             img.src = "../" + e.direccion_img;
             img.width = 200;
@@ -293,9 +271,6 @@ async function mostrar_productos(categoria) {
 
         productos.appendChild(grid);
 
-        /* ======================================================
-           CONTROLES DE PÁGINA
-        ====================================================== */
         if (data.totalPaginas > 1) {
             const controles = document.createElement("div");
             controles.classList.add("volver");
@@ -331,6 +306,7 @@ async function mostrar_productos(categoria) {
 }
 
 
+
 // ============================================================
 // FUNCIÓN AÑADIR A FAVORITOS
 // ============================================================
@@ -359,6 +335,25 @@ async function agregarAFavoritos(productoId) {
         alert("Error al conectar con la API");
     }
 }
+
+async function eliminarFavorito(id_producto) {
+    const usuarioId = localStorage.getItem("usuarioId");
+    if (!usuarioId) return;
+
+    try {
+        const resp = await fetch(`${API_URL}/favoritos/${usuarioId}/${id_producto}`, {
+            method: "DELETE",
+        });
+
+        const data = await resp.json();
+        if (!resp.ok) {
+            console.error("Error al eliminar favorito:", data);
+        }
+    } catch (err) {
+        console.error("Error al eliminar favorito (fetch):", err);
+    }
+}
+
 
 // ============================================================
 // VER PRODUCTO
