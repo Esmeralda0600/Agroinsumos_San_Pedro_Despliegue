@@ -1,3 +1,9 @@
+// 🔄 Sincronizar cuando inven.html elimina un favorito
+if (localStorage.getItem("actualizarFavoritos") === "1") {
+    localStorage.removeItem("actualizarFavoritos");
+    location.reload();
+}
+
 document.addEventListener("DOMContentLoaded", async () => {
 
     const usuarioId = localStorage.getItem("usuarioId");
@@ -49,11 +55,6 @@ document.addEventListener("DOMContentLoaded", async () => {
 
         totalFavoritos.textContent = `${favoritos.length} productos`;
 
-        /** ================================
-         *  ELIMINAR FAVORITO
-         *  - Backend
-         *  - LocalStorage (favoritosLS)
-         *  ================================ */
         document.querySelectorAll(".btn-eliminar").forEach(btn => {
             btn.addEventListener("click", async () => {
 
@@ -65,12 +66,15 @@ document.addEventListener("DOMContentLoaded", async () => {
                     method: "DELETE"
                 });
 
-                // 2. ELIMINAR EN LOCALSTORAGE PARA SINCRONIZAR INVENTARIO Y PRODUCTO
+                // 2. ELIMINAR EN LOCALSTORAGE
                 let favsLS = JSON.parse(localStorage.getItem("favoritosLS")) || [];
                 favsLS = favsLS.filter(n => n !== nombreProducto);
                 localStorage.setItem("favoritosLS", JSON.stringify(favsLS));
 
-                // 3. QUITAR DEL DOM
+                // 3. ACTUALIZAR INVENTARIO CUANDO REGRESE
+                localStorage.setItem("actualizarInventario", "1");
+
+                // 4. ELIMINAR DEL DOM
                 btn.closest(".item-carrito").remove();
 
                 const restantes = document.querySelectorAll(".item-carrito").length;
