@@ -130,23 +130,29 @@ async function mostrar_productos(categoria) {
 
     data.productos.forEach(p => {
 
-        const esFav = favsLS.includes(p.nombre_producto);
+        const productoId = String(p.id_producto);
+        const nombreProducto = p.nombre_producto;
+
+        const esFav = favsLS.some(f => String(f.id) === productoId);
 
         const card = document.createElement("div");
         card.classList.add("tarjeta");
 
         card.innerHTML = `
             <img src="../${p.direccion_img}">
-            <h3>${p.nombre_producto}</h3>
+            <h3>${nombreProducto}</h3>
             <p>$${p.precio}</p>
         `;
 
+        // CORAZÓN
         const imgFav = document.createElement("img");
         imgFav.classList.add("btn-favorito");
         imgFav.src = esFav ? "imgs/corazon_lleno.png" : "imgs/corazon_vacio.png";
 
-        imgFav.onclick = () => toggleFavorito(p.nombre_producto, imgFav);
+        // LLAMADA CORRECTA → IGUAL A PRODUCTO.HTML
+        imgFav.onclick = () => toggleFavorito(productoId, nombreProducto, imgFav);
 
+        // Botón Ver
         const btnVer = document.createElement("button");
         btnVer.innerText = "Ver producto";
         btnVer.classList.add("btn", "comprar");
@@ -162,63 +168,66 @@ async function mostrar_productos(categoria) {
 
 
 // ============================================================
-// FAVORITOS — AGREGAR / QUITAR DESDE INVENTARIO
-//   ⚠ Usa SOLO nombre (porque backend no devuelve id_producto)
+// FAVORITOS — AGREGAR / QUITAR (IGUAL QUE PRODUCTO.HTML)
 // ============================================================
-async function toggleFavorito(nombreProducto, imgElem) {
+async function toggleFavorito(productoId, nombreProducto, imgElem) {
 
     const usuarioId = localStorage.getItem("usuarioId");
+
     if (!usuarioId) {
         alert("Debes iniciar sesión");
         return window.location.href = "login.html";
     }
 
     let favsLS = JSON.parse(localStorage.getItem("favoritosLS")) || [];
-    const yaEsta = favsLS.includes(nombreProducto);
+    const yaEsta = favsLS.some(f => String(f.id) === String(productoId));
 
-    // --------------------------
-    // ❌ QUITAR FAVORITO
-    // --------------------------
+    // ❌ QUITAR
     if (yaEsta) {
 
-        favsLS = favsLS.filter(n => n !== nombreProducto);
+        favsLS = favsLS.filter(f => String(f.id) !== String(productoId));
         localStorage.setItem("favoritosLS", JSON.stringify(favsLS));
         imgElem.src = "imgs/corazon_vacio.png";
 
-        // eliminar del backend por NOMBRE
-        const resp = await fetch(`${API_URL}/favoritos/${usuarioId}`);
-        const data = await resp.json();
+        try {
+            const resp = await fetch(`${API_URL}/favoritos/${usuarioId}`);
+            const data = await resp.json();
 
-        const fav = data.favoritos.find(f => f.nombre === nombreProducto);
+            const favorito = data.favoritos.find(f =>
+                String(f.producto?.id_producto) === String(productoId)
+            );
 
-        if (fav) {
-            await fetch(`${API_URL}/favoritos/${fav._id}`, { method: "DELETE" });
+            if (favorito) {
+                await fetch(`${API_URL}/favoritos/${favorito._id}`, {
+                    method: "DELETE"
+                });
+            }
+
+        } catch (err) {
+            console.error("Error eliminando favorito:", err);
         }
 
-        // avisar a favoritos.html
         localStorage.setItem("actualizarFavoritos", "1");
-        localStorage.setItem("productoEliminado", nombreProducto);
+        localStorage.setItem("productoEliminado", String(productoId));
 
         return;
     }
 
-    // --------------------------
-    // ❤️ AGREGAR FAVORITO
-    // --------------------------
-    favsLS.push(nombreProducto);
+    // ❤️ AGREGAR
+    favsLS.push({ id: String(productoId), nombre: nombreProducto });
     localStorage.setItem("favoritosLS", JSON.stringify(favsLS));
 
     imgElem.src = "imgs/corazon_lleno.png";
 
-    // guardar en backend
-    await fetch(`${API_URL}/favoritos`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-            usuarioId,
-            nombre: nombreProducto // ← el backend lo registra por nombre
-        })
-    });
+    try {
+        await fetch(`${API_URL}/favoritos`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ usuarioId, productoId })
+        });
+    } catch (err) {
+        console.error("Error agregando favorito:", err);
+    }
 }
 
 
@@ -234,24 +243,23 @@ function cambiar_pagina(producto) {
 
 
 // ============================================================
-// SINCRONIZAR INVENTARIO SI FAVORITOS.HTML ELIMINÓ UNO
+// SINCRONIZAR INVENTARIO CUANDO FAVORITOS.HTML ELIMINA UNO
 // ============================================================
 function sincronizarInventario() {
 
     if (localStorage.getItem("actualizarInventario") !== "1") return;
 
-    const nombre = localStorage.getItem("productoEliminado");
+    const eliminado = localStorage.getItem("productoEliminado");
 
-    if (nombre) {
+    if (eliminado) {
         let favsLS = JSON.parse(localStorage.getItem("favoritosLS")) || [];
-        favsLS = favsLS.filter(n => n !== nombre);
+        favsLS = favsLS.filter(f => String(f.id) !== String(eliminado));
         localStorage.setItem("favoritosLS", JSON.stringify(favsLS));
     }
 
     localStorage.removeItem("actualizarInventario");
     localStorage.removeItem("productoEliminado");
 
-    // recargar solo si estamos en inven.html
     if (document.getElementById("mostrar_productos_por_categoria")) {
         location.reload();
     }
