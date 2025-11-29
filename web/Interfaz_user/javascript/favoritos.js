@@ -4,16 +4,28 @@
 
 const API_URL = "https://agroinsumos-san-pedro-despliegue.onrender.com";
 
-
 // ============================================================
-// 1. Si inven.html eliminó un favorito → limpiar flags
+// 1. Si inven.html eliminó un favorito → sincronizar aquí
 // ============================================================
 if (localStorage.getItem("actualizarFavoritos") === "1") {
-    // OJO: en inven ya se actualizó favoritosLS,
-    // aquí solo tenemos que limpiar banderas
+
+    const idEliminado = localStorage.getItem("productoEliminado");
+
+    if (idEliminado) {
+        let favsLS = JSON.parse(localStorage.getItem("favoritosLS")) || [];
+
+        // 🔥 CORREGIDO: comparar SIEMPRE STRING vs STRING
+        favsLS = favsLS.filter(p => String(p.id) !== String(idEliminado));
+
+        localStorage.setItem("favoritosLS", JSON.stringify(favsLS));
+    }
+
     localStorage.removeItem("actualizarFavoritos");
     localStorage.removeItem("productoEliminado");
+
+    location.reload();
 }
+
 
 
 // ============================================================
@@ -26,57 +38,50 @@ document.addEventListener("DOMContentLoaded", async () => {
     const totalFavoritos = document.getElementById("total-favoritos");
 
     if (!usuarioId) {
-        lista.innerHTML = `<p class="sin-sesion">Debes iniciar sesión para ver tus favoritos.</p>`;
+        lista.innerHTML = `
+            <p class="sin-sesion">Debes iniciar sesión para ver tus favoritos.</p>
+        `;
         return;
     }
 
     try {
         const resp = await fetch(`${API_URL}/favoritos/${usuarioId}`);
         const data = await resp.json();
-        let favoritos = data.favoritos || [];
-
-        // 🧠 Aplicar filtro por localStorage → si en inven ya lo quitaste, no se muestra
-        const favsLS = JSON.parse(localStorage.getItem("favoritosLS")) || [];
-
-        favoritos = favoritos.filter(f => {
-            const prodId = String(
-                f.producto?.id_producto ||
-                f.productoId ||
-                f.id_producto
-            );
-            return favsLS.some(ls => String(ls.id) === prodId);
-        });
+        const favoritos = data.favoritos || [];
 
         lista.innerHTML = "";
 
         if (favoritos.length === 0) {
-            lista.innerHTML = `<p class="sin-favoritos">No tienes productos favoritos aún.</p>`;
+            lista.innerHTML = `
+                <p class="sin-favoritos">No tienes productos favoritos aún.</p>
+            `;
             totalFavoritos.textContent = "0 productos";
             return;
         }
 
+        // ============================================================
+        // MOSTRAR LISTA DE FAVORITOS
+        // ============================================================
         favoritos.forEach(fav => {
-            const prodId = String(
-                fav.producto?.id_producto ||
-                fav.productoId ||
-                fav.id_producto
-            );
+
+            const idRealProducto = fav.producto?.id_producto; // id del producto real
 
             const articulo = document.createElement("article");
             articulo.classList.add("item-carrito");
 
             articulo.innerHTML = `
-                <img src="${fav.imagen || 'imgs/ingrediente.png'}" class="producto-img">
+                <img src="${fav.imagen || fav.producto?.direccion_img || 'imgs/ingrediente.png'}" 
+                     class="producto-img">
 
                 <div class="info-producto-carrito">
-                    <h3>${fav.nombre}</h3>
-                    <p>Precio: $${fav.precio}</p>
+                    <h3>${fav.nombre || fav.producto?.nombre_producto}</h3>
+                    <p>Precio: $${fav.precio || fav.producto?.precio}</p>
                 </div>
 
                 <div class="acciones-item">
                     <button class="btn-eliminar" 
-                            data-id="${fav._id}" 
-                            data-productoid="${prodId}">
+                        data-id="${fav._id}" 
+                        data-productoid="${idRealProducto}">
                         Eliminar
                     </button>
                 </div>
@@ -87,30 +92,31 @@ document.addEventListener("DOMContentLoaded", async () => {
 
         totalFavoritos.textContent = `${favoritos.length} productos`;
 
+
         // ============================================================
         // 3. ELIMINAR FAVORITO DESDE favoritos.html
         // ============================================================
         document.querySelectorAll(".btn-eliminar").forEach(btn => {
             btn.addEventListener("click", async () => {
 
-                const idFavorito = btn.dataset.id;
-                const idProducto = btn.dataset.productoid;
+                const idFavorito = btn.dataset.id;          // _id del documento favorito
+                const idProducto = btn.dataset.productoid;  // id_producto real
 
-                // Backend
+                // 1. Eliminar del backend
                 await fetch(`${API_URL}/favoritos/${idFavorito}`, {
                     method: "DELETE"
                 });
 
-                // LocalStorage: quitar por id_producto
+                // 2. Eliminar del LocalStorage (🔥 comparando correctamente)
                 let favsLS = JSON.parse(localStorage.getItem("favoritosLS")) || [];
                 favsLS = favsLS.filter(p => String(p.id) !== String(idProducto));
                 localStorage.setItem("favoritosLS", JSON.stringify(favsLS));
 
-                // Avisar a inven.html para que actualice iconos
+                // 3. Avisar al inventario para actualizar íconos allí
                 localStorage.setItem("actualizarInventario", "1");
                 localStorage.setItem("productoEliminado", String(idProducto));
 
-                // Quitar visualmente
+                // 4. Quitar visualmente
                 btn.closest(".item-carrito").remove();
 
                 const restantes = document.querySelectorAll(".item-carrito").length;
