@@ -348,6 +348,33 @@ async function interpretarBusqueda() {
 
 
 // ============================================================
+// SINCRONIZAR INVENTARIO CUANDO FAVORITOS.HTML ELIMINA UNO
+// ============================================================
+document.addEventListener("DOMContentLoaded", () => {
+
+    if (localStorage.getItem("actualizarInventario") === "1") {
+        
+        const nombreEliminado = localStorage.getItem("productoEliminado");
+
+        if (nombreEliminado) {
+            let favsLS = JSON.parse(localStorage.getItem("favoritosLS")) || [];
+            favsLS = favsLS.filter(n => n !== nombreEliminado);
+            localStorage.setItem("favoritosLS", JSON.stringify(favsLS));
+        }
+
+        localStorage.removeItem("actualizarInventario");
+        localStorage.removeItem("productoEliminado");
+
+        // Recargar íconos del inventario solo si estamos en inven.html
+        if (document.getElementById("mostrar_productos_por_categoria")) {
+            location.reload();
+        }
+    }
+});
+
+
+
+// ============================================================
 // RELOAD AL VOLVER DEL HISTORIAL
 // ============================================================
 window.addEventListener("pageshow", (e) => {
