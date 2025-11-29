@@ -1,12 +1,12 @@
 // ============================================================
-// FAVORITOS.HTML – BASADO EN BACKEND REAL
+// FAVORITOS.HTML — TOTALMENTE COMPATIBLE CON TU BACKEND REAL
 // ============================================================
 
 const API_URL = "https://agroinsumos-san-pedro-despliegue.onrender.com";
 
 
 // ============================================================
-// 1. Si inven.html eliminó ⇒ sincronizar aquí
+// 1. SINCRONIZAR: si inven.html eliminó algo
 // ============================================================
 if (localStorage.getItem("actualizarFavoritos") === "1") {
 
@@ -14,10 +14,7 @@ if (localStorage.getItem("actualizarFavoritos") === "1") {
 
     if (nombreEliminado) {
         let favsLS = JSON.parse(localStorage.getItem("favoritosLS")) || [];
-
-        // ❗ Backend NO envía ID, solo nombre
-        favsLS = favsLS.filter(f => f.nombre !== nombreEliminado);
-
+        favsLS = favsLS.filter(n => n !== nombreEliminado);
         localStorage.setItem("favoritosLS", JSON.stringify(favsLS));
     }
 
@@ -30,7 +27,7 @@ if (localStorage.getItem("actualizarFavoritos") === "1") {
 
 
 // ============================================================
-// 2. CARGA DE FAVORITOS.HTML
+// 2. CARGAR FAVORITOS DEL BACKEND
 // ============================================================
 document.addEventListener("DOMContentLoaded", async () => {
 
@@ -39,7 +36,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     const totalFavoritos = document.getElementById("total-favoritos");
 
     if (!usuarioId) {
-        lista.innerHTML = `<p>Debes iniciar sesión para ver tus favoritos.</p>`;
+        lista.innerHTML = `<p class="sin-sesion">Debes iniciar sesión.</p>`;
         return;
     }
 
@@ -52,17 +49,21 @@ document.addEventListener("DOMContentLoaded", async () => {
         lista.innerHTML = "";
 
         if (favoritos.length === 0) {
-            lista.innerHTML = `<p>No tienes productos favoritos aún.</p>`;
+            lista.innerHTML = `<p class="sin-favoritos">No tienes productos favoritos.</p>`;
             totalFavoritos.textContent = "0 productos";
             return;
         }
 
+        // ======================================================
+        // Mostrar los favoritos
+        // ======================================================
         favoritos.forEach(fav => {
-            const item = document.createElement("article");
-            item.classList.add("item-carrito");
 
-            item.innerHTML = `
-                <img src="${fav.imagen}" class="producto-img">
+            const articulo = document.createElement("article");
+            articulo.classList.add("item-carrito");
+
+            articulo.innerHTML = `
+                <img src="${fav.imagen || 'imgs/ingrediente.png'}" class="producto-img">
 
                 <div class="info-producto-carrito">
                     <h3>${fav.nombre}</h3>
@@ -78,47 +79,46 @@ document.addEventListener("DOMContentLoaded", async () => {
                 </div>
             `;
 
-            lista.appendChild(item);
+            lista.appendChild(articulo);
         });
 
         totalFavoritos.textContent = `${favoritos.length} productos`;
 
 
-        // ============================================================
-        // 3. ELIMINAR FAVORITO DESDE favoritos.html
-        // ============================================================
+
+        // ======================================================
+        // 3. ELIMINAR FAVORITO DESDE FAVORITOS.HTML
+        // ======================================================
         document.querySelectorAll(".btn-eliminar").forEach(btn => {
 
             btn.addEventListener("click", async () => {
 
                 const idFavorito = btn.dataset.id;
-                const nombre = btn.dataset.nombre;
+                const nombreProducto = btn.dataset.nombre;
 
-                // Backend
-                await fetch(`${API_URL}/favoritos/${idFavorito}`, {
-                    method: "DELETE"
-                });
+                // Eliminar del backend
+                await fetch(`${API_URL}/favoritos/${idFavorito}`, { method: "DELETE" });
 
-                // LocalStorage por nombre (backend NO envía id_producto)
+                // Eliminar del localStorage
                 let favsLS = JSON.parse(localStorage.getItem("favoritosLS")) || [];
-                favsLS = favsLS.filter(f => f.nombre !== nombre);
+                favsLS = favsLS.filter(n => n !== nombreProducto);
                 localStorage.setItem("favoritosLS", JSON.stringify(favsLS));
 
-                // Avisar al inventario que quite el corazón
+                // Avisar al inventario
                 localStorage.setItem("actualizarInventario", "1");
-                localStorage.setItem("productoEliminado", nombre);
+                localStorage.setItem("productoEliminado", nombreProducto);
 
-                // Quitar visualmente
+                // Eliminar visualmente
                 btn.closest(".item-carrito").remove();
 
-                const count = document.querySelectorAll(".item-carrito").length;
-                totalFavoritos.textContent = `${count} productos`;
+                const restantes = document.querySelectorAll(".item-carrito").length;
+                totalFavoritos.textContent = `${restantes} productos`;
             });
         });
 
 
     } catch (err) {
         console.error("ERROR FAVORITOS:", err);
-        lista.innerHTML = "<p>Error cargando favoritos.</p>";
+        lista.innerHTML = "<p>Error al cargar favoritos.</p>";
     }
 });
