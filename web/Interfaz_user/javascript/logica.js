@@ -152,6 +152,25 @@ async function mostrar_productos(categoria) {
         const data = await resp.json();
         if (!resp.ok) return alert("Error: " + data.error);
 
+                // =============== NUEVO: Cargar favoritos del usuario ===============
+        let nombresFavoritos = new Set();
+        const usuarioId = localStorage.getItem("usuarioId");
+
+        if (usuarioId) {
+            try {
+                const respFav = await fetch(`${API_URL}/favoritos/${usuarioId}`);
+                const dataFav = await respFav.json();
+                const favoritos = dataFav.favoritos || [];
+
+                // Guardamos solo los nombres de los productos en un Set
+                nombresFavoritos = new Set(favoritos.map(f => f.nombre));
+            } catch (err) {
+                console.error("No se pudieron cargar los favoritos:", err);
+            }
+        }
+        // =================== FIN BLOQUE NUEVO ===================
+
+
         loader.classList.add("oculto");
 
         const titulo = document.createElement("h2");
