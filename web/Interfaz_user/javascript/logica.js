@@ -166,7 +166,6 @@ async function mostrar_productos(categoria) {
         const grid = document.createElement("div");
         grid.classList.add("productos-grid");
 
-        // Leer favoritos locales (por nombre)
         let favoritosLS = JSON.parse(localStorage.getItem("favoritosLS")) || [];
 
         data.productos.forEach((e) => {
@@ -175,7 +174,6 @@ async function mostrar_productos(categoria) {
 
             const img = document.createElement("img");
             img.src = "../" + e.direccion_img;
-            img.width = 200;
 
             const n = document.createElement("h3");
             n.innerText = e.nombre_producto;
@@ -183,12 +181,8 @@ async function mostrar_productos(categoria) {
             const precio = document.createElement("p");
             precio.innerText = ` $${e.precio}`;
 
-            // =======================================
-            // CORAZÓN FAVORITO (PNG + ESTADO LOCAL)
-            // =======================================
             const imgFav = document.createElement("img");
             imgFav.classList.add("btn-favorito");
-            imgFav.alt = "Favorito";
 
             if (favoritosLS.includes(e.nombre_producto)) {
                 imgFav.src = "imgs/corazon_lleno.png";
@@ -200,7 +194,6 @@ async function mostrar_productos(categoria) {
             imgFav.onclick = () =>
                 toggleFavorito(e.id_producto, e.nombre_producto, imgFav);
 
-            // BOTÓN VER PRODUCTO
             const btnVer = document.createElement("button");
             btnVer.innerText = "Ver producto";
             btnVer.classList.add("btn", "comprar");
@@ -211,36 +204,6 @@ async function mostrar_productos(categoria) {
         });
 
         productos.appendChild(grid);
-
-        // PAGINACIÓN
-        if (data.totalPaginas > 1) {
-            const controles = document.createElement("div");
-            controles.classList.add("volver");
-
-            if (data.paginaActual > 1) {
-                const btnPrev = document.createElement("button");
-                btnPrev.classList.add("btn-volver");
-                btnPrev.innerText = "Anterior";
-                btnPrev.onclick = () => {
-                    page--;
-                    mostrar_productos(categoria);
-                };
-                controles.appendChild(btnPrev);
-            }
-
-            if (data.paginaActual != data.totalPaginas) {
-                const btnNext = document.createElement("button");
-                btnNext.classList.add("btn-volver");
-                btnNext.innerText = "Siguiente";
-                btnNext.onclick = () => {
-                    page++;
-                    mostrar_productos(categoria);
-                };
-                controles.appendChild(btnNext);
-            }
-
-            productos.appendChild(controles);
-        }
 
     } catch {
         alert("Error de conexión con la API");
@@ -266,34 +229,28 @@ async function toggleFavorito(productoId, nombreProducto, imgElem) {
     // SI YA ESTÁ: QUITAR FAVORITO
     // ==========================
     if (yaEsta) {
-        // 1. Quitar del localStorage
         favsLS = favsLS.filter(n => n !== nombreProducto);
         localStorage.setItem("favoritosLS", JSON.stringify(favsLS));
 
-        // 2. Cambiar icono a vacío
         imgElem.src = "imgs/corazon_vacio.png";
         imgElem.classList.remove("favorito-activo");
 
-        // 3. Borrar también del backend
         try {
             const resp = await fetch(`${API_URL}/favoritos/${usuarioId}`);
             const data = await resp.json();
             const lista = data.favoritos || [];
 
-            const favorito = lista.find(f =>
-                f.producto &&
-                (f.producto.id_producto === productoId ||
-                 f.producto.nombre === nombreProducto ||
-                 f.producto.nombre_producto === nombreProducto)
+            const favOriginal = lista.find(f =>
+                f.producto && f.producto.id_producto === productoId
             );
 
-            if (favorito && favorito._id) {
-                await fetch(`${API_URL}/favoritos/${favorito._id}`, {
+            if (favOriginal && favOriginal._id) {
+                await fetch(`${API_URL}/favoritos/${favOriginal._id}`, {
                     method: "DELETE"
                 });
             }
         } catch (err) {
-            console.error("Error al eliminar favorito en backend:", err);
+            console.error("Error eliminando en backend:", err);
         }
 
         return;
@@ -308,7 +265,6 @@ async function toggleFavorito(productoId, nombreProducto, imgElem) {
     imgElem.src = "imgs/corazon_lleno.png";
     imgElem.classList.add("favorito-activo");
 
-    // Guardar también en el backend
     try {
         await fetch(`${API_URL}/favoritos`, {
             method: "POST",
@@ -316,7 +272,7 @@ async function toggleFavorito(productoId, nombreProducto, imgElem) {
             body: JSON.stringify({ usuarioId, productoId })
         });
     } catch (err) {
-        console.error("Error al agregar favorito en backend:", err);
+        console.error("Error agregando favorito:", err);
     }
 }
 
@@ -414,7 +370,6 @@ async function interpretarBusqueda() {
     });
 
     const data = await response.json();
-    console.log("Respuesta IA:", data);
 
     const categoria = data.categoria;
 
@@ -432,6 +387,8 @@ async function interpretarBusqueda() {
     alert("Ocurrió un error al procesar la búsqueda.");
   }
 }
+
+
 // ===========================
 // FORZAR REFRESCO AL VOLVER
 // ===========================
@@ -440,4 +397,3 @@ window.addEventListener("pageshow", function (event) {
         location.reload();
     }
 });
-
