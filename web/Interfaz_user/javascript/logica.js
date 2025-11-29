@@ -163,7 +163,7 @@ async function mostrar_productos(categoria) {
                 const favoritos = dataFav.favoritos || [];
 
                 // Guardamos solo los nombres de los productos en un Set
-                favoritosSet = new Set(favoritos.map(f => f.nombre));
+                favoritosSet = new Set(favoritos.map(f => f.id_producto));
             } catch (err) {
                 console.error("No se pudieron cargar los favoritos:", err);
             }
@@ -206,7 +206,8 @@ async function mostrar_productos(categoria) {
             indicadorFav.classList.add("favorito-indicador");
             indicadorFav.dataset.id = e.id_producto;
 
-            const esFavorito = favoritosSet.has(e.nombre_producto);
+            const esFavorito = favoritosSet.has(e.id_producto);
+
 
             if (esFavorito) {
                 indicadorFav.classList.add("activo");
