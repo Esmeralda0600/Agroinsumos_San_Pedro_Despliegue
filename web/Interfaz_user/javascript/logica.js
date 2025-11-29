@@ -10,15 +10,18 @@ const API_URL = "https://agroinsumos-san-pedro-despliegue.onrender.com";
 // ============================================================
 document.addEventListener("DOMContentLoaded", () => {
 
+    // CATÁLOGO
     if (document.getElementById("contenedor-tarjetas")) {
         cargarCategorias();
         activarRadiosCatalogo();
     }
 
+    // BIENVENIDA
     const usuario = JSON.parse(localStorage.getItem("usuario"));
     const span = document.getElementById("bienvenida");
     if (usuario && span) span.innerText = `Bienvenido, ${usuario.nombre_usuario} 👋`;
 
+    // SINCRONIZAR INVENTARIO SI FAVORITOS.HTML ELIMINÓ ALGO
     sincronizarInventario();
 });
 
@@ -53,7 +56,7 @@ function activarRadiosCatalogo() {
 
 
 // ============================================================
-// CARGAR CATEGORÍAS
+// CARGAR CATEGORÍAS (CATÁLOGO)
 // ============================================================
 async function cargarCategorias() {
     const resp = await fetch(`${API_URL}/usuarios/categorias`);
@@ -63,13 +66,12 @@ async function cargarCategorias() {
 
 
 // ============================================================
-// MOSTRAR TARJETAS
+// MOSTRAR TARJETAS EN CATÁLOGO
 // ============================================================
 function mostrarTarjetas(lista, tituloTexto) {
 
     const contenedor = document.getElementById("contenedor-tarjetas");
     const titulo = document.getElementById("titulo-catalogo");
-
     if (!contenedor) return;
 
     contenedor.innerHTML = "";
@@ -80,7 +82,11 @@ function mostrarTarjetas(lista, tituloTexto) {
         div.classList.add("tarjeta");
         div.style.backgroundImage = `url('${item.img}')`;
 
-        div.innerHTML = `<div class="overlay"><p>${item.nombre}</p></div>`;
+        div.innerHTML = `
+            <div class="overlay">
+                <p>${item.nombre}</p>
+            </div>
+        `;
 
         div.addEventListener("click", () => {
             window.location.href = `inven.html?categoria=${item.nombre.toUpperCase()}`;
@@ -92,7 +98,7 @@ function mostrarTarjetas(lista, tituloTexto) {
 
 
 // ============================================================
-// LOGIN & REGISTRO
+// REGISTRO DE USUARIO
 // ============================================================
 async function registrar_usuario() {
     const nombre_usuario = document.getElementById("usuario").value.trim();
@@ -106,11 +112,15 @@ async function registrar_usuario() {
     });
 
     const data = await resp.json();
-    if (!resp.ok) return alert(data.error);
-    alert("Registrado ✔");
+    if (!resp.ok) return alert("Error: " + data.error);
+    alert("Usuario registrado ✔");
     window.location.href = "index.html";
 }
 
+
+// ============================================================
+// LOGIN
+// ============================================================
 async function login() {
     const correo = document.getElementById("correo").value.trim();
     const password = document.getElementById("password").value.trim();
@@ -122,7 +132,7 @@ async function login() {
     });
 
     const data = await resp.json();
-    if (!resp.ok) return alert(data.error);
+    if (!resp.ok) return alert("Error: " + data.error);
 
     localStorage.setItem("usuario", JSON.stringify(data.usuario));
     localStorage.setItem("usuarioId", data.usuario._id);
@@ -155,7 +165,6 @@ async function mostrar_productos(categoria) {
     });
 
     const data = await resp.json();
-
     loader.classList.add("oculto");
 
     const titulo = document.createElement("h2");
@@ -169,29 +178,34 @@ async function mostrar_productos(categoria) {
 
     data.productos.forEach(e => {
 
-        const esFav = favsLS.some(f => f.id == e.id_producto);
+        const productoId = String(e.id_producto);
+        const esFav = favsLS.some(f => String(f.id) === productoId);
 
         const div = document.createElement("div");
         div.classList.add("tarjeta");
 
-        div.innerHTML = `
-            <img src="../${e.direccion_img}">
-            <h3>${e.nombre_producto}</h3>
-            <p>$${e.precio}</p>
-        `;
+        const img = document.createElement("img");
+        img.src = "../" + e.direccion_img;
+
+        const n = document.createElement("h3");
+        n.innerText = e.nombre_producto;
+
+        const precio = document.createElement("p");
+        precio.innerText = `$${e.precio}`;
 
         const imgFav = document.createElement("img");
         imgFav.classList.add("btn-favorito");
         imgFav.src = esFav ? "imgs/corazon_lleno.png" : "imgs/corazon_vacio.png";
 
-        imgFav.onclick = () => toggleFavorito(e.id_producto, e.nombre_producto, imgFav);
+        imgFav.onclick = () =>
+            toggleFavorito(productoId, e.nombre_producto, imgFav);
 
         const btnVer = document.createElement("button");
         btnVer.innerText = "Ver producto";
         btnVer.classList.add("btn", "comprar");
         btnVer.onclick = () => cambiar_pagina(e);
 
-        div.append(imgFav, btnVer);
+        div.append(img, n, precio, imgFav, btnVer);
         grid.appendChild(div);
     });
 
@@ -200,48 +214,66 @@ async function mostrar_productos(categoria) {
 
 
 // ============================================================
-// AGREGAR / QUITAR FAVORITO (AHORA SI FUNCIONA)
+// FAVORITOS — AGREGAR / QUITAR DESDE INVENTARIO
 // ============================================================
 async function toggleFavorito(productoId, nombreProducto, imgElem) {
 
     const usuarioId = localStorage.getItem("usuarioId");
-    if (!usuarioId) return alert("Debes iniciar sesión");
+    if (!usuarioId) {
+        alert("Debes iniciar sesión");
+        return;
+    }
 
     let favsLS = JSON.parse(localStorage.getItem("favoritosLS")) || [];
+    const yaEsta = favsLS.some(f => String(f.id) === String(productoId));
 
-    const yaEsta = favsLS.some(f => f.id == productoId);
-
-    // -------- QUITAR --------
+    // -------- QUITAR FAVORITO --------
     if (yaEsta) {
 
-        favsLS = favsLS.filter(f => f.id != productoId);
+        // 1) Quitar de localStorage
+        favsLS = favsLS.filter(f => String(f.id) !== String(productoId));
         localStorage.setItem("favoritosLS", JSON.stringify(favsLS));
+
+        // 2) Cambiar icono
         imgElem.src = "imgs/corazon_vacio.png";
 
-        const resp = await fetch(`${API_URL}/favoritos/${usuarioId}`);
-        const data = await resp.json();
-        const fav = data.favoritos.find(f => f.producto?.id_producto == productoId);
+        // 3) Intentar borrar en backend (si no jala, al menos el front queda bien)
+        try {
+            const resp = await fetch(`${API_URL}/favoritos/${usuarioId}`);
+            const data = await resp.json();
 
-        if (fav) {
-            await fetch(`${API_URL}/favoritos/${fav._id}`, { method: "DELETE" });
+            const fav = (data.favoritos || []).find(
+                f => String(f.producto?.id_producto || f.productoId || f.id_producto) === String(productoId)
+            );
+
+            if (fav && fav._id) {
+                await fetch(`${API_URL}/favoritos/${fav._id}`, { method: "DELETE" });
+            }
+        } catch (err) {
+            console.error("Error eliminando favorito en backend:", err);
         }
 
+        // 4) Avisar a favoritos.html qué producto se eliminó
         localStorage.setItem("actualizarFavoritos", "1");
-        localStorage.setItem("productoEliminado", productoId);
+        localStorage.setItem("productoEliminado", String(productoId));
 
         return;
     }
 
-    // -------- AGREGAR --------
-    favsLS.push({ id: productoId, nombre: nombreProducto });
+    // -------- AGREGAR FAVORITO --------
+    favsLS.push({ id: String(productoId), nombre: nombreProducto });
     localStorage.setItem("favoritosLS", JSON.stringify(favsLS));
     imgElem.src = "imgs/corazon_lleno.png";
 
-    await fetch(`${API_URL}/favoritos`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ usuarioId, productoId })
-    });
+    try {
+        await fetch(`${API_URL}/favoritos`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ usuarioId, productoId })
+        });
+    } catch (err) {
+        console.error("Error al agregar favorito:", err);
+    }
 }
 
 
@@ -255,17 +287,18 @@ function cambiar_pagina(producto) {
 
 
 // ============================================================
-// SINCRONIZAR INVENTARIO (cuando favoritos.html elimina uno)
+// SINCRONIZAR INVENTARIO CUANDO FAVORITOS.HTML ELIMINA UNO
 // ============================================================
 function sincronizarInventario() {
 
     if (localStorage.getItem("actualizarInventario") !== "1") return;
 
     const eliminado = localStorage.getItem("productoEliminado");
-
-    let favsLS = JSON.parse(localStorage.getItem("favoritosLS")) || [];
-    favsLS = favsLS.filter(f => f.id != eliminado);
-    localStorage.setItem("favoritosLS", JSON.stringify(favsLS));
+    if (eliminado) {
+        let favsLS = JSON.parse(localStorage.getItem("favoritosLS")) || [];
+        favsLS = favsLS.filter(f => String(f.id) !== String(eliminado));
+        localStorage.setItem("favoritosLS", JSON.stringify(favsLS));
+    }
 
     localStorage.removeItem("actualizarInventario");
     localStorage.removeItem("productoEliminado");
@@ -273,6 +306,37 @@ function sincronizarInventario() {
     if (document.getElementById("mostrar_productos_por_categoria")) {
         location.reload();
     }
+}
+
+
+// ============================================================
+// BUSCADOR IA
+// ============================================================
+const URL_BACKEND_IA = `${API_URL}/api/ia/interpretar`;
+const btnBuscarIA = document.getElementById("btn-buscar-ia");
+const inputBusqueda = document.getElementById("input-busqueda");
+
+if (btnBuscarIA) {
+    btnBuscarIA.addEventListener("click", interpretarBusqueda);
+    inputBusqueda.addEventListener("keypress", e => {
+        if (e.key === "Enter") interpretarBusqueda();
+    });
+}
+
+async function interpretarBusqueda() {
+    const texto = inputBusqueda.value.trim();
+    if (!texto) return alert("Escribe algo para buscar");
+
+    const resp = await fetch(URL_BACKEND_IA, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ texto })
+    });
+
+    const data = await resp.json();
+    if (!data.categoria) return alert("No se reconoció la categoría");
+
+    window.location.href = `inven.html?categoria=${data.categoria}`;
 }
 
 
