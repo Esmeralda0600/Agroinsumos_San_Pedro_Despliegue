@@ -534,8 +534,6 @@ body {
   display: flex;            /* centro automático */
   justify-content: center;  /* horizontal */
   align-items: center;      /* vertical */
-  background: rgba(255, 255, 255, 0.7); /* fondo suave */
-  backdrop-filter: blur(2px); /* opcional efecto glass */
   z-index: 99999;
 
   transform: scale(1);  
