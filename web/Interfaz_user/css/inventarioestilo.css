@@ -227,7 +227,18 @@ body {
     max-width: 300px;
     transition: transform 0.3s ease;
     text-align: center;
+    position: relative; 
 }
+
+/* Icono de favorito en la tarjeta */
+.favorito-indicador {
+    position: absolute;
+    top: 8px;
+    right: 10px;
+    font-size: 22px;
+    pointer-events: none; /* para que no estorbe los clics */
+}
+
 
 .tarjeta:hover {
     transform: translateY(-5px);
