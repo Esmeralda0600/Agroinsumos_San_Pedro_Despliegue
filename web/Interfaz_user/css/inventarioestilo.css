@@ -567,4 +567,51 @@ body {
     }
 }
 
+/* Loader container (fondo semi-transparente opcional) */
+.loader-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  backdrop-filter: blur(0px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+}
+
+/* Oculto por defecto (tu clase actual) */
+.oculto {
+  display: none !important;
+}
+
+/* Loader styles */
+.loader {
+  position: relative;
+  width: 80px;
+  height: 20px;
+}
+
+.circle {
+  width: 16px;
+  height: 16px;
+  background-color: #4CAF50;
+  border-radius: 50%;
+  position: absolute;
+  animation: bounce 0.6s infinite alternate;
+}
+
+.circle-1 { left: 0;   animation-delay: 0s; }
+.circle-2 { left: 20px; animation-delay: 0.15s; }
+.circle-3 { left: 40px; animation-delay: 0.3s; }
+.circle-4 { left: 60px; animation-delay: 0.45s; }
+
+@keyframes bounce {
+  to {
+    transform: translateY(-10px);
+  }
+}
+
+
 
