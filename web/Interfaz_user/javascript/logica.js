@@ -216,55 +216,69 @@ async function mostrar_productos(categoria) {
 // ============================================================
 // FAVORITOS — AGREGAR / QUITAR DESDE INVENTARIO
 // ============================================================
+// ============================================================
+// FAVORITOS — AGREGAR / QUITAR (VERSIÓN CORRECTA COMO PRODUCTO.HTML)
+// ============================================================
 async function toggleFavorito(productoId, nombreProducto, imgElem) {
 
     const usuarioId = localStorage.getItem("usuarioId");
+
     if (!usuarioId) {
         alert("Debes iniciar sesión");
-        return;
+        return window.location.href = "login.html";
     }
 
     let favsLS = JSON.parse(localStorage.getItem("favoritosLS")) || [];
+
     const yaEsta = favsLS.some(f => String(f.id) === String(productoId));
 
-    // -------- QUITAR FAVORITO --------
+    // =========================================
+    // 🔵 SI YA ES FAVORITO → QUITARLO
+    // =========================================
     if (yaEsta) {
 
-        // 1) Quitar de localStorage
+        // 1. Quitar del LocalStorage
         favsLS = favsLS.filter(f => String(f.id) !== String(productoId));
         localStorage.setItem("favoritosLS", JSON.stringify(favsLS));
 
-        // 2) Cambiar icono
+        // 2. Cambiar icono
         imgElem.src = "imgs/corazon_vacio.png";
 
-        // 3) Intentar borrar en backend (si no jala, al menos el front queda bien)
+        // 3. Quitar del backend (igual que producto.html)
         try {
             const resp = await fetch(`${API_URL}/favoritos/${usuarioId}`);
             const data = await resp.json();
 
-            const fav = (data.favoritos || []).find(
-                f => String(f.producto?.id_producto || f.productoId || f.id_producto) === String(productoId)
+            const favOriginal = data.favoritos.find(f =>
+                String(f.producto?.id_producto) === String(productoId)
             );
 
-            if (fav && fav._id) {
-                await fetch(`${API_URL}/favoritos/${fav._id}`, { method: "DELETE" });
+            if (favOriginal && favOriginal._id) {
+                await fetch(`${API_URL}/favoritos/${favOriginal._id}`, {
+                    method: "DELETE"
+                });
             }
+
         } catch (err) {
-            console.error("Error eliminando favorito en backend:", err);
+            console.error("Error eliminando favorito backend:", err);
         }
 
-        // 4) Avisar a favoritos.html qué producto se eliminó
+        // 4. Avisar a favoritos.html
         localStorage.setItem("actualizarFavoritos", "1");
         localStorage.setItem("productoEliminado", String(productoId));
 
         return;
     }
 
-    // -------- AGREGAR FAVORITO --------
+    // =========================================
+    // 🔴 SI NO ES FAVORITO → AGREGARLO
+    // =========================================
     favsLS.push({ id: String(productoId), nombre: nombreProducto });
     localStorage.setItem("favoritosLS", JSON.stringify(favsLS));
+
     imgElem.src = "imgs/corazon_lleno.png";
 
+    // Guardar también en backend
     try {
         await fetch(`${API_URL}/favoritos`, {
             method: "POST",
@@ -272,9 +286,10 @@ async function toggleFavorito(productoId, nombreProducto, imgElem) {
             body: JSON.stringify({ usuarioId, productoId })
         });
     } catch (err) {
-        console.error("Error al agregar favorito:", err);
+        console.error("Error al agregar en backend:", err);
     }
 }
+
 
 
 // ============================================================
