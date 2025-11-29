@@ -4,8 +4,8 @@
 
 const API_URL = "https://agroinsumos-san-pedro-despliegue.onrender.com";
 
-// 🚀 1. Sincronizar cuando INVENTARIO elimina un favorito
-if (localStorage.getItem("actualizarInventario") === "1") {
+// 🚀 1. Si inven.html eliminó un favorito, sincronizar aquí
+if (localStorage.getItem("actualizarFavoritos") === "1") {
 
     const nombreEliminado = localStorage.getItem("productoEliminado");
 
@@ -15,14 +15,13 @@ if (localStorage.getItem("actualizarInventario") === "1") {
         localStorage.setItem("favoritosLS", JSON.stringify(favsLS));
     }
 
-    localStorage.removeItem("actualizarInventario");
+    localStorage.removeItem("actualizarFavoritos");
     localStorage.removeItem("productoEliminado");
 
     location.reload();
 }
 
-
-// 🚀 2. FAVORITOS.HTML CARGA INICIAL
+// 🚀 2. FAVORITOS.HTML: carga inicial
 document.addEventListener("DOMContentLoaded", async () => {
 
     const usuarioId = localStorage.getItem("usuarioId");
@@ -35,7 +34,6 @@ document.addEventListener("DOMContentLoaded", async () => {
     }
 
     try {
-        // Obtener favoritos desde el backend
         const resp = await fetch(`${API_URL}/favoritos/${usuarioId}`);
         const data = await resp.json();
         const favoritos = data.favoritos || [];
@@ -48,7 +46,6 @@ document.addEventListener("DOMContentLoaded", async () => {
             return;
         }
 
-        // Construcción visual de cada favorito
         favoritos.forEach(fav => {
             const articulo = document.createElement("article");
             articulo.classList.add("item-carrito");
@@ -75,30 +72,30 @@ document.addEventListener("DOMContentLoaded", async () => {
 
         totalFavoritos.textContent = `${favoritos.length} productos`;
 
-        // 🚀 3. BOTONES ELIMINAR
+        // 🚀 3. Eliminar favorito desde favoritos.html
         document.querySelectorAll(".btn-eliminar").forEach(btn => {
             btn.addEventListener("click", async () => {
+
                 const idFavorito = btn.dataset.id;
                 const nombreProducto = btn.dataset.nombre;
 
-                // ELIMINAR EN BACKEND
+                // Backend
                 await fetch(`${API_URL}/favoritos/${idFavorito}`, {
                     method: "DELETE"
                 });
 
-                // ELIMINAR DEL LOCALSTORAGE
+                // LocalStorage
                 let favsLS = JSON.parse(localStorage.getItem("favoritosLS")) || [];
                 favsLS = favsLS.filter(n => n !== nombreProducto);
                 localStorage.setItem("favoritosLS", JSON.stringify(favsLS));
 
-                // NOTIFICAR INVENTARIO
+                // Avisar al inventario
                 localStorage.setItem("actualizarInventario", "1");
                 localStorage.setItem("productoEliminado", nombreProducto);
 
-                // QUITAR VISUALMENTE
+                // Quitar visualmente
                 btn.closest(".item-carrito").remove();
 
-                // ACTUALIZAR CONTADOR
                 const restantes = document.querySelectorAll(".item-carrito").length;
                 totalFavoritos.textContent = `${restantes} productos`;
             });
