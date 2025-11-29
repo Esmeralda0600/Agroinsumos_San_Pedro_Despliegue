@@ -190,8 +190,26 @@ async function mostrar_productos(categoria) {
 
     // Si el nombre del producto está en la lista de favoritos, mostramos 💚
             if (nombresFavoritos.has(e.nombre_producto)) {
-                indicadorFav.innerHTML = "💚";
-            }
+    // Corazón PRO verde lleno
+    indicadorFav.innerHTML = `
+        <svg width="26" height="26" viewBox="0 0 24 24" fill="#28a745"
+             xmlns="http://www.w3.org/2000/svg">
+          <path d="M12 21s-6.716-4.686-10-9.428C-1.243 7.52 1.238 2 6.364 2
+                   8.925 2 11 3.75 12 5.09 13 3.75 15.075 2 17.636 2
+                   22.762 2 25.243 7.52 22 11.572 18.716 16.314 12
+                   21 12 21z"/>
+        </svg>`;
+} else {
+    // Corazón PRO gris delineado
+    indicadorFav.innerHTML = `
+        <svg width="26" height="26" viewBox="0 0 24 24" fill="none"
+             stroke="#666" stroke-width="2" stroke-linecap="round"
+             stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg">
+          <path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.6l-1-1a5.5 5.5 0 0 0-7.8
+                   7.8l1 1L12 21l7.8-7.8 1-1a5.5 5.5 0 0 0 0-7.8z"/>
+        </svg>`;
+}
+
 
 
             const img = document.createElement("img");
