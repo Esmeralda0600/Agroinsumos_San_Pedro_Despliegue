@@ -6,15 +6,15 @@ const API_URL = "https://agroinsumos-san-pedro-despliegue.onrender.com";
 
 
 // ============================================================
-// 1. Si inven.html eliminó un favorito → actualizar aquí
+// 1. Si inven.html eliminó un favorito → sincronizar aquí
 // ============================================================
 if (localStorage.getItem("actualizarFavoritos") === "1") {
 
-    const nombreEliminado = localStorage.getItem("productoEliminado");
+    const idEliminado = localStorage.getItem("productoEliminado");
 
-    if (nombreEliminado) {
+    if (idEliminado) {
         let favsLS = JSON.parse(localStorage.getItem("favoritosLS")) || [];
-        favsLS = favsLS.filter(n => n !== nombreEliminado);
+        favsLS = favsLS.filter(p => p.id !== idEliminado);
         localStorage.setItem("favoritosLS", JSON.stringify(favsLS));
     }
 
@@ -67,7 +67,7 @@ document.addEventListener("DOMContentLoaded", async () => {
                 <div class="acciones-item">
                     <button class="btn-eliminar" 
                             data-id="${fav._id}" 
-                            data-nombre="${fav.nombre}">
+                            data-productoid="${fav.producto?.id_producto}">
                         Eliminar
                     </button>
                 </div>
@@ -86,21 +86,21 @@ document.addEventListener("DOMContentLoaded", async () => {
             btn.addEventListener("click", async () => {
 
                 const idFavorito = btn.dataset.id;
-                const nombreProducto = btn.dataset.nombre;
+                const idProducto = btn.dataset.productoid;
 
                 // Borrar del backend
                 await fetch(`${API_URL}/favoritos/${idFavorito}`, {
                     method: "DELETE"
                 });
 
-                // Borrar del LS
+                // Eliminar del LS usando ID REAL
                 let favsLS = JSON.parse(localStorage.getItem("favoritosLS")) || [];
-                favsLS = favsLS.filter(n => n !== nombreProducto);
+                favsLS = favsLS.filter(p => p.id !== idProducto);
                 localStorage.setItem("favoritosLS", JSON.stringify(favsLS));
 
                 // Avisar al inventario
                 localStorage.setItem("actualizarInventario", "1");
-                localStorage.setItem("productoEliminado", nombreProducto);
+                localStorage.setItem("productoEliminado", idProducto);
 
                 // Quitar visualmente
                 btn.closest(".item-carrito").remove();
