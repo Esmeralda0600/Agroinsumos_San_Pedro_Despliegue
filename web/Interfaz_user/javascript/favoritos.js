@@ -4,7 +4,10 @@
 
 const API_URL = "https://agroinsumos-san-pedro-despliegue.onrender.com";
 
-// 🚀 1. Si inven.html eliminó un favorito, sincronizar aquí
+
+// ============================================================
+// 1. Si inven.html eliminó un favorito → actualizar aquí
+// ============================================================
 if (localStorage.getItem("actualizarFavoritos") === "1") {
 
     const nombreEliminado = localStorage.getItem("productoEliminado");
@@ -21,7 +24,10 @@ if (localStorage.getItem("actualizarFavoritos") === "1") {
     location.reload();
 }
 
-// 🚀 2. FAVORITOS.HTML: carga inicial
+
+// ============================================================
+// 2. CARGA DE FAVORITOS.HTML
+// ============================================================
 document.addEventListener("DOMContentLoaded", async () => {
 
     const usuarioId = localStorage.getItem("usuarioId");
@@ -72,19 +78,22 @@ document.addEventListener("DOMContentLoaded", async () => {
 
         totalFavoritos.textContent = `${favoritos.length} productos`;
 
-        // 🚀 3. Eliminar favorito desde favoritos.html
+
+        // ============================================================
+        // 3. ELIMINAR FAVORITO DESDE favoritos.html
+        // ============================================================
         document.querySelectorAll(".btn-eliminar").forEach(btn => {
             btn.addEventListener("click", async () => {
 
                 const idFavorito = btn.dataset.id;
                 const nombreProducto = btn.dataset.nombre;
 
-                // Backend
+                // Borrar del backend
                 await fetch(`${API_URL}/favoritos/${idFavorito}`, {
                     method: "DELETE"
                 });
 
-                // LocalStorage
+                // Borrar del LS
                 let favsLS = JSON.parse(localStorage.getItem("favoritosLS")) || [];
                 favsLS = favsLS.filter(n => n !== nombreProducto);
                 localStorage.setItem("favoritosLS", JSON.stringify(favsLS));
