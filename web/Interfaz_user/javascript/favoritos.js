@@ -6,22 +6,13 @@ const API_URL = "https://agroinsumos-san-pedro-despliegue.onrender.com";
 
 
 // ============================================================
-// 1. Si inven.html eliminó un favorito → sincronizar aquí
+// 1. Si inven.html eliminó un favorito → limpiar flags
 // ============================================================
 if (localStorage.getItem("actualizarFavoritos") === "1") {
-
-    const idEliminado = localStorage.getItem("productoEliminado");
-
-    if (idEliminado) {
-        let favsLS = JSON.parse(localStorage.getItem("favoritosLS")) || [];
-        favsLS = favsLS.filter(p => p.id !== idEliminado);
-        localStorage.setItem("favoritosLS", JSON.stringify(favsLS));
-    }
-
+    // OJO: en inven ya se actualizó favoritosLS,
+    // aquí solo tenemos que limpiar banderas
     localStorage.removeItem("actualizarFavoritos");
     localStorage.removeItem("productoEliminado");
-
-    location.reload();
 }
 
 
@@ -42,7 +33,19 @@ document.addEventListener("DOMContentLoaded", async () => {
     try {
         const resp = await fetch(`${API_URL}/favoritos/${usuarioId}`);
         const data = await resp.json();
-        const favoritos = data.favoritos || [];
+        let favoritos = data.favoritos || [];
+
+        // 🧠 Aplicar filtro por localStorage → si en inven ya lo quitaste, no se muestra
+        const favsLS = JSON.parse(localStorage.getItem("favoritosLS")) || [];
+
+        favoritos = favoritos.filter(f => {
+            const prodId = String(
+                f.producto?.id_producto ||
+                f.productoId ||
+                f.id_producto
+            );
+            return favsLS.some(ls => String(ls.id) === prodId);
+        });
 
         lista.innerHTML = "";
 
@@ -53,6 +56,12 @@ document.addEventListener("DOMContentLoaded", async () => {
         }
 
         favoritos.forEach(fav => {
+            const prodId = String(
+                fav.producto?.id_producto ||
+                fav.productoId ||
+                fav.id_producto
+            );
+
             const articulo = document.createElement("article");
             articulo.classList.add("item-carrito");
 
@@ -67,7 +76,7 @@ document.addEventListener("DOMContentLoaded", async () => {
                 <div class="acciones-item">
                     <button class="btn-eliminar" 
                             data-id="${fav._id}" 
-                            data-productoid="${fav.producto?.id_producto}">
+                            data-productoid="${prodId}">
                         Eliminar
                     </button>
                 </div>
@@ -78,7 +87,6 @@ document.addEventListener("DOMContentLoaded", async () => {
 
         totalFavoritos.textContent = `${favoritos.length} productos`;
 
-
         // ============================================================
         // 3. ELIMINAR FAVORITO DESDE favoritos.html
         // ============================================================
@@ -88,19 +96,19 @@ document.addEventListener("DOMContentLoaded", async () => {
                 const idFavorito = btn.dataset.id;
                 const idProducto = btn.dataset.productoid;
 
-                // Borrar del backend
+                // Backend
                 await fetch(`${API_URL}/favoritos/${idFavorito}`, {
                     method: "DELETE"
                 });
 
-                // Eliminar del LS usando ID REAL
+                // LocalStorage: quitar por id_producto
                 let favsLS = JSON.parse(localStorage.getItem("favoritosLS")) || [];
-                favsLS = favsLS.filter(p => p.id !== idProducto);
+                favsLS = favsLS.filter(p => String(p.id) !== String(idProducto));
                 localStorage.setItem("favoritosLS", JSON.stringify(favsLS));
 
-                // Avisar al inventario
+                // Avisar a inven.html para que actualice iconos
                 localStorage.setItem("actualizarInventario", "1");
-                localStorage.setItem("productoEliminado", idProducto);
+                localStorage.setItem("productoEliminado", String(idProducto));
 
                 // Quitar visualmente
                 btn.closest(".item-carrito").remove();
