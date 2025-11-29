@@ -6,36 +6,36 @@ const API_URL = "https://agroinsumos-san-pedro-despliegue.onrender.com";
 
 
 // ============================================================
-// DOMContentLoaded ÚNICO
+// DOMContentLoaded GENERAL
 // ============================================================
 document.addEventListener("DOMContentLoaded", () => {
 
-    // CATÁLOGO
+    // Si estamos en catálogo
     if (document.getElementById("contenedor-tarjetas")) {
         cargarCategorias();
         activarRadiosCatalogo();
     }
 
-    // BIENVENIDA
+    // Bienvenida
     const usuario = JSON.parse(localStorage.getItem("usuario"));
     const span = document.getElementById("bienvenida");
     if (usuario && span) span.innerText = `Bienvenido, ${usuario.nombre_usuario} 👋`;
 
-    // SINCRONIZAR INVENTARIO SI FAVORITOS.HTML ELIMINÓ ALGO
+    // Sincronizar inventario si favoritos.html eliminó algo
     sincronizarInventario();
 });
 
 
 // ============================================================
-// FILTROS DEL CATÁLOGO
+// CATALOGO
 // ============================================================
 function activarRadiosCatalogo() {
     const radios = document.querySelectorAll('input[name="tipo-busqueda"]');
 
     radios.forEach(radio => {
         radio.addEventListener("change", async e => {
-
             let url = "";
+
             if (e.target.value === "producto") url = "categorias";
             if (e.target.value === "marca") url = "marcas";
             if (e.target.value === "ingrediente") url = "ingrediente";
@@ -54,26 +54,17 @@ function activarRadiosCatalogo() {
     });
 }
 
-
-// ============================================================
-// CARGAR CATEGORÍAS (CATÁLOGO)
-// ============================================================
 async function cargarCategorias() {
     const resp = await fetch(`${API_URL}/usuarios/categorias`);
     const data = await resp.json();
     mostrarTarjetas(data, "CATÁLOGO DE PRODUCTOS");
 }
 
-
-// ============================================================
-// MOSTRAR TARJETAS EN CATÁLOGO
-// ============================================================
 function mostrarTarjetas(lista, tituloTexto) {
-
     const contenedor = document.getElementById("contenedor-tarjetas");
     const titulo = document.getElementById("titulo-catalogo");
-    if (!contenedor) return;
 
+    if (!contenedor) return;
     contenedor.innerHTML = "";
     titulo.textContent = tituloTexto;
 
@@ -98,7 +89,7 @@ function mostrarTarjetas(lista, tituloTexto) {
 
 
 // ============================================================
-// REGISTRO DE USUARIO
+// LOGIN Y REGISTRO
 // ============================================================
 async function registrar_usuario() {
     const nombre_usuario = document.getElementById("usuario").value.trim();
@@ -113,14 +104,11 @@ async function registrar_usuario() {
 
     const data = await resp.json();
     if (!resp.ok) return alert("Error: " + data.error);
+
     alert("Usuario registrado ✔");
     window.location.href = "index.html";
 }
 
-
-// ============================================================
-// LOGIN
-// ============================================================
 async function login() {
     const correo = document.getElementById("correo").value.trim();
     const password = document.getElementById("password").value.trim();
@@ -142,7 +130,7 @@ async function login() {
 
 
 // ============================================================
-// MOSTRAR INVENTARIO (inven.html)
+// INVENTARIO (INVEN.HTML)
 // ============================================================
 let page = 1;
 const params = new URLSearchParams(window.location.search);
@@ -153,6 +141,7 @@ async function mostrar_productos(categoria) {
 
     const productos = document.getElementById("mostrar_productos_por_categoria");
     const loader = document.getElementById("loader");
+
     if (!productos) return;
 
     loader.classList.remove("oculto");
@@ -171,41 +160,37 @@ async function mostrar_productos(categoria) {
     titulo.innerText = categoria.toUpperCase();
     productos.appendChild(titulo);
 
-    const favsLS = JSON.parse(localStorage.getItem("favoritosLS")) || [];
+    const favoritosLS = JSON.parse(localStorage.getItem("favoritosLS")) || [];
 
     const grid = document.createElement("div");
     grid.classList.add("productos-grid");
 
     data.productos.forEach(e => {
 
-        const productoId = String(e.id_producto);
-        const esFav = favsLS.some(f => String(f.id) === productoId);
+        const id = String(e.id_producto);
+        const esFav = favoritosLS.some(f => f.id === id);
 
         const div = document.createElement("div");
         div.classList.add("tarjeta");
-
-        const img = document.createElement("img");
-        img.src = "../" + e.direccion_img;
-
-        const n = document.createElement("h3");
-        n.innerText = e.nombre_producto;
-
-        const precio = document.createElement("p");
-        precio.innerText = `$${e.precio}`;
 
         const imgFav = document.createElement("img");
         imgFav.classList.add("btn-favorito");
         imgFav.src = esFav ? "imgs/corazon_lleno.png" : "imgs/corazon_vacio.png";
 
-        imgFav.onclick = () =>
-            toggleFavorito(productoId, e.nombre_producto, imgFav);
+        imgFav.onclick = () => toggleFavorito(id, e.nombre_producto, imgFav);
+
+        div.innerHTML = `
+            <img src="../${e.direccion_img}">
+            <h3>${e.nombre_producto}</h3>
+            <p>$${e.precio}</p>
+        `;
 
         const btnVer = document.createElement("button");
         btnVer.innerText = "Ver producto";
         btnVer.classList.add("btn", "comprar");
         btnVer.onclick = () => cambiar_pagina(e);
 
-        div.append(img, n, precio, imgFav, btnVer);
+        div.append(imgFav, btnVer);
         grid.appendChild(div);
     });
 
@@ -214,106 +199,67 @@ async function mostrar_productos(categoria) {
 
 
 // ============================================================
-// FAVORITOS — AGREGAR / QUITAR DESDE INVENTARIO
+// FAVORITOS → AGREGAR/QUITAR (UNIFICADO AL 100%)
 // ============================================================
-// ============================================================
-// FAVORITOS — AGREGAR / QUITAR (VERSIÓN CORRECTA COMO PRODUCTO.HTML)
-// ============================================================
-async function toggleFavorito(productoId, nombreProducto, imgElem) {
+async function toggleFavorito(productoId, nombre, imgElem) {
 
     const usuarioId = localStorage.getItem("usuarioId");
-
-    if (!usuarioId) {
-        alert("Debes iniciar sesión");
-        return window.location.href = "login.html";
-    }
+    if (!usuarioId) return alert("Debes iniciar sesión");
 
     let favsLS = JSON.parse(localStorage.getItem("favoritosLS")) || [];
+    const yaEsta = favsLS.some(f => f.id === productoId);
 
-    const yaEsta = favsLS.some(f => String(f.id) === String(productoId));
-
-    // =========================================
-    // 🔵 SI YA ES FAVORITO → QUITARLO
-    // =========================================
+    // ------------------ QUITAR FAVORITO ------------------
     if (yaEsta) {
-
-        // 1. Quitar del LocalStorage
-        favsLS = favsLS.filter(f => String(f.id) !== String(productoId));
+        favsLS = favsLS.filter(f => f.id !== productoId);
         localStorage.setItem("favoritosLS", JSON.stringify(favsLS));
 
-        // 2. Cambiar icono
         imgElem.src = "imgs/corazon_vacio.png";
 
-        // 3. Quitar del backend (igual que producto.html)
-        try {
-            const resp = await fetch(`${API_URL}/favoritos/${usuarioId}`);
-            const data = await resp.json();
+        // borrar en backend
+        const resp = await fetch(`${API_URL}/favoritos/${usuarioId}`);
+        const data = await resp.json();
 
-            const favOriginal = data.favoritos.find(f =>
-                String(f.producto?.id_producto) === String(productoId)
-            );
+        const fav = data.favoritos.find(f =>
+            String(f.producto?.id_producto) === String(productoId)
+        );
 
-            if (favOriginal && favOriginal._id) {
-                await fetch(`${API_URL}/favoritos/${favOriginal._id}`, {
-                    method: "DELETE"
-                });
-            }
-
-        } catch (err) {
-            console.error("Error eliminando favorito backend:", err);
+        if (fav) {
+            await fetch(`${API_URL}/favoritos/${fav._id}`, { method: "DELETE" });
         }
 
-        // 4. Avisar a favoritos.html
+        // avisar a favoritos.html
         localStorage.setItem("actualizarFavoritos", "1");
-        localStorage.setItem("productoEliminado", String(productoId));
+        localStorage.setItem("productoEliminado", productoId);
 
         return;
     }
 
-    // =========================================
-    // 🔴 SI NO ES FAVORITO → AGREGARLO
-    // =========================================
-    favsLS.push({ id: String(productoId), nombre: nombreProducto });
+    // ------------------ AGREGAR FAVORITO ------------------
+    favsLS.push({ id: productoId, nombre });
     localStorage.setItem("favoritosLS", JSON.stringify(favsLS));
 
     imgElem.src = "imgs/corazon_lleno.png";
 
-    // Guardar también en backend
-    try {
-        await fetch(`${API_URL}/favoritos`, {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ usuarioId, productoId })
-        });
-    } catch (err) {
-        console.error("Error al agregar en backend:", err);
-    }
-}
-
-
-
-// ============================================================
-// VER PRODUCTO
-// ============================================================
-function cambiar_pagina(producto) {
-    localStorage.setItem("productoSeleccionado", JSON.stringify(producto));
-    window.location.href = "producto.html";
+    await fetch(`${API_URL}/favoritos`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ usuarioId, productoId })
+    });
 }
 
 
 // ============================================================
-// SINCRONIZAR INVENTARIO CUANDO FAVORITOS.HTML ELIMINA UNO
+// SINCRONIZAR INVENTARIO SI FAVORITOS.HTML BORRA UNO
 // ============================================================
 function sincronizarInventario() {
-
     if (localStorage.getItem("actualizarInventario") !== "1") return;
 
     const eliminado = localStorage.getItem("productoEliminado");
-    if (eliminado) {
-        let favsLS = JSON.parse(localStorage.getItem("favoritosLS")) || [];
-        favsLS = favsLS.filter(f => String(f.id) !== String(eliminado));
-        localStorage.setItem("favoritosLS", JSON.stringify(favsLS));
-    }
+
+    let favsLS = JSON.parse(localStorage.getItem("favoritosLS")) || [];
+    favsLS = favsLS.filter(f => f.id !== eliminado);
+    localStorage.setItem("favoritosLS", JSON.stringify(favsLS));
 
     localStorage.removeItem("actualizarInventario");
     localStorage.removeItem("productoEliminado");
@@ -325,33 +271,11 @@ function sincronizarInventario() {
 
 
 // ============================================================
-// BUSCADOR IA
+// VER PRODUCTO
 // ============================================================
-const URL_BACKEND_IA = `${API_URL}/api/ia/interpretar`;
-const btnBuscarIA = document.getElementById("btn-buscar-ia");
-const inputBusqueda = document.getElementById("input-busqueda");
-
-if (btnBuscarIA) {
-    btnBuscarIA.addEventListener("click", interpretarBusqueda);
-    inputBusqueda.addEventListener("keypress", e => {
-        if (e.key === "Enter") interpretarBusqueda();
-    });
-}
-
-async function interpretarBusqueda() {
-    const texto = inputBusqueda.value.trim();
-    if (!texto) return alert("Escribe algo para buscar");
-
-    const resp = await fetch(URL_BACKEND_IA, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ texto })
-    });
-
-    const data = await resp.json();
-    if (!data.categoria) return alert("No se reconoció la categoría");
-
-    window.location.href = `inven.html?categoria=${data.categoria}`;
+function cambiar_pagina(producto) {
+    localStorage.setItem("productoSeleccionado", JSON.stringify(producto));
+    window.location.href = "producto.html";
 }
 
 
