@@ -11,23 +11,17 @@ const API_URL = "https://agroinsumos-san-pedro-despliegue.onrender.com";
 // ============================================================
 document.addEventListener("DOMContentLoaded", () => {
 
-    // =============================
-    // 1. Cargar catálogo principal
-    // =============================
+    // 1. CARGAR CATALOGO PRINCIPAL
     if (document.getElementById("contenedor-tarjetas")) {
-        cargarCategorias(); // carga categorías al entrar
-        activarRadiosCatalogo(); // activa cambios producto/marca/ingrediente
+        cargarCategorias();
+        activarRadiosCatalogo();
     }
 
-    // =============================
-    // 2. Mostrar bienvenida
-    // =============================
+    // 2. MOSTRAR BIENVENIDA
     const usuario = JSON.parse(localStorage.getItem("usuario"));
     const span = document.getElementById("bienvenida");
     if (usuario && span) span.innerText = `Bienvenido, ${usuario.nombre_usuario} 👋`;
-
 });
-
 
 
 // ============================================================
@@ -64,9 +58,8 @@ function activarRadiosCatalogo() {
 }
 
 
-
 // ============================================================
-// FUNCIÓN: cargar categorías desde la API
+// CARGAR CATEGORÍAS
 // ============================================================
 async function cargarCategorias() {
     try {
@@ -79,9 +72,8 @@ async function cargarCategorias() {
 }
 
 
-
 // ============================================================
-// FUNCIÓN: MOSTRAR TARJETAS DEL CATÁLOGO PRINCIPAL
+// MOSTRAR TARJETAS EN CATÁLOGO PRINCIPAL
 // ============================================================
 function mostrarTarjetas(lista, tituloTexto) {
 
@@ -196,13 +188,11 @@ async function mostrar_productos(categoria) {
         const data = await resp.json();
         loader.classList.add("oculto");
 
-        // título de categoría
         const titulo = document.createElement("h2");
         titulo.innerText = categoria.toUpperCase();
         productos.appendChild(titulo);
 
         const favoritosLS = JSON.parse(localStorage.getItem("favoritosLS")) || [];
-
         const grid = document.createElement("div");
         grid.classList.add("productos-grid");
 
@@ -247,7 +237,7 @@ async function mostrar_productos(categoria) {
 
 
 // ============================================================
-// FAVORITOS INVENTARIO – AGREGAR / QUITAR + SINCRONIZACIÓN
+// FAVORITOS INVENTARIO — AGREGAR / QUITAR
 // ============================================================
 async function toggleFavorito(productoId, nombreProducto, imgElem) {
 
@@ -260,7 +250,11 @@ async function toggleFavorito(productoId, nombreProducto, imgElem) {
     let favsLS = JSON.parse(localStorage.getItem("favoritosLS")) || [];
     const yaEsta = favsLS.includes(nombreProducto);
 
+    // --------------------------
+    // QUITAR FAVORITO
+    // --------------------------
     if (yaEsta) {
+
         favsLS = favsLS.filter(n => n !== nombreProducto);
         localStorage.setItem("favoritosLS", JSON.stringify(favsLS));
 
@@ -269,16 +263,21 @@ async function toggleFavorito(productoId, nombreProducto, imgElem) {
         try {
             const resp = await fetch(`${API_URL}/favoritos/${usuarioId}`);
             const data = await resp.json();
+            const lista = data.favoritos || [];
 
-            const favorito = data.favoritos.find(f =>
-                f.producto.id_producto === productoId
+            const favOriginal = lista.find(f =>
+                f.producto &&
+                String(f.producto.id_producto) === String(productoId)
             );
 
-            if (favorito)
-                await fetch(`${API_URL}/favoritos/${favorito._id}`, { method: "DELETE" });
+            if (favOriginal && favOriginal._id) {
+                await fetch(`${API_URL}/favoritos/${favOriginal._id}`, {
+                    method: "DELETE"
+                });
+            }
 
-        } catch (error) {
-            console.error(error);
+        } catch (err) {
+            console.error("Error eliminando favorito en backend:", err);
         }
 
         localStorage.setItem("actualizarFavoritos", "1");
@@ -287,16 +286,23 @@ async function toggleFavorito(productoId, nombreProducto, imgElem) {
         return;
     }
 
+    // --------------------------
+    // AGREGAR FAVORITO
+    // --------------------------
     favsLS.push(nombreProducto);
     localStorage.setItem("favoritosLS", JSON.stringify(favsLS));
 
     imgElem.src = "imgs/corazon_lleno.png";
 
-    await fetch(`${API_URL}/favoritos`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ usuarioId, productoId })
-    });
+    try {
+        await fetch(`${API_URL}/favoritos`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ usuarioId, productoId })
+        });
+    } catch (err) {
+        console.error("Error al agregar favorito:", err);
+    }
 }
 
 
@@ -308,7 +314,6 @@ function cambiar_pagina(producto) {
     localStorage.setItem("productoSeleccionado", JSON.stringify(producto));
     window.location.href = "producto.html";
 }
-
 
 
 // ============================================================
@@ -336,13 +341,10 @@ async function interpretarBusqueda() {
     });
 
     const data = await resp.json();
-    const categoria = data.categoria;
+    if (!data.categoria) return alert("No se reconoció la categoría");
 
-    if (!categoria) return alert("No se reconoció la categoría");
-
-    window.location.href = `inven.html?categoria=${categoria}`;
+    window.location.href = `inven.html?categoria=${data.categoria}`;
 }
-
 
 
 // ============================================================
