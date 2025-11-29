@@ -279,7 +279,7 @@ async function toggleFavorito(productoId, nombreProducto, imgElem) {
 
         // Avisar a favoritos.html
         localStorage.setItem("actualizarFavoritos", "1");
-        localStorage.setItem("productoEliminado", nombreProducto);
+        localStorage.setItem("productoEliminado", productoId);
 
         return;
     }
