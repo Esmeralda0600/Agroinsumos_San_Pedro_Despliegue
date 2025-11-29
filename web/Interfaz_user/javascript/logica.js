@@ -107,6 +107,11 @@ async function mostrar_productos(categoria) {
         loader.classList.add("oculto");
         productos.innerHTML = "";
 
+        // 🔥 TÍTULO RESTAURADO (antes lo habías eliminado sin querer)
+        const titulo = document.createElement("h2");
+        titulo.innerText = categoria.toUpperCase();
+        productos.appendChild(titulo);
+
         const favoritosLS = JSON.parse(localStorage.getItem("favoritosLS")) || [];
 
         const grid = document.createElement("div");
@@ -127,9 +132,10 @@ async function mostrar_productos(categoria) {
 
             const imgFav = document.createElement("img");
             imgFav.classList.add("btn-favorito");
+
             imgFav.src = favoritosLS.includes(e.nombre_producto)
-                            ? "imgs/corazon_lleno.png"
-                            : "imgs/corazon_vacio.png";
+                ? "imgs/corazon_lleno.png"
+                : "imgs/corazon_vacio.png";
 
             imgFav.onclick = () =>
                 toggleFavorito(e.id_producto, e.nombre_producto, imgFav);
@@ -166,14 +172,11 @@ async function toggleFavorito(productoId, nombreProducto, imgElem) {
     const yaEsta = favsLS.includes(nombreProducto);
 
     if (yaEsta) {
-        // quitar de LS
         favsLS = favsLS.filter(n => n !== nombreProducto);
         localStorage.setItem("favoritosLS", JSON.stringify(favsLS));
 
-        // icono vacío
         imgElem.src = "imgs/corazon_vacio.png";
 
-        // eliminar backend
         try {
             const resp = await fetch(`${API_URL}/favoritos/${usuarioId}`);
             const data = await resp.json();
@@ -251,8 +254,7 @@ async function interpretarBusqueda() {
 
     if (!categoria) return alert("No se reconoció la categoría");
 
-    window.location.href =
-        `inven.html?categoria=${categoria}`;
+    window.location.href = `inven.html?categoria=${categoria}`;
 }
 
 
