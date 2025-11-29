@@ -138,7 +138,7 @@ async function mostrar_productos(categoria) {
     const loader = document.getElementById("loader");
 
     loader.classList.remove("oculto");
-    
+
     productos.innerHTML = "";
     productos.classList.add("catalogo");
 
@@ -152,24 +152,25 @@ async function mostrar_productos(categoria) {
         const data = await resp.json();
         if (!resp.ok) return alert("Error: " + data.error);
 
-                // =============== NUEVO: Cargar favoritos del usuario ===============
-        let nombresFavoritos = new Set();
+        /* ======================================================
+           CARGAR FAVORITOS DEL USUARIO
+        ====================================================== */
+        let favoritosSet = new Set();
         const usuarioId = localStorage.getItem("usuarioId");
 
         if (usuarioId) {
             try {
                 const respFav = await fetch(`${API_URL}/favoritos/${usuarioId}`);
                 const dataFav = await respFav.json();
+
                 const favoritos = dataFav.favoritos || [];
 
-                // Guardamos solo los nombres de los productos en un Set
-                nombresFavoritos = new Set(favoritos.map(f => f.nombre));
+                // Guardamos nombres para comparación
+                favoritosSet = new Set(favoritos.map(f => f.nombre));
             } catch (err) {
-                console.error("No se pudieron cargar los favoritos:", err);
+                console.error("Error al cargar favoritos:", err);
             }
         }
-        // =================== FIN BLOQUE NUEVO ===================
-
 
         loader.classList.add("oculto");
 
@@ -180,40 +181,94 @@ async function mostrar_productos(categoria) {
         const grid = document.createElement("div");
         grid.classList.add("productos-grid");
 
-        data.productos.forEach((e) => {
-            const div = document.createElement("div");
-            div.classList.add("tarjeta");
+        /* ======================================================
+           SVG ICONOS PRO
+        ====================================================== */
+        const iconoFavoritoOff = `
+        <svg width="26" height="26" viewBox="0 0 24 24" fill="none"
+        stroke="#666" stroke-width="2" stroke-linecap="round"
+        stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg">
+          <path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.6l-1-1a5.5 5.5 0 0 0-7.8
+                   7.8l1 1L12 21l7.8-7.8 1-1a5.5 5.5 0 0 0 0-7.8z"/>
+        </svg>`;
 
-                // ===== NUEVO: Indicador de favorito =====
-            const indicadorFav = document.createElement("div");
-            indicadorFav.classList.add("favorito-indicador");
-
-    // Si el nombre del producto está en la lista de favoritos, mostramos 💚
-            if (nombresFavoritos.has(e.nombre_producto)) {
-    // Corazón PRO verde lleno
-    indicadorFav.innerHTML = `
+        const iconoFavoritoOn = `
         <svg width="26" height="26" viewBox="0 0 24 24" fill="#28a745"
-             xmlns="http://www.w3.org/2000/svg">
+        xmlns="http://www.w3.org/2000/svg">
           <path d="M12 21s-6.716-4.686-10-9.428C-1.243 7.52 1.238 2 6.364 2
                    8.925 2 11 3.75 12 5.09 13 3.75 15.075 2 17.636 2
                    22.762 2 25.243 7.52 22 11.572 18.716 16.314 12
                    21 12 21z"/>
         </svg>`;
-} else {
-    // Corazón PRO gris delineado
-    indicadorFav.innerHTML = `
-        <svg width="26" height="26" viewBox="0 0 24 24" fill="none"
-             stroke="#666" stroke-width="2" stroke-linecap="round"
-             stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg">
-          <path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.6l-1-1a5.5 5.5 0 0 0-7.8
-                   7.8l1 1L12 21l7.8-7.8 1-1a5.5 5.5 0 0 0 0-7.8z"/>
-        </svg>`;
-}
 
+        /* ======================================================
+           RECORRER PRODUCTOS
+        ====================================================== */
+        data.productos.forEach((e) => {
+            const div = document.createElement("div");
+            div.classList.add("tarjeta");
 
+            /* =========== INDICADOR FAVORITO =========== */
+            const indicadorFav = document.createElement("div");
+            indicadorFav.classList.add("favorito-indicador");
+            indicadorFav.dataset.id = e.id_producto; // ← importante
 
+            const esFavorito = favoritosSet.has(e.nombre_producto);
+
+            if (esFavorito) {
+                indicadorFav.classList.add("activo");
+                indicadorFav.innerHTML = iconoFavoritoOn;
+            } else {
+                indicadorFav.innerHTML = iconoFavoritoOff;
+            }
+
+            /* =========== CLICK PARA AGREGAR/QUITAR FAVORITO =========== */
+            indicadorFav.addEventListener("click", async () => {
+                if (!usuarioId) {
+                    return alert("Debes iniciar sesión para guardar favoritos.");
+                }
+
+                const productoId = indicadorFav.dataset.id;
+
+                // 🔴 Si ya es favorito → eliminar
+                if (indicadorFav.classList.contains("activo")) {
+                    try {
+                        await fetch(`${API_URL}/favoritos/${usuarioId}/${productoId}`, {
+                            method: "DELETE"
+                        });
+
+                        indicadorFav.classList.remove("activo");
+                        indicadorFav.innerHTML = iconoFavoritoOff;
+
+                    } catch (err) {
+                        console.error("Error al eliminar favorito:", err);
+                    }
+
+                    return;
+                }
+
+                // 🟢 Si NO es favorito → agregar
+                try {
+                    await fetch(`${API_URL}/favoritos`, {
+                        method: "POST",
+                        headers: { "Content-Type": "application/json" },
+                        body: JSON.stringify({
+                            id_usuario: usuarioId,
+                            id_producto: productoId
+                        })
+                    });
+
+                    indicadorFav.classList.add("activo");
+                    indicadorFav.innerHTML = iconoFavoritoOn;
+
+                } catch (err) {
+                    console.error("Error al agregar favorito:", err);
+                }
+            });
+
+            /* =========== RESTO DE LA TARJETA =========== */
             const img = document.createElement("img");
-            img.src = "../"+ e.direccion_img;
+            img.src = "../" + e.direccion_img;
             img.width = 200;
 
             const n = document.createElement("h3");
@@ -235,8 +290,12 @@ async function mostrar_productos(categoria) {
             div.append(indicadorFav, img, n, precio, btnFav, btnVer);
             grid.appendChild(div);
         });
+
         productos.appendChild(grid);
 
+        /* ======================================================
+           CONTROLES DE PÁGINA
+        ====================================================== */
         if (data.totalPaginas > 1) {
             const controles = document.createElement("div");
             controles.classList.add("volver");
@@ -270,6 +329,7 @@ async function mostrar_productos(categoria) {
         alert("Error de conexión con la API");
     }
 }
+
 
 // ============================================================
 // FUNCIÓN AÑADIR A FAVORITOS
