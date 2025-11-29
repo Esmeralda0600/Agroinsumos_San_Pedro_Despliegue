@@ -184,6 +184,16 @@ async function mostrar_productos(categoria) {
             const div = document.createElement("div");
             div.classList.add("tarjeta");
 
+                // ===== NUEVO: Indicador de favorito =====
+            const indicadorFav = document.createElement("div");
+            indicadorFav.classList.add("favorito-indicador");
+
+    // Si el nombre del producto está en la lista de favoritos, mostramos 💚
+            if (nombresFavoritos.has(e.nombre_producto)) {
+                indicadorFav.innerHTML = "💚";
+            }
+
+
             const img = document.createElement("img");
             img.src = "../"+ e.direccion_img;
             img.width = 200;
@@ -204,7 +214,7 @@ async function mostrar_productos(categoria) {
             btnVer.classList.add("btn", "comprar");
             btnVer.onclick = () => cambiar_pagina(e);
 
-            div.append(img, n, precio, btnFav, btnVer);
+            div.append(indicadorFav, img, n, precio, btnFav, btnVer);
             grid.appendChild(div);
         });
         productos.appendChild(grid);
