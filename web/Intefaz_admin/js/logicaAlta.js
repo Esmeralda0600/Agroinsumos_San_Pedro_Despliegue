@@ -1,4 +1,4 @@
-const API_URL = "https://agroinsumos-san-pedro-despliegue.onrender.com";
+const API_URL = "https://agroinsumos-san-pedro-despliegue-kafy.onrender.com";
 
 document.addEventListener("DOMContentLoaded", () => {
     console.log("[DEBUG] script.js cargado");
@@ -39,26 +39,38 @@ document.addEventListener("DOMContentLoaded", () => {
     form.addEventListener("submit", async (e) => {
         e.preventDefault();
         console.log("[DEBUG] Submit de alta de producto");
-
-        // ============================
-        // 1. Obtener archivo
-        // ============================
-        const archivo = fotoInput?.files[0];
         let rutaImagen = "default.png";
 
-        // ============================
-        // 2. Subir imagen si existe
-        // ============================
-        if (archivo) {
-            try {
-                const subida = await subirImagen(archivo);
-                rutaImagen = subida;  // "/imgs_productos/1732635399.png"
-            } catch (error) {
-                console.error("Error subiendo imagen:", error);
-                alert("Error al subir imagen");
-                return;
-            }
+        const fotoInput = document.getElementById("foto");
+        const file = fotoInput.files[0];
+
+        let urlImagen = null;
+
+        if (file) {
+            urlImagen = await subirImagen(file);
+            console.log("Imagen subida:", urlImagen);
         }
+
+        // Ahora puedes mandar el resto de datos del producto
+        const payload = {
+            nombre: document.getElementById("nombre").value,
+            precio: document.getElementById("precio").value,
+            descripcion: document.getElementById("descripcion").value,
+            imagen: urlImagen, // ← aquí queda la URL final
+        };
+
+        const res = await fetch(API_CREAR_PRODUCTO_URL, {
+            method: "POST",
+            headers: {
+            "Content-Type": "application/json"
+            },
+            body: JSON.stringify(payload)
+        });
+
+        const data = await res.json();
+        console.log(data);
+
+        alert("Producto guardado correctamente");
 
         // Leer valores del formulario
         const nombre = document.getElementById("nombre").value.trim();
@@ -107,7 +119,7 @@ document.addEventListener("DOMContentLoaded", () => {
             descripcion,
             cantidad,
             id_sucursal: sucursal,
-            direccion_img:rutaImagen,
+            direccion_img:urlImagen,
             categoria_producto
         };
 
@@ -140,7 +152,7 @@ document.addEventListener("DOMContentLoaded", () => {
             alert(`El producto "${nombre}" se guardó correctamente.`);
             form.reset();
             if (preview) {
-                preview.src = "imgs/agrex_abc.png";
+                preview.src = "../imgs/logo.png"; // cambio de la foto por default
             }
 
         } catch (error) {
@@ -151,15 +163,16 @@ document.addEventListener("DOMContentLoaded", () => {
 
 });
 
-async function subirImagen(archivo) {
-    const datos = new FormData();
-    datos.append("foto", archivo);
-
-    const res = await fetch(`${API_URL}/administradores/subir-imagen`, {
-        method: "POST",
-        body: datos
+async function subirImagen(file) {
+    const formData = new FormData();
+    formData.append("file", file);
+  
+    const res = await fetch("https://agroinsumos-san-pedro-despliegue-kafy.onrender.comadministrador/upload", {
+      method: "POST",
+      body: formData
     });
-
+  
     const data = await res.json();
-    return data.ruta;  // devuelve "/imgs_productos/archivo.png"
+    return data.url; // ← Cloudinary URL
 }
+  
