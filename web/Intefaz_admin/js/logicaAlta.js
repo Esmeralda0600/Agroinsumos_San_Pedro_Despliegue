@@ -22,7 +22,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 };
                 reader.readAsDataURL(archivo);
             } else {
-                preview.src = "imgs/logo.png";
+                preview.src = "../imgs/default.png";
             }
         });
     }
@@ -39,38 +39,16 @@ document.addEventListener("DOMContentLoaded", () => {
     form.addEventListener("submit", async (e) => {
         e.preventDefault();
         console.log("[DEBUG] Submit de alta de producto");
-        let rutaImagen = "default.png";
 
         const fotoInput = document.getElementById("foto");
         const file = fotoInput.files[0];
 
-        let urlImagen = null;
+        let urlImagen = "../imgs/default.png";
 
         if (file) {
             urlImagen = await subirImagen(file);
             console.log("Imagen subida:", urlImagen);
         }
-
-        // Ahora puedes mandar el resto de datos del producto
-        const payload = {
-            nombre: document.getElementById("nombre").value,
-            precio: document.getElementById("precio").value,
-            descripcion: document.getElementById("descripcion").value,
-            imagen: urlImagen, // ← aquí queda la URL final
-        };
-
-        const res = await fetch(API_CREAR_PRODUCTO_URL, {
-            method: "POST",
-            headers: {
-            "Content-Type": "application/json"
-            },
-            body: JSON.stringify(payload)
-        });
-
-        const data = await res.json();
-        console.log(data);
-
-        alert("Producto guardado correctamente");
 
         // Leer valores del formulario
         const nombre = document.getElementById("nombre").value.trim();
@@ -104,11 +82,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
         // Generar id único
         const id_producto = `P-${Date.now()}`;
-
-        // let direccion_img = "default.png";
-        // if (archivo) {
-        //     direccion_img = archivo.name;
-        // }
 
         const nuevoProducto = {
             id_producto,
@@ -160,14 +133,13 @@ document.addEventListener("DOMContentLoaded", () => {
             alert("No se pudo conectar con el servidor. Verifica que el backend esté activo.");
         }
     });
-
 });
 
 async function subirImagen(file) {
     const formData = new FormData();
     formData.append("file", file);
   
-    const res = await fetch("https://agroinsumos-san-pedro-despliegue-kafy.onrender.com/administradores/upload", {
+    const res = await fetch(`${API_URL}/administradores/upload`, {
       method: "POST",
       body: formData
     });
