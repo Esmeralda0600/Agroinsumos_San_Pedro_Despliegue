@@ -4,7 +4,9 @@ import { listarAdmins, crearAdmin,mostrarInventario} from "../controllers/adminC
 import { subirImagen } from "../controllers/uploadController.js";
 
 const router = express.Router();
-const upload = multer(); // archivos en memoria
+
+const storage = multer.memoryStorage();
+const upload = multer({ storage });
 
 router.get("/", listarAdmins);
 router.post("/", crearAdmin);

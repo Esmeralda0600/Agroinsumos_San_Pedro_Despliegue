@@ -167,7 +167,7 @@ async function subirImagen(file) {
     const formData = new FormData();
     formData.append("file", file);
   
-    const res = await fetch("https://agroinsumos-san-pedro-despliegue-kafy.onrender.comadministrador/upload", {
+    const res = await fetch("https://agroinsumos-san-pedro-despliegue-kafy.onrender.com/administradores/upload", {
       method: "POST",
       body: formData
     });
