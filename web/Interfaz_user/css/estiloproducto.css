@@ -69,6 +69,16 @@ main {
     margin-right: 30px;
 }
 
+.logo img {
+    transition: transform 0.4s ease;
+}
+
+.logo img:hover {
+    transform: scale(1.12);            
+    filter: drop-shadow(0 0 10px #2e7d32); 
+    cursor: pointer;
+}
+
 .Buscador {
     background: linear-gradient(180deg, #fff9f5 0%, #f3ecff 100%);
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
