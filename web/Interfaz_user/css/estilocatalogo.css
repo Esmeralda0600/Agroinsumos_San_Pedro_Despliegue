@@ -48,6 +48,16 @@ main {
     margin-right: 30px;
 }
 
+.logo img {
+    transition: transform 0.4s ease;
+}
+
+.logo img:hover {
+    transform: scale(1.12);            
+    filter: drop-shadow(0 0 10px #2e7d32); 
+    cursor: pointer;
+}
+
 .botones-derecha {
     display: flex;
     align-items: center;
