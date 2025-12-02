@@ -28,14 +28,16 @@ const radios = document.querySelectorAll('input[name="tipo-busqueda"]');
 if (radios.length != 0) cargarCategorias();
 
 async function cargarCategorias() {
+    const loader = document.getElementById("loader");
+    loader.classList.remove("oculto");
     try {
         const resp = await fetch(`${API_URL}/usuarios/categorias`);
         const data = await resp.json();
-        if (!resp.ok) return alert("Error: " + data.error);
-
+        if (!resp.ok) return showToast("Error: " + data.error,"error");
+        loader.classList.add("oculto");
         mostrarTarjetas(data, "CATÁLOGO DE PRODUCTOS");
     } catch {
-        alert("Error de conexión");
+        showToast("Error de conexión", "error");
     }
 
     radios.forEach(radio => {
@@ -44,11 +46,14 @@ async function cargarCategorias() {
             if (e.target.value === "producto") url = "categorias";
             if (e.target.value === "marca") url = "marcas";
             if (e.target.value === "ingrediente") url = "ingrediente";
+            loader.classList.remove("oculto");
 
             try {
                 const resp = await fetch(`${API_URL}/usuarios/${url}`);
                 const data = await resp.json();
-                if (!resp.ok) return alert("Error: " + data.error);
+                if (!resp.ok) return showToast("Error: " + data.error,"error");
+
+                loader.classList.add("oculto");
 
                 const titulo =
                     e.target.value === "marca" ? "CATÁLOGO POR MARCA" :
@@ -56,8 +61,9 @@ async function cargarCategorias() {
                     "CATÁLOGO DE PRODUCTOS";
 
                 mostrarTarjetas(data, titulo);
+               
             } catch {
-                alert("Error de conexión");
+                showToast("Error de conexión", "error");
             }
         });
     });
@@ -70,6 +76,8 @@ async function registrar_usuario() {
     const nombre_usuario = document.getElementById("usuario").value.trim();
     const correo = document.getElementById("correo").value.trim();
     const password = document.getElementById("password").value.trim();
+    const loader = document.getElementById("loader");
+    loader.classList.remove("oculto");
 
     try {
         const resp = await fetch(`${API_URL}/usuarios`, {
@@ -79,12 +87,14 @@ async function registrar_usuario() {
         });
 
         const data = await resp.json();
-        if (!resp.ok) return alert("Error: " + data.error);
+        if (!resp.ok) return showToast("Error: " + data.error,"error");
 
-        alert("Usuario registrado ✔");
+        loader.classList.add("oculto");
+
+        showToast("Usuario registrado ✔","success");
         window.location.href = "index.html";
     } catch {
-        alert("Error de conexión con la API");
+        showToast("Error de conexión con la API","error");
     }
 }
 
@@ -94,6 +104,8 @@ async function registrar_usuario() {
 async function login() {
     const correo = document.getElementById("correo").value.trim();
     const password = document.getElementById("password").value.trim();
+    const loader = document.getElementById("loader");
+    loader.classList.remove("oculto");
 
     try {
         const resp = await fetch(`${API_URL}/usuarios/login`, {
@@ -103,15 +115,17 @@ async function login() {
         });
 
         const data = await resp.json();
-        if (!resp.ok) return alert("Error: " + data.error);
+        if (!resp.ok) return showToast("Error: " + data.error,"error");
 
-        alert("Inicio de sesión exitoso 👌");
+        loader.classList.add("oculto");
+
+        showToast("Inicio de sesión exitoso 👌","success");
         localStorage.setItem("usuario", JSON.stringify(data.usuario));
         localStorage.setItem("usuarioId", data.usuario._id);
         window.location.href = "index.html";
 
     } catch {
-        alert("Error de conexión");
+        showToast("Error de conexión","error");
     }
 }
 
@@ -136,7 +150,6 @@ if (categoria) mostrar_productos(categoria);
 async function mostrar_productos(categoria) {
     const productos = document.getElementById("mostrar_productos_por_categoria");
     const loader = document.getElementById("loader");
-
     loader.classList.remove("oculto");
     
     productos.innerHTML = "";
@@ -150,8 +163,7 @@ async function mostrar_productos(categoria) {
         });
 
         const data = await resp.json();
-        if (!resp.ok) return alert("Error: " + data.error);
-
+        if (!resp.ok) return showToast("Error: " + data.error,"error");
                 // =============== NUEVO: Cargar favoritos del usuario ===============
         let nombresFavoritos = new Set();
         const usuarioId = localStorage.getItem("usuarioId");
@@ -267,7 +279,7 @@ async function mostrar_productos(categoria) {
         }
 
     } catch {
-        alert("Error de conexión con la API");
+        showToast("Error de conexión con la API","error");
     }
 }
 
@@ -278,7 +290,7 @@ async function agregarAFavoritos(productoId) {
     const usuarioId = localStorage.getItem("usuarioId");
 
     if (!usuarioId) {
-        alert("Debes iniciar sesión para agregar favoritos.");
+        showToast("Debes iniciar sesión para agregar favoritos.","error");
         return window.location.href = "login.html";
     }
 
@@ -290,13 +302,13 @@ async function agregarAFavoritos(productoId) {
         });
 
         const data = await resp.json();
-        if (!resp.ok) return alert("Error: " + data.error);
+        if (!resp.ok) return showToast("Error: " + data.error,"error");
 
-        alert("Producto agregado a favoritos ❤️");
+        showToast("Producto agregado a favoritos ❤️","success");
         window.location.href = "favoritos.html";
 
     } catch {
-        alert("Error al conectar con la API");
+        showToast("Error al conectar con la API","error");
     }
 }
 
@@ -352,7 +364,7 @@ function agregarAlCarrito(producto) {
     }
 
     localStorage.setItem("carrito", JSON.stringify(carrito));
-    alert("Producto agregado al carrito 🛒");
+    showToast("Producto agregado al carrito 🛒","success");
 }
 
 
@@ -369,9 +381,9 @@ document.getElementById("input-busqueda").addEventListener("keypress", e => {
 
 async function interpretarBusqueda() {
   const texto = document.getElementById("input-busqueda").value.trim();
-
+    
   if (!texto) {
-    alert("Por favor escribe lo que deseas buscar.");
+    showToast("Por favor escribe lo que deseas buscar.","error");
     return;
   }
 
@@ -388,7 +400,7 @@ async function interpretarBusqueda() {
     const categoria = data.categoria;
 
     if (!categoria) {
-      alert("No se pudo identificar la categoría.");
+      showToast("No se pudo identificar la categoría.","error");
       return;
     }
 
@@ -398,6 +410,6 @@ async function interpretarBusqueda() {
 
   } catch (error) {
     console.error("Error con IA:", error);
-    alert("Ocurrió un error al procesar la búsqueda.");
+    showToast("Ocurrió un error al procesar la búsqueda.","error");
   }
 }

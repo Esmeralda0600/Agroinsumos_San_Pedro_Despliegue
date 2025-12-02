@@ -9,6 +9,8 @@
 
     <!-- ==================== ESTILOS ==================== -->
     <link rel="stylesheet" href="css/inventarioestilo.css">
+    <link rel="stylesheet" href="css/loader.css">
+    <link rel="stylesheet" href="css/toast.css">
     <link rel="icon" type="image/png" href="imgs/logo.png">
 </head>
 
@@ -30,34 +32,34 @@
         </div>
 
         <div class="botones-derecha">
-    <button class="carrito-de-compras" onclick="window.location.href='favoritos.html'">
-        <img src="imgs/favs.png">
-    </button>
+            <button class="carrito-de-compras" onclick="window.location.href='favoritos.html'">
+                <img src="imgs/favs.png">
+            </button>
 
-    <button class="carrito-de-compras" onclick="window.location.href='carrito.html'">
-        <img src="imgs/carrito.png">
-    </button>
+            <button class="carrito-de-compras" onclick="window.location.href='carrito.html'">
+                <img src="imgs/carrito.png">
+            </button>
 
-    <button id="btn-login" class="btn-login" onclick="window.location.href='login.html'">
-        Iniciar sesión
-    </button>
+            <button id="btn-login" class="btn-login" onclick="window.location.href='login.html'">
+                Iniciar sesión
+            </button>
 
-    <button id="btn-register" class="btn-registrarse" onclick="window.location.href='registro.html'">
-        Registrarse
-    </button>
+            <button id="btn-register" class="btn-registrarse" onclick="window.location.href='registro.html'">
+                Registrarse
+            </button>
 
-    <button id="btn-user" class="icono-user" style="display:none;">
-        <img src="imgs/usuario.png" alt="Usuario">
-    </button>
+            <button id="btn-user" class="icono-user" style="display:none;">
+                <img src="imgs/usuario.png" alt="Usuario">
+            </button>
 
-    <button id="btn-logout" class="btn-registrarse" style="display:none;">
-        Cerrar sesión
-    </button>
-</div>
+            <button id="btn-logout" class="btn-registrarse" style="display:none;">
+                Cerrar sesión
+            </button>
+        </div>
 
     </header>
 
-    <!-- From Uiverse.io by Novaxlo --> 
+    <!-- From Uiverse.io by Novaxlo -->
 
 
 
@@ -66,7 +68,7 @@
         <!-- Aquí logica.js insertará el título y los productos -->
     </section>
 
-<div id="loader" class="oculto">Cargando...</div>
+    <div id="loader" class="oculto"></div>
 
 
 
@@ -76,6 +78,8 @@
             Volver
         </button>
     </div>
+
+    <div id="toastContainer"></div>
 
     <!-- ==================== FOOTER ==================== -->
     <footer class="footer">
@@ -87,7 +91,10 @@
 
     <!-- ==================== SCRIPT ==================== -->
     <!--<script src="javascript/inven.js"></script>-->
+    <script src="javascript/toast.js"></script>
+    <script src="javascript/loader.js"></script>
     <script src="javascript/logica.js"></script>
+
     <script src="javascript/auth.js"></script>
 
 </body>

@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Pagar | Agroinsumos San Pedro</title>
     <link rel="stylesheet" href="css/pago.css">
+    <link rel="stylesheet" href="css/toast.css">
 </head>
 <body>
     <!-- HEADER -->
@@ -38,13 +39,14 @@
             <button class="btn btn-finalizar" onclick="finalizarCompra()">Continuar</button>
         </div>
     </main>
-
+    <div id="toastContainer"></div>
     <!-- FOOTER -->
     <footer class="footer">
         <p>Agroinsumos San Pedro © 2025</p>
     </footer>
 
     <!-- SCRIPT -->
+    <script src="javascript/toast.js"></script>
     <script src="javascript/pago.js"></script>
 </body>
 </html>

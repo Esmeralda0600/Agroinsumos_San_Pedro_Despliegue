@@ -7,6 +7,8 @@
 
     <!-- Hoja de estilos principal -->
     <link rel="stylesheet" href="css/estilocatalogo.css" />
+    <link rel="stylesheet" href="css/loader.css">
+    <link rel="stylesheet" href="css/toast.css">
   </head>
 
   <body>
@@ -112,6 +114,7 @@
     <main class="catalogo">
       <h2 id="titulo-catalogo">CATÁLOGO DE PRODUCTOS</h2>
       <div class="productos-grid" id="contenedor-tarjetas"></div>
+      <div id="loader" class="oculto"></div>
     </main>
 
     <!-- ============================================================
@@ -123,6 +126,8 @@
       </button>
     </div>
 
+    <div id="toastContainer"></div>
+    
     <!-- ============================================================
          FOOTER
          ============================================================ -->
@@ -136,6 +141,8 @@
     <!-- ============================================================
          SCRIPTS
          ============================================================ -->
+    <script src="javascript/loader.js"></script>
+    <script src="javascript/toast.js"></script>
     <script type="module" src="javascript/logica.js"></script>
     <script src="javascript/auth.js"></script>
 
