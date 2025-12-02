@@ -224,13 +224,14 @@ body {
     text-align: justify;
 }
 
-.tabla-inventario td span {
-    display: inline-block;
+.tabla-inventario td  {
+    /*display: inline-block;
     background-color: white;
     padding: 6px 12px;
     border-radius: 8px;
     min-width: 120px;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2);*/
+    border: 1px solid #a09b9b;
 }
 
 /* Botón modificar */
