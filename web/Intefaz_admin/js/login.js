@@ -7,13 +7,24 @@ document.addEventListener("DOMContentLoaded", () => {
         const usuario = document.getElementById("administrador").value.trim();
         const contraseña = document.getElementById("contraseña").value.trim();
 
-        console.log("Validando...", usuario, contraseña); // comprobación
+        console.log("Validando...", usuario, contraseña);
 
         if (usuario === "administrador" && contraseña === "agroinsumos_spa") {
+
             alert("Acceso permitido");
+
+            // Guardar sesión en localStorage
+            localStorage.setItem("adminAuth", JSON.stringify({
+                adminId: "admin-default",
+                usuario: "administrador"
+            }));
+
             window.location.href = "principal.html";
+
         } else {
+
             alert("Usuario o contraseña incorrectos");
+
         }
     });
 });
