@@ -1,4 +1,4 @@
-const API_URL = "https://agroinsumos-san-pedro-despliegue-kafy.onrender.com";
+const API_URL = "https://agroinsumos-san-pedro-despliegue.onrender.com";
 
 document.addEventListener("DOMContentLoaded", () => {
     console.log("[DEBUG] script.js cargado");
@@ -148,3 +148,4 @@ async function subirImagen(file) {
     return data.url; // ← Cloudinary URL
 }
   
+
