@@ -37,7 +37,7 @@ const allowedOrigins = [
   "http://localhost:4000",
 
   // 🔹 Dominios Vercel que estás usando AHORA
-  "https://agroinsumos-san-pedro-despliegue-us-eight.vercel.app",
+  "https://agroinsumos-san-pedro-despliegue-ebon.vercel.app",
   "https://agroinsumos-san-pedro-despliegue-sigma.vercel.app",
 
   // 🔹 Backend Render
