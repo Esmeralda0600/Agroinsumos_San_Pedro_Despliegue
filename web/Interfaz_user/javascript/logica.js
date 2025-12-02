@@ -404,7 +404,7 @@ async function interpretarBusqueda() {
       return;
     }
 
-    const URL_BASE = "https://agroinsumos-san-pedro-despliegue-us-eight.vercel.app";
+    const URL_BASE = "https://agroinsumos-san-pedro-despliegue-ebon.vercel.app";
 
     window.location.href = `${URL_BASE}/inven.html?categoria=${categoria}`;
 
