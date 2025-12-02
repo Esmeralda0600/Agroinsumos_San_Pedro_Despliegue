@@ -16,6 +16,6 @@ document.addEventListener("DOMContentLoaded", () => {
   } catch (e) {
     console.error("Error leyendo adminAuth:", e);
     localStorage.removeItem("adminAuth");
-    window.location.href = "login.html";
+    window.location.href = "index.html";
   }
 });
