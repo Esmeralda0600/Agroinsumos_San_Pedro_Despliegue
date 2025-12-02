@@ -10,7 +10,7 @@ const API_URL = "https://agroinsumos-san-pedro-despliegue.onrender.com";
 
 // ============================================================
 // BOTONES LOGIN Y REGISTRO
-// ============================================================
+// ===========================================================
 const btn_registro = document.getElementById("boton_registro");
 if (btn_registro && paginaActual.includes("registro")) {
     btn_registro.addEventListener("click", registrar_usuario);
