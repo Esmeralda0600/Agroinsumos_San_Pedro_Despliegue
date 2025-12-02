@@ -1,30 +1,41 @@
-// api/controllers/uploadController.js
+import { v2 as cloudinary } from "cloudinary";
+import streamifier from "streamifier";
 
-import multer from "multer";
-import path from "path";
 
-// Configuración del storage
-const storage = multer.diskStorage({
-    destination: (req, file, cb) => {
-        cb(null, "imgs"); 
-    },
-    filename: (req, file, cb) => {
-        const nombre = Date.now() + path.extname(file.originalname);
-        cb(null, nombre);
-    }
+cloudinary.config({
+  cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+  api_key: process.env.CLOUDINARY_API_KEY,
+  api_secret: process.env.CLOUDINARY_API_SECRET,
 });
 
-export const upload = multer({ storage });
-
-export const subirImagen = (req, res) => {
+export const subirImagen = async (req, res) => {
+  try {
     if (!req.file) {
-        return res.status(400).json({
-            error: "No se envió ningún archivo"
-        });
+      return res.status(400).json({ error: "No se envió archivo" });
     }
 
-    res.json({
-        mensaje: "Imagen guardada correctamente",
-        ruta: "/imgs/" + req.file.filename
-    });
+    const uploadStream = cloudinary.uploader.upload_stream(
+      {
+        folder: "agroinsumos/imagenes", // carpeta opcional
+      },
+      (error, result) => {
+        if (error) {
+          console.error("Cloudinary error:", error);
+          return res.status(500).json({ error: "Error subiendo imagen" });
+        }
+
+        return res.json({
+          url: result.secure_url,
+          public_id: result.public_id,
+        });
+      }
+    );
+
+    // Convertir Buffer → Stream
+    streamifier.createReadStream(req.file.buffer).pipe(uploadStream);
+
+  } catch (err) {
+    console.error("Error servidor:", err);
+    res.status(500).json({ error: "Error interno" });
+  }
 };

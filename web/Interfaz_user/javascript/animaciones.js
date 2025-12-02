@@ -88,7 +88,7 @@ async function interpretarBusqueda() {
   const texto = document.getElementById("input-busqueda").value.trim();
 
   if (!texto) {
-    alert("Por favor escribe lo que deseas buscar.");
+    showToast("Por favor escribe lo que deseas buscar.","error");
     return;
   }
 
@@ -107,7 +107,7 @@ async function interpretarBusqueda() {
     const categoria = data.categoria;
 
     if (!categoria) {
-      alert("No se pudo identificar la categoría.");
+      showToast("No se pudo identificar la categoría.","error");
       return;
     }
 
@@ -121,6 +121,6 @@ async function interpretarBusqueda() {
 
   } catch (error) {
     console.error("Error con IA:", error);
-    alert("Ocurrió un error al procesar la búsqueda.");
+    showToast("Ocurrió un error al procesar la búsqueda.","error");
   }
 }

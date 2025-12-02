@@ -6,6 +6,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Producto | Agroinsumos San Pedro</title>
     <link rel="stylesheet" href="css/estiloproducto.css">
+    <link rel="stylesheet" href="css/toast.css">
+    <link rel="stylesheet" href="css/loader.css">
 </head>
 
 <body>
@@ -76,7 +78,8 @@
             <a href="catalogo.html" class="btn volver-btn">Volver</a>
         </div>
     </main>
-
+    <div id="toastContainer"></div>
+    <div id="loader" class="oculto"></div>
     <!-- ==================== FOOTER ==================== -->
     <footer class="footer">
         <h2>Agroinsumos San Pedro</h2>
@@ -84,13 +87,15 @@
     </footer>
 
     <!-- ==================== LÓGICA DEL PRODUCTO ==================== -->
+    <script src="javascript/toast.js"></script>
+    <script src="javascript/loader.js"></script>
     <script>
         document.addEventListener("DOMContentLoaded", () => {
 
             const producto = JSON.parse(localStorage.getItem("productoSeleccionado"));
 
             if (!producto) {
-                alert("No se pudo cargar el producto.");
+                showToast("No se pudo cargar el producto.","error");
                 return window.location.href = "catalogo.html";
             }
 
@@ -119,7 +124,7 @@
                 const usuarioId = localStorage.getItem("usuarioId");
 
                 if (!usuarioId) {
-                    alert("Inicia sesión para agregar al carrito.");
+                    showToast("Inicia sesión para agregar al carrito.","error");
                     return window.location.href = "login.html";
                 }
 
@@ -154,7 +159,7 @@
                 const usuarioId = localStorage.getItem("usuarioId");
 
                 if (!usuarioId) {
-                    alert("Debes iniciar sesión para comprar.");
+                    showToast("Debes iniciar sesión para comprar.","error");
                     return window.location.href = "login.html";
                 }
 
@@ -178,7 +183,7 @@
 
                 const usuarioId = localStorage.getItem("usuarioId");
                 if (!usuarioId) {
-                    alert("Inicia sesión para guardar favoritos.");
+                    showToast("Inicia sesión para guardar favoritos.","error");
                     return window.location.href = "login.html";
                 }
 
@@ -191,10 +196,10 @@
                 const data = await resp.json();
 
                 if (resp.ok) {
-                    alert("Producto agregado ❤️");
+                    showToast("Producto agregado ❤️","success");
                     window.location.href = "favoritos.html";
                 } else {
-                    alert("Error: " + data.error);
+                    showToast("Error: " + data.error,"success");
                 }
             });
 
@@ -214,7 +219,7 @@
             const texto = document.getElementById("input-busqueda").value.trim();
 
             if (!texto) {
-                alert("Por favor escribe lo que deseas buscar.");
+                showToast("Por favor escribe lo que deseas buscar.","error");
                 return;
             }
 
@@ -229,7 +234,7 @@
                 const categoria = data.categoria;
 
                 if (!categoria) {
-                    alert("No se pudo identificar la categoría.");
+                    showToast("No se pudo identificar la categoría.","error");
                     return;
                 }
 
@@ -240,7 +245,7 @@
 
             } catch (error) {
                 console.error("Error con IA:", error);
-                alert("Ocurrió un error al procesar la búsqueda.");
+                showToast("Ocurrió un error al procesar la búsqueda.","error");
             }
         }
     </script>

@@ -1,0 +1,65 @@
+/*Loader ------------------------------------------------------------ FIN : 999*/
+.oculto{
+    display: none;
+}
+
+#loader1 {
+    margin: 30px auto;
+    position: relative;
+    width: 200px;
+    height: 200px;
+    justify-content: center;
+    align-items: center;
+
+}
+
+svg {
+    width: 100%;
+    height: 100%;
+}
+
+path {
+    /* fill: #b0b6b1; */
+    fill: white;
+    transition: 0.3s;
+    opacity: 1;
+}
+
+/* Safari */
+@-webkit-keyframes spin-inner {
+    0% {
+        -webkit-transform: rotate(0deg);
+    }
+
+    100% {
+        -webkit-transform: rotate(360deg);
+    }
+}
+
+@keyframes spin-inner {
+    0% {
+        transform: rotate(0deg);
+    }
+
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+@-webkit-keyframes spin-outer {
+    100% {
+        -webkit-transform: rotate(360deg);
+    }
+}
+
+@keyframes spin-outer {
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+@keyframes addColor {
+    to {
+        fill: rgb(70, 134, 70);
+    }
+}

@@ -1,4 +1,4 @@
-const API_URL = "https://agroinsumos-san-pedro-despliegue.onrender.com";
+const API_URL = "https://agroinsumos-san-pedro-despliegue-kafy.onrender.com";
 
 document.addEventListener("DOMContentLoaded", () => {
     console.log("[DEBUG] script.js cargado");
@@ -22,7 +22,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 };
                 reader.readAsDataURL(archivo);
             } else {
-                preview.src = "imgs/logo.png";
+                preview.src = "../imgs/default.png";
             }
         });
     }
@@ -40,24 +40,14 @@ document.addEventListener("DOMContentLoaded", () => {
         e.preventDefault();
         console.log("[DEBUG] Submit de alta de producto");
 
-        // ============================
-        // 1. Obtener archivo
-        // ============================
-        const archivo = fotoInput?.files[0];
-        let rutaImagen = "default.png";
+        const fotoInput = document.getElementById("foto");
+        const file = fotoInput.files[0];
 
-        // ============================
-        // 2. Subir imagen si existe
-        // ============================
-        if (archivo) {
-            try {
-                const subida = await subirImagen(archivo);
-                rutaImagen = subida;  // "/imgs_productos/1732635399.png"
-            } catch (error) {
-                console.error("Error subiendo imagen:", error);
-                alert("Error al subir imagen");
-                return;
-            }
+        let urlImagen = "../imgs/default.png";
+
+        if (file) {
+            urlImagen = await subirImagen(file);
+            console.log("Imagen subida:", urlImagen);
         }
 
         // Leer valores del formulario
@@ -93,11 +83,6 @@ document.addEventListener("DOMContentLoaded", () => {
         // Generar id único
         const id_producto = `P-${Date.now()}`;
 
-        // let direccion_img = "default.png";
-        // if (archivo) {
-        //     direccion_img = archivo.name;
-        // }
-
         const nuevoProducto = {
             id_producto,
             nombre_producto: nombre,
@@ -107,7 +92,7 @@ document.addEventListener("DOMContentLoaded", () => {
             descripcion,
             cantidad,
             id_sucursal: sucursal,
-            direccion_img:rutaImagen,
+            direccion_img:urlImagen,
             categoria_producto
         };
 
@@ -140,7 +125,7 @@ document.addEventListener("DOMContentLoaded", () => {
             alert(`El producto "${nombre}" se guardó correctamente.`);
             form.reset();
             if (preview) {
-                preview.src = "imgs/agrex_abc.png";
+                preview.src = "../imgs/logo.png"; // cambio de la foto por default
             }
 
         } catch (error) {
@@ -148,18 +133,18 @@ document.addEventListener("DOMContentLoaded", () => {
             alert("No se pudo conectar con el servidor. Verifica que el backend esté activo.");
         }
     });
-
 });
 
-async function subirImagen(archivo) {
-    const datos = new FormData();
-    datos.append("foto", archivo);
-
-    const res = await fetch(`${API_URL}/administradores/subir-imagen`, {
-        method: "POST",
-        body: datos
+async function subirImagen(file) {
+    const formData = new FormData();
+    formData.append("file", file);
+  
+    const res = await fetch(`${API_URL}/administradores/upload`, {
+      method: "POST",
+      body: formData
     });
-
+  
     const data = await res.json();
-    return data.ruta;  // devuelve "/imgs_productos/archivo.png"
+    return data.url; // ← Cloudinary URL
 }
+  

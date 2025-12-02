@@ -3,7 +3,7 @@ function obtenerItemsParaPago() {
   const usuarioId = localStorage.getItem("usuarioId");
 
   if (!usuarioId) {
-    alert("Debes iniciar sesión para ver tu carrito.");
+    showToast("Debes iniciar sesión para ver tu carrito.","error");
     window.location.href = "login.html";
     return { items: [], esCompraDirecta: false };
   }
@@ -109,7 +109,7 @@ async function finalizarCompra() {
   const { items, esCompraDirecta } = obtenerItemsParaPago();
 
   if (!items.length) {
-    alert("No hay productos para pagar.");
+    showToast("No hay productos para pagar.","error");
     return;
   }
 
@@ -138,7 +138,7 @@ async function finalizarCompra() {
 
     if (!resp.ok) {
       console.error("Error al crear preferencia:", data);
-      alert("Hubo un error al crear el pago. Intenta más tarde.");
+      showToast("Hubo un error al crear el pago. Intenta más tarde.","error");
       return;
     }
 
@@ -154,7 +154,7 @@ async function finalizarCompra() {
     // const urlCheckout = data.sandbox_init_point || data.init_point;
 
     // if (!urlCheckout) {
-    //   alert("No se recibió URL de pago desde Mercado Pago.");
+    //   showToast("No se recibió URL de pago desde Mercado Pago.","error");
     //   return;
     // }
 
@@ -170,7 +170,7 @@ async function finalizarCompra() {
     }
 
     if (!urlCheckout) {
-      alert("No se recibió URL de pago desde Mercado Pago.");
+      showToast("No se recibió URL de pago desde Mercado Pago.","error");
       console.error("Respuesta de MP sin URL:", data);
       return;
     }
@@ -181,7 +181,7 @@ async function finalizarCompra() {
 
   } catch (err) {
     console.error("Error de red al crear el pago:", err);
-    alert("Error conectando con el servidor de pagos.");
+    showToast("Error conectando con el servidor de pagos.","error");
   }
 }
 
