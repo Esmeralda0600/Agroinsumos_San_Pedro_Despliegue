@@ -201,6 +201,8 @@ async function mostrar_productos(categoria) {
             indicadorFav.classList.add("favorito-indicador");
 
     // Si el nombre del producto está en la lista de favoritos, mostramos 💚
+    console.log(nombresFavoritos)
+    console.log(e.nombre_producto)
             if (nombresFavoritos.has(e.nombre_producto)) {
     // Corazón PRO verde lleno
     indicadorFav.innerHTML = `
@@ -226,7 +228,11 @@ async function mostrar_productos(categoria) {
 
 
             const img = document.createElement("img");
-            img.src = "../"+ e.direccion_img;
+            if (e.direccion_img.startsWith("http")) {
+                img.src = e.direccion_img;  // es URL completa (Cloudinary)
+            } else {
+                img.src = "../" + e.direccion_img;  // es ruta local
+            }
             img.width = 200;
 
             const n = document.createElement("h3");
