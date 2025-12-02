@@ -9,7 +9,6 @@
 </head>
 
 <body>
-    <img src="imgs/fondoindex.jpg" class="fondo">
     <div class="Header">
         <div class="logo">
             <img src="imgs/logo.png" alt="logo" class="logo-de-la-empresa">
@@ -28,31 +27,33 @@
 
     </div>
 
+    <main>
     <!-- Carrusel -->
-    <section class="carrusel">
-        <div class="contenedor-carrusel">
-            <div class="slide fade">
-                <img src="imgs/carrusel1.jpg" alt="Imagen 1">
-            </div>
-            <div class="slide fade">
-                <img src="imgs/carrusel2.jpg" alt="Imagen 2">
-            </div>
-            <div class="slide fade">
-                <img src="imgs/carrusel3.jpg" alt="Imagen 3">
+        <section class="carrusel">
+            <div class="contenedor-carrusel">
+                <div class="slide fade">
+                    <img src="imgs/fondo1.jpg" alt="Imagen 1">
+                </div>
+                <div class="slide fade">
+                    <img src="imgs/fondoindex.jpg" alt="Imagen 2">
+                </div>
+                <div class="slide fade">
+                    <img src="imgs/fondo3a.jpg" alt="Imagen 3">
+                </div>
+
+                <!-- Botones de navegación -->
+                <a class="prev" onclick="cambiarSlide(-1)">&#10094;</a>
+                <a class="next" onclick="cambiarSlide(1)">&#10095;</a>
             </div>
 
-            <!-- Botones de navegación -->
-            <a class="prev" onclick="cambiarSlide(-1)">&#10094;</a>
-            <a class="next" onclick="cambiarSlide(1)">&#10095;</a>
-        </div>
-
-        <!-- Puntos debajo -->
-        <div class="puntos">
-            <span class="dot" onclick="irASlide(1)"></span>
-            <span class="dot" onclick="irASlide(2)"></span>
-            <span class="dot" onclick="irASlide(3)"></span>
-        </div>
-    </section>
+            <!-- Puntos debajo -->
+            <div class="puntos">
+                <span class="dot" onclick="irASlide(1)"></span>
+                <span class="dot" onclick="irASlide(2)"></span>
+                <span class="dot" onclick="irASlide(3)"></span>
+            </div>
+        </section>
+    </main>
 
     <footer class="footer">
         <div class="footer-contenido">
@@ -64,6 +65,5 @@
 
     <script src="js/animaciones.js"></script>
     <script src="js/proteger_admin.js"></script>
-    <!-- <script src="js/notificacion.js"></script> -->
 </body>
 </html>
