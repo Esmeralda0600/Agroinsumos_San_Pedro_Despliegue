@@ -214,12 +214,13 @@ async function mostrar_productos(categoria) {
 } else {
     // Corazón PRO gris delineado
     indicadorFav.innerHTML = `
-        <svg width="26" height="26" viewBox="0 0 24 24" fill="none"
-             stroke="#666" stroke-width="2" stroke-linecap="round"
-             stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg">
-          <path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.6l-1-1a5.5 5.5 0 0 0-7.8
-                   7.8l1 1L12 21l7.8-7.8 1-1a5.5 5.5 0 0 0 0-7.8z"/>
-        </svg>`;
+    <svg width="26" height="26" viewBox="0 0 24 24"
+         fill="none"
+         stroke="#000" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.6l-1-1a5.5 5.5 0 0 0-7.8
+               7.8l1 1L12 21l7.8-7.8 1-1a5.5 5.5 0 0 0 0-7.8z"/>
+    </svg>`;
+
 }
 
 
