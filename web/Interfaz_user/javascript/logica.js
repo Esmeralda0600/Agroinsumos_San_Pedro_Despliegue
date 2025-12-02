@@ -175,7 +175,7 @@ async function mostrar_productos(categoria) {
                 const favoritos = dataFav.favoritos || [];
 
                 // Guardamos solo los nombres de los productos en un Set
-                nombresFavoritos = new Set(favoritos.map(f => f.id_producto));
+                nombresFavoritos = new Set(favoritos.map(f => f.nombre));
             } catch (err) {
                 console.error("No se pudieron cargar los favoritos:", err);
             }
@@ -201,7 +201,7 @@ async function mostrar_productos(categoria) {
             indicadorFav.classList.add("favorito-indicador");
 
     // Si el nombre del producto está en la lista de favoritos, mostramos 💚
-            if (nombresFavoritos.has(e.id_producto)) {
+            if (nombresFavoritos.has(e.nombre_producto)) {
     // Corazón PRO verde lleno
     indicadorFav.innerHTML = `
         <svg width="26" height="26" viewBox="0 0 24 24" fill="#28a745"
