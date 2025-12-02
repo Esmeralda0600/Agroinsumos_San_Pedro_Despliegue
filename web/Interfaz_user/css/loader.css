@@ -18,7 +18,7 @@ svg {
     height: 100%;
 }
 
-path {
+#loader1 svg path {
     /* fill: #b0b6b1; */
     fill: white;
     transition: 0.3s;
