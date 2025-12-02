@@ -533,12 +533,6 @@ body {
 }
 
 
-/* FORZAR COLOR DEL CORAZÓN */
-.favorito-indicador svg path {
-    stroke: #28a745 !important;  /* Color verde */
-    fill: none !important;        /* Sin relleno (outline) */
-    stroke-width: 2 !important;
-}
 
 
 
