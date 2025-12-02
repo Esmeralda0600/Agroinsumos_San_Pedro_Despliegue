@@ -35,13 +35,13 @@
         <form id="form-baja" class="row g-4 justify-content-center">
           <!-- Campo de búsqueda -->
           <div class="col-md-6">
-            <label for="buscar" class="form-label fw-bold">Buscar producto por nombre</label>
-            <input type="text" id="buscar" class="form-control" placeholder="Ej. Agrex-ABC" required>
+            <!-- <label for="buscar" class="form-label fw-bold">Buscar producto por nombre</label>
+            <input type="text" id="buscar" class="form-control" placeholder="Ej. Agrex-ABC" required> -->
           </div>
 
-          <div class="col-md-3 d-flex align-items-end">
+          <!-- <div class="col-md-3 d-flex align-items-end">
             <button type="button" class="btn-verde" id="btnBuscar">Buscar</button>
-          </div>
+          </div> -->
 
           <div class="col-12 text-center">
             <img id="preview" src="imgs/agrex_abc.png" alt="Vista previa del producto" class="img-fluid d-none">
@@ -76,6 +76,8 @@
 
             <div class="text-center mt-4">
               <button type="submit" class="btn-verde px-4 py-2">Eliminar Producto</button>
+              <button class="cancelar" type="button" onclick="window.location.href='inventario.html'" 
+                   style="background-color: darkred; border-radius:5px; border:none; padding: 6px 12px; color: white;">Cancelar</button>
             </div>
           </div>
 
@@ -83,7 +85,7 @@
       </div>
     </div>
     <div>
-      <button class="volver" onclick="window.location.href='gestion.html'">Volver</button>
+      <button class="volver" onclick="window.location.href='inventario.html'">Volver</button>
     </div>
 
   </main>
@@ -101,6 +103,7 @@
 
   <script src="js/logicaBaja.js"></script>
   <script src="js/notificacion.js"></script>
+  <script src="js/proteger_admin.js"></script>
 </body>
 
 </html>

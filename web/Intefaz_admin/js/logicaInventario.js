@@ -36,15 +36,73 @@ async function cargarInventario() {
 
       // Ingrediente activo
       const tdIngrediente = document.createElement("td");
-      tdIngrediente.innerHTML = `<span>${producto.ingrediente_activo || "-"}</span>`;
+const ingrediente = (producto.ingrediente_activo || "-").trim();
+const palabrasIng = ingrediente.split(/\s+/);
+const limiteIng = 2;
 
+if (ingrediente === "-" || palabrasIng.length <= limiteIng) {
+  tdIngrediente.innerHTML = `<span>${ingrediente}</span>`;
+} else {
+  const cortaIng = palabrasIng.slice(0, limiteIng).join(" ");
+  const idDetalleIng = "ing_" + producto.id_producto; // ID único
+
+  tdIngrediente.innerHTML = `
+    <details id="${idDetalleIng}">
+        <summary>
+          ${cortaIng}...
+          <span class="toggle-ing" style="color:#0f684b; cursor:pointer">Leer más</span>
+        </summary>
+        <p style="margin-top:5px;">${ingrediente}</p>
+    </details>
+  `;
+
+  // Cambiar entre "Leer más" y "Leer menos"
+  setTimeout(() => {
+    const detailsIng = document.getElementById(idDetalleIng);
+    const txtIng = detailsIng.querySelector(".toggle-ing");
+
+    detailsIng.addEventListener("toggle", () => {
+      txtIng.textContent = detailsIng.open ? "Leer menos" : "Leer más";
+    });
+  }, 0);
+}
       // Marca
       const tdMarca = document.createElement("td");
       tdMarca.innerHTML = `<span>${producto.marca || "-"}</span>`;
 
       // Descripción
       const tdDescripcion = document.createElement("td");
-      tdDescripcion.innerHTML = `<span>${producto.descripcion || "-"}</span>`;
+const descripcion = (producto.descripcion || "-").trim();
+const palabras = descripcion.split(/\s+/);
+const limite = 6;
+
+if (descripcion === "-" || palabras.length <= limite) {
+  tdDescripcion.innerHTML = `<span>${descripcion}</span>`;
+} else {
+  const corta = palabras.slice(0, limite).join(" ");
+
+  const idDetalle = "desc_" + producto.id_producto; // ID único por producto
+
+  tdDescripcion.innerHTML = `
+    <details id="${idDetalle}">
+        <summary>
+            ${corta}... 
+            <span class="toggle-text" style="color:#0f684b; cursor:pointer">Leer más</span>
+        </summary>
+        <p style="margin-top:5px;">${descripcion}</p>
+    </details>
+  `;
+
+  // Cambiar "Leer más" <-> "Leer menos"
+  setTimeout(() => {
+    const details = document.getElementById(idDetalle);
+    const txt = details.querySelector(".toggle-text");
+
+    details.addEventListener("toggle", () => {
+      txt.textContent = details.open ? "Leer menos" : "Leer más";
+    });
+  }, 0);
+}
 
       // Cantidad
       const tdCantidad = document.createElement("td");
@@ -58,16 +116,52 @@ async function cargarInventario() {
       const tdCategoria = document.createElement("td");
       tdCategoria.innerHTML = `<span>${producto.categoria_producto || "-"}</span>`;
 
-      // Botón de acción
+      // Acción selector
       const tdAccion = document.createElement("td");
-      const btn = document.createElement("button");
-      btn.className = "modificar";
-      btn.type = "button";
-      btn.textContent = "Modificar";
-      btn.onclick = () => {
-        window.location.href = `modificar.html?id=${producto.id_producto}`;
-      };
-      tdAccion.appendChild(btn);
+
+// Crear el <select>
+const selectAccion = document.createElement("select");
+selectAccion.className = "select-accion";
+
+// Opción por defecto
+const optDefault = document.createElement("option");
+optDefault.value = "";
+optDefault.textContent = "-";
+
+// Opción MODIFICAR
+const optModificar = document.createElement("option");
+optModificar.value = "modificar";
+optModificar.textContent = "Modificar";
+
+// Opción ELIMINAR
+const optEliminar = document.createElement("option");
+optEliminar.value = "eliminar";
+optEliminar.textContent = "Eliminar";
+
+// Agregar opciones al select
+selectAccion.appendChild(optDefault);
+selectAccion.appendChild(optModificar);
+selectAccion.appendChild(optEliminar);
+
+// Manejar cambio
+selectAccion.addEventListener("change", () => {
+  const value = selectAccion.value;
+
+  if (value === "modificar") {
+    // Ir a la pantalla de modificar
+    window.location.href = `modificar.html?id=${producto.id_producto}`;
+  }
+
+  if (value === "eliminar") {
+     window.location.href = `baja2.html?id=${producto.id_producto}`;
+  }
+
+  // Regresar el select a "Acción"
+  selectAccion.value = "";
+});
+
+// Agregar el select a la celda
+tdAccion.appendChild(selectAccion);
 
       tr.appendChild(tdNombre);
       tr.appendChild(tdPrecio);
