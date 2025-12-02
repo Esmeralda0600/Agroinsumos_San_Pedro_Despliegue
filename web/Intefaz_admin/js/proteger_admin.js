@@ -4,7 +4,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   if (!authStr) {
     alert("Debes iniciar sesión como administrador para acceder.");
-    window.location.href = "login.html";
+    window.location.href = "index.html";
     return;
   }
 
