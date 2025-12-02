@@ -130,6 +130,16 @@ header {
     height: 60px;
 }
 
+.logo img {
+    transition: transform 0.4s ease;
+}
+
+.logo img:hover {
+    transform: scale(1.12);            
+    filter: drop-shadow(0 0 10px #2e7d32); 
+    cursor: pointer;
+}
+
 .buscador {
     display: flex;
     align-items: center;
