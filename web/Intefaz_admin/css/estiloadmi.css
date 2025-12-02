@@ -2,29 +2,26 @@
    ESTILOS GENERALES
 =========================== */
 html, body {
-    overflow-x: hidden;
     height: 100%;
     margin: 0;
-    display: flex;
-    flex-direction: column;
-}
-
-body {
+    padding: 0;
+    overflow-x: hidden;
     font-family: Arial, sans-serif;
-    margin: 0;
     color: #111;
 }
 
-.fondo {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    z-index: -1;
+body {
+    display: flex;
+    flex-direction: column;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
 }
 
+main {
+    flex: 1;
+}
 /* ===========================
    HEADER
 =========================== */
@@ -53,22 +50,6 @@ body {
     display: flex;
     align-items: center;
     gap: 15px;
-}
-
-/* botones */
-.campanita {
-    background: none;
-    border: none;
-    cursor: pointer;
-}
-
-.campanita img {
-    width: 40px;
-    height: 40px;
-    transition: transform 0.2s ease;
-}
-.campanita:hover img {
-    transform: scale(1.1);
 }
 
 .btn-close,
@@ -125,99 +106,119 @@ body {
    CARRUSEL
 =========================== */
 .carrusel {
-    flex: 1;
-    margin: 40px auto;
-    max-width: 900px;
-    width: 100%;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;  /* siempre ocupa la pantalla completa */
+    overflow: hidden;
+    z-index: -2;
 }
 
 .contenedor-carrusel {
+    width: 100%;
+    height: 100%;
     position: relative;
-    overflow: hidden;
-    border-radius: 10px;
 }
 
+/* Cada slide ocupa SIEMPRE toda la pantalla */
 .slide {
     display: none;
+    position: absolute;
+    width: 100%;
+    height: 100%;
 }
 
+/* Imagen ocupa todo el fondo sin deformarse */
 .slide img {
     width: 100%;
-    height: 450px;
+    height: 100%;
     object-fit: cover;
-    border-radius: 10px;
+    object-position: center;     /* centra la imagen en cualquier pantalla */
+    filter: brightness(100%);
+    transition: opacity 1.3s ease;
 }
 
-/* botones prev/next */
+/* Overlay profesional */
+.carrusel::after {
+    content: "";
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(
+        to bottom,
+        rgba(0,0,0,0.25),
+        rgba(0,0,0,0.55)
+    );
+    z-index: 1;
+    pointer-events: none;
+}
+
+/* Botones prev/next */
 .prev,
 .next {
     cursor: pointer;
     position: absolute;
     top: 50%;
-    padding: 10px;
-    font-size: 22px;
+    padding: 14px;
+    font-size: 28px;
     color: white;
-    background-color: rgba(0, 0, 0, 0.5);
+    background-color: rgba(0,0,0,0.35);
     border-radius: 50%;
+    backdrop-filter: blur(5px);
     transform: translateY(-50%);
-    transition: 0.3s;
+    z-index: 2;
+    transition: 0.3s ease;
 }
 
 .prev:hover,
 .next:hover {
-    background-color: rgba(0, 0, 0, 0.8);
+    background-color: rgba(0,0,0,0.6);
+    transform: translateY(-50%) scale(1.15);
 }
 
-.prev {
-    left: 10px;
-}
-.next {
-    right: 10px;
-}
+.prev { left: 25px; }
+.next { right: 25px; }
 
-/* puntos */
+/* Puntos de navegación */
 .puntos {
+    position: fixed;
+    bottom: 25px;
+    width: 100%;
     text-align: center;
-    margin-top: 15px;
+    z-index: 3;
 }
 
 .dot {
-    height: 14px;
-    width: 14px;
-    margin: 0 5px;
-    background-color: #bbb;
+    height: 13px;
+    width: 13px;
+    margin: 0 6px;
+    background-color: rgba(255,255,255,0.55);
     border-radius: 50%;
     display: inline-block;
     cursor: pointer;
-    transition: background-color 0.3s;
+    transition: 0.3s ease;
 }
 
 .dot.active,
 .dot:hover {
-    background-color: #2e7d32;
-}
-
-/* animación */
-.fade {
-    animation: fade 1s ease-in-out;
-}
-
-@keyframes fade {
-    from { opacity: 0.4; }
-    to { opacity: 1; }
+    background-color: #3B8952;
 }
 
 /* ===========================
    FOOTER
 =========================== */
-.footer {
+footer {
     width: 100%;
+    height: 6%;
     background-color: #3B8952;
     color: white;
     text-align: center;
     padding: 10px 0;
+    margin-top: 40px;
+    font-size: 10px;
 }
-
 
 /* ===========================
    RESPONSIVE
