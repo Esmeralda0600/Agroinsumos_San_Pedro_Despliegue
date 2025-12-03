@@ -8,7 +8,7 @@ html, body {
     overflow-x: hidden;
     font-family: "Poppins", Arial, sans-serif;
     color: #1f2d1f;  /* verde gris natural */
-    background: #f0f5f1; /* fondo claro natural */
+    /*background: #f0f5f1; /* fondo claro natural */
 }
 
 body {
@@ -91,6 +91,7 @@ main {
     width: 100%;
     height: 100%;
     object-fit: cover;
+    z-index: -1;
 }
 
 /* ===========================
@@ -191,8 +192,7 @@ main {
 
     .busqueda-container input,
     .busqueda-container select {
-        width: 100%;
-        max-width: 90%;
+        width: 90%;
         min-width: 0%;
     }
 }
