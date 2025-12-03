@@ -166,7 +166,8 @@ footer {
 }
 
 .volver {
-    position: absolute;
+    /* position: absolute; */
+    margin: 10px auto;
     /* se posiciona relativo a .contenido */
     /*margin-top: -85.7px;*/
     right: 20px;

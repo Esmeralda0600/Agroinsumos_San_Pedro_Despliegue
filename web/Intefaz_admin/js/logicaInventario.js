@@ -8,13 +8,15 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 async function cargarInventario() {
+  const loader = document.getElementById("loader");
+  loader.classList.remove("oculto");
   try {
     const resp = await fetch(API_INVENTARIO_URL);
 
     if (!resp.ok) {
       throw new Error("Error al consultar la API: " + resp.status);
     }
-
+    loader.classList.add("oculto");
     const data = await resp.json();
 
     // En mostrarInventario regresamos { mensaje, inventario: [...] }

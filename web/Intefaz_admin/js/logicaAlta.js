@@ -39,6 +39,8 @@ document.addEventListener("DOMContentLoaded", () => {
     form.addEventListener("submit", async (e) => {
         e.preventDefault();
         console.log("[DEBUG] Submit de alta de producto");
+        const loader = document.getElementById("loader");
+        loader.classList.remove("oculto");
 
         const fotoInput = document.getElementById("foto");
         const file = fotoInput.files[0];
@@ -76,7 +78,7 @@ document.addEventListener("DOMContentLoaded", () => {
             isNaN(precio) ||
             isNaN(cantidad)
         ) {
-            alert("Por favor llena todos los campos correctamente.");
+            showToast("Por favor llena todos los campos correctamente.","error");
             return;
         }
 
@@ -118,19 +120,21 @@ document.addEventListener("DOMContentLoaded", () => {
             console.log("[DEBUG] Respuesta del servidor:", data);
 
             if (!resp.ok) {
-                alert("Hubo un error al guardar el producto. Revisa la consola.");
+                showToast("No se pudo guardar el producto.","error");
                 return;
             }
 
-            alert(`El producto "${nombre}" se guardó correctamente.`);
+            loader.classList.add("oculto");
+
+            showToast(`El producto "${nombre}" se guardó correctamente.`,"success");
             form.reset();
             if (preview) {
-                preview.src = "../imgs/logo.png"; // cambio de la foto por default
+                preview.src = "../imgs/logo.png"; 
             }
 
         } catch (error) {
             console.error("[ERROR] Error de red al crear producto:", error);
-            alert("No se pudo conectar con el servidor. Verifica que el backend esté activo.");
+            showToast("No se pudo guardar el producto.","error");
         }
     });
 });

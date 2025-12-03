@@ -28,7 +28,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   console.log("[DEBUG] idDesdeURL:", idDesdeURL);
 
   if (!idDesdeURL) {
-    alert("No se recibió ningún producto para dar de baja.");
+    showToast("No se recibió ningún producto para dar de baja.","error");
     // Si quieres, mandas de regreso al inventario:
     // window.location.href = "inventario.html";
     return;
@@ -45,9 +45,9 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     if (!resp.ok) {
       if (resp.status === 404) {
-        alert("El producto a eliminar no fue encontrado.");
+        showToast("El producto a eliminar no fue encontrado.","error");
       } else {
-        alert("Error al cargar el producto. Revisa la consola.");
+        showToast("Error al cargar el producto.","error");
         console.error("[ERROR] Status búsqueda:", resp.status);
       }
       return;
@@ -65,18 +65,18 @@ document.addEventListener("DOMContentLoaded", async () => {
     inputDescripcion.value = producto.descripcion || "";
     inputPrecio.value = producto.precio ?? 0;
 
-    if (producto.imagen) {
+    if (producto.direccion_img.startsWith("http")) {
       // O ajusta esta ruta según cómo guardes la imagen
-      preview.src = `imgs/${producto.imagen}`;
+      preview.src = producto.direccion_img;
     } else {
-      preview.src = "imgs/agrex_abc.png";
+      preview.src = "../" + producto.direccion_img;
     }
 
     preview.classList.remove("d-none");
     datosProducto.classList.remove("d-none");
   } catch (error) {
     console.error("[ERROR] Error al cargar producto por ID:", error);
-    alert("No se pudo conectar con el servidor para cargar el producto.");
+    showToast("No se pudo conectar con el servidor para cargar el producto.","error");
     return;
   }
 
@@ -88,9 +88,10 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     const idProducto = inputIdProducto.value;
     const nombre = inputNombre.value;
+    
 
     if (!idProducto) {
-      alert("No hay producto cargado para eliminar.");
+      showToast("No hay producto cargado para eliminar.","error");
       return;
     }
 
@@ -99,6 +100,9 @@ document.addEventListener("DOMContentLoaded", async () => {
     }
 
     try {
+      const loader = document.getElementById("loader");
+      loader.classList.remove("oculto");
+      
       const resp = await fetch(`${API_PRODUCTOS_BASE}/${encodeURIComponent(idProducto)}`, {
         method: "DELETE"
       });
@@ -106,14 +110,16 @@ document.addEventListener("DOMContentLoaded", async () => {
       if (!resp.ok) {
         const dataErr = await resp.json().catch(() => ({}));
         console.error("[ERROR] al eliminar:", dataErr);
-        alert("Hubo un problema al eliminar el producto. Revisa la consola.");
+        showToast("Hubo un problema al eliminar el producto.","error");
         return;
       }
 
+      loader.classList.add("oculto");
+      
       const data = await resp.json();
       console.log("[DEBUG] Respuesta eliminación:", data);
 
-      alert(`✅ El producto "${nombre}" se eliminó correctamente.`);
+      showToast(`✅ El producto "${nombre}" se eliminó correctamente.`,"success");
 
       formBaja.reset();
       datosProducto.classList.add("d-none");
@@ -123,7 +129,7 @@ document.addEventListener("DOMContentLoaded", async () => {
       // window.location.href = "inventario.html";
     } catch (error) {
       console.error("[ERROR] Error de red al eliminar producto:", error);
-      alert("No se pudo conectar con el servidor para eliminar el producto.");
+      showToast("No se pudo conectar con el servidor para eliminar el producto.","error");
     }
   });
 });

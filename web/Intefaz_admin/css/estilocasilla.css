@@ -244,9 +244,11 @@ body {
 }
 
 .img-producto {
-    width: 240px;
+    width: 120px;
+    height: auto;
     border-radius: 10px;
     margin-bottom: 20px;
+    object-fit: contain;
 }
 
 .label {

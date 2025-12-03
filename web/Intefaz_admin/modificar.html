@@ -6,6 +6,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Modificar Producto - Agroinsumos San Pedro</title>
     <link rel="stylesheet" href="css/estilocasilla.css">
+    <link rel="stylesheet" href="css/loader.css">
+    <link rel="stylesheet" href="css/toast.css">
 </head>
 
 <body>
@@ -22,7 +24,8 @@
             <button class="btn-close" onclick="window.location.href='index.html'">Cerrar sesión</button>
         </div>
     </div>
-
+    
+    <div id="toastContainer"></div>
     <!-- CONTENIDO PRINCIPAL -->
     <main class="contenido">
 
@@ -32,7 +35,7 @@
 
             <!-- Lado izquierdo: imagen y cantidad actual -->
             <div class="lado-izquierdo">
-                <img src="imgs/agrex_abc.png" class="img-producto" id="imgProducto">
+                <img src="imgs/logo.png" class="img-producto" id="imgProducto">
 
                 <p id="nombreProducto" class="nombre-producto">Nombre del producto</p>
 
@@ -79,7 +82,7 @@
             <button class="guardar" type="button">Guardar cambios</button>
             <button class="cancelar" type="button" onclick="window.location.href='inventario.html'">Cancelar</button>
         </div>
-
+        <div id="loader" class="oculto"></div>
         <div>
             <button class="volver" onclick="window.location.href='inventario.html'">Volver</button>
         </div>    
@@ -92,6 +95,8 @@
         </div>
     </footer>
 
+    <script src="js/toast.js"></script>
+    <script src="js/loader.js"></script>
     <script src="js/modificar.js"></script>
     <script src="js/proteger_admin.js"></script>
 </body>
