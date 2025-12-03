@@ -1,31 +1,42 @@
-/* =========================== RESET / GLOBAL =========================== */
-html,
-body {
+/* ===========================
+   ESTILOS GENERALES
+=========================== */
+html, body {
+    height: 100%;
     margin: 0;
     padding: 0;
-    box-sizing: border-box;
     overflow-x: hidden;
-    font-family: Arial, sans-serif;
-    color: #111;
+    font-family: "Poppins", Arial, sans-serif;
+    color: #1f2d1f;  /* verde gris natural */
+    background: #f0f5f1; /* fondo claro natural */
 }
 
 body {
-    background-image: url("/imgs/fondo.jpg");
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
     background-attachment: fixed;
 }
 
+main {
+    flex: 1;
+}
+
 /* =========================== NAVBAR =========================== */
 .navbar {
-    background-color: #3B8952 !important;
-    position: relative;
-    height: 120px;
+    background: linear-gradient(120deg, #1f5f3c, #2f7a52);
+    color: white;
     display: flex;
     align-items: center;
-    padding: 15 30px !important;
-    /*box-shadow: 0px 2px 2px 4px rgba(149, 247, 104, 0.774);*/
+    justify-content: space-between;
+    padding: 18px 40px;
+    flex-wrap: wrap;
+    box-shadow: 0 3px 16px rgba(0,0,0,0.18);
+    z-index: 20;
+    border-bottom: 2px solid rgba(255,255,255,0.25);
 }
 
 .navbar .container-fluid {
@@ -38,23 +49,18 @@ body {
 
 /* LOGO */
 .navbar-brand img {
-    display: block;
     height: 90px;
-    width: auto;
+    transition: transform 0.25s ease;
 }
 
 /* TÍTULO CENTRADO */
 .navbar-title {
-    position: absolute;
-    left: 50%;
-    transform: translateX(-50%);
-    font-size: 28px;
-    font-weight: 600;
-    color: white;
-    text-align: center;
     white-space: nowrap;
-    z-index: 15;
-    pointer-events: none;
+    font-size: 2.1rem;
+    text-align: center;
+    flex: 1;
+    font-weight: 600;
+    letter-spacing: 0.8px;
 }
 
 /* ACCIONES DERECHA */
@@ -73,19 +79,21 @@ body {
 
 /* BOTONES VERDES */
 .btn-verde {
-    background-color: #0f684b;
-    color: white;
-    border: none;
-    padding: 7px 12px;
+    padding: 4px 12px;
     font-size: 0.95rem;
     border-radius: 6px;
+    border: none;
     cursor: pointer;
-    transition: transform .12s ease, background .12s ease;
+    color: white;
+    background: #3b8c61;
+    border: 1px solid rgba(255,255,255,0.3);
+    transition: background 0.25s ease, transform 0.2s ease;
+    font-weight: 600;
 }
 
 .btn-verde:hover {
-    transform: translateY(-1px);
-    background-color: #03484c;
+    background: #18462d;
+    transform: translateY(-2px);
 }
 
 /* =========================== RESPONSIVE =========================== */
@@ -128,11 +136,15 @@ body {
 /* =========================== FOOTER =========================== */
 footer {
     width: 100%;
-    background-color: #3B8952;
+    background-color: #1f5f3c;
     color: white;
     text-align: center;
-    padding: 14px 0;
-    margin-top: 40px;
+    padding: 10px 0;
+    font-size: 12px;
+    letter-spacing: 0.3px;
+    box-shadow: 0 -3px 18px rgba(0,0,0,0.2);
+    position: relative;
+    z-index: 10;
 }
 
 /* =========================== CONTENEDOR (CARD) =========================== */
@@ -166,11 +178,10 @@ footer {
 }
 
 .volver {
-    position: absolute;
-    /* se posiciona relativo a .contenido */
-    /*margin-top: -85.7px;*/
-    right: 20px;
-    /* alineado a la derecha */
+    position: sticky;
+    left: 90%;
+    margin-top: 20px;
+    bottom: 20px;
     padding: 10px 16px;
     border: none;
     background: #0f684b;
