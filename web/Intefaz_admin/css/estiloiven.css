@@ -2,13 +2,86 @@
    ESTILOS GENERALES
 =========================== */
 html, body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
     overflow-x: hidden;
+    font-family: "Poppins", Arial, sans-serif;
+    color: #1f2d1f;  /* verde gris natural */
+    /*background: #f0f5f1; /* fondo claro natural */
 }
 
 body {
-    font-family: Arial, sans-serif;
-    margin: 0;
-    color: #111;
+    display: flex;
+    flex-direction: column;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+}
+
+main {
+    flex: 1;
+}
+
+/* ===========================================================
+   HEADER 
+=========================================================== */
+.Header {
+    background: linear-gradient(120deg, #1f5f3c, #2f7a52);
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 18px 40px;
+    flex-wrap: wrap;
+    box-shadow: 0 3px 16px rgba(0,0,0,0.18);
+    z-index: 20;
+    border-bottom: 2px solid rgba(255,255,255,0.25);
+}
+
+.logo img {
+    height: 85px;
+    transition: transform 0.25s ease;
+}
+.logo img:hover {
+    transform: scale(1.05);
+}
+
+.Nombre {
+    font-size: 2.1rem;
+    text-align: center;
+    flex: 1;
+    font-weight: 600;
+    letter-spacing: 0.8px;
+}
+
+/* ===========================
+   BOTONES HEADER 
+=========================== */
+.botones-derecha {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.btn-close,
+.btn-start {
+    padding: 8px 16px;
+    border-radius: 6px;
+    border: none;
+    cursor: pointer;
+    color: white;
+    background: #3b8c61;
+    border: 1px solid rgba(255,255,255,0.3);
+    transition: background 0.25s ease, transform 0.2s ease;
+    font-weight: 600;
+}
+
+.btn-close:hover,
+.btn-start:hover {
+    background: #4aa574;
+    transform: translateY(-2px);
 }
 
 .fondo {
@@ -22,69 +95,6 @@ body {
 }
 
 /* ===========================
-   HEADER
-=========================== */
-.Header {
-    background-color: #3B8952;
-    color: white;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 15px 30px;
-    flex-wrap: wrap;
-}
-
-.logo img {
-    height: 90px;
-    width: auto;
-}
-
-.Nombre {
-    font-size: 2rem;
-    text-align: center;
-    flex: 1;
-}
-
-.botones-derecha {
-    display: flex;
-    align-items: center;
-    gap: 15px;
-}
-
-/* botones */
-.campanita {
-    background: none;
-    border: none;
-    cursor: pointer;
-}
-
-.campanita img {
-    width: 40px;
-    height: 40px;
-    transition: transform 0.2s ease;
-}
-.campanita:hover img {
-    transform: scale(1.1);
-}
-
-.btn-close,
-.btn-start {
-    padding: 8px 15px;
-    border-radius: 5px;
-    border: none;
-    cursor: pointer;
-    color: white;
-    background-color: #0f684b;
-    transition: transform 0.2s ease, background 0.2s ease;
-}
-
-.btn-close:hover,
-.btn-start:hover {
-    background-color: #03484c;
-    transform: scale(1.1);
-}
-
-/* ===========================
    BOTONES CENTRO
 =========================== */
 .botones-centro {
@@ -92,6 +102,7 @@ body {
     justify-content: center;
     gap: 20px;
     margin-top: 40px;
+    z-index: 5;
 }
 
 .inventario,
@@ -181,8 +192,7 @@ body {
 
     .busqueda-container input,
     .busqueda-container select {
-        width: 100%;
-        max-width: 90%;
+        width: 90%;
         min-width: 0%;
     }
 }
@@ -252,7 +262,7 @@ body {
 /* ==================== BOTÓN GESTIÓN ==================== */
 
 .gestion {
-    margin-top: 30px;
+    margin-top: 5px;
     background-color: #0e1a0e;
     color: #fff;
     border-radius: 8px;
@@ -272,7 +282,7 @@ body {
     margin-top: 30px;
     right: 20px;         /* alineado a la derecha */
     padding: 10px 16px;
-    border: none;
+    border: none;z-index: 5;
     background:  #0f684b; /* mismo color que guardar */
     color: white;
     font-size: 14px;
@@ -288,19 +298,20 @@ body {
 }
 
 
-
 /* ========================== FOOTER ========================== */
 
-.footer {
-    bottom: 0;
+footer {
     width: 100%;
-    background-color: #3B8952;
+    background-color: #1f5f3c;
     color: white;
     text-align: center;
-    padding: 10px 0;
+    padding: 1px 0;
+    font-size: 12px;
+    letter-spacing: 0.3px;
+    box-shadow: 0 -3px 18px rgba(0,0,0,0.2);
+    position: relative;
+    z-index: 10;
 }
-
-
 
 /* ===================== RESPONSIVE ===================== */
 

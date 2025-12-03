@@ -5,11 +5,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Agroinsumos San Pedro</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
     <link rel="stylesheet" href="css/estiloadmi.css">
 </head>
 
 <body>
-    <img src="imgs/fondoindex.jpg" class="fondo">
     <div class="Header">
         <div class="logo">
             <img src="imgs/logo.png" alt="logo" class="logo-de-la-empresa">
@@ -18,8 +18,13 @@
         <div class="Nombre"> Agroinsumos San Pedro </div>
         <div class="botones-derecha">
             <!-- Nuevos botones -->
-            <button class="btn-start" type="button" onclick="window.location.href='principal.html'">Inicio</button>
-            <button class="btn-close" type="button" onclick="window.location.href='index.html'">Cerrar sesión</button>
+            <button class="btn-start" type="button" onclick="window.location.href='principal.html'">
+                <i class="bi bi-house-door-fill"></i> Inicio
+            </button>
+
+            <button class="btn-close" type="button" onclick="window.location.href='index.html'">
+                <i class="bi bi-box-arrow-right"></i> Cerrar sesión
+            </button>
         </div>
     </div>
     <div class="botones-centro">
@@ -28,31 +33,33 @@
 
     </div>
 
+    <main>
     <!-- Carrusel -->
-    <section class="carrusel">
-        <div class="contenedor-carrusel">
-            <div class="slide fade">
-                <img src="imgs/carrusel1.jpg" alt="Imagen 1">
-            </div>
-            <div class="slide fade">
-                <img src="imgs/carrusel2.jpg" alt="Imagen 2">
-            </div>
-            <div class="slide fade">
-                <img src="imgs/carrusel3.jpg" alt="Imagen 3">
+        <section class="carrusel">
+            <div class="contenedor-carrusel">
+                <div class="slide fade">
+                    <img src="imgs/fondo1.jpg" alt="Imagen 1">
+                </div>
+                <div class="slide fade">
+                    <img src="imgs/fondoindex.jpg" alt="Imagen 2">
+                </div>
+                <div class="slide fade">
+                    <img src="imgs/fondo3a.jpg" alt="Imagen 3">
+                </div>
+
+                <!-- Botones de navegación -->
+                <a class="prev" onclick="cambiarSlide(-1)">&#10094;</a>
+                <a class="next" onclick="cambiarSlide(1)">&#10095;</a>
             </div>
 
-            <!-- Botones de navegación -->
-            <a class="prev" onclick="cambiarSlide(-1)">&#10094;</a>
-            <a class="next" onclick="cambiarSlide(1)">&#10095;</a>
-        </div>
-
-        <!-- Puntos debajo -->
-        <div class="puntos">
-            <span class="dot" onclick="irASlide(1)"></span>
-            <span class="dot" onclick="irASlide(2)"></span>
-            <span class="dot" onclick="irASlide(3)"></span>
-        </div>
-    </section>
+            <!-- Puntos debajo -->
+            <div class="puntos">
+                <span class="dot" onclick="irASlide(1)"></span>
+                <span class="dot" onclick="irASlide(2)"></span>
+                <span class="dot" onclick="irASlide(3)"></span>
+            </div>
+        </section>
+    </main>
 
     <footer class="footer">
         <div class="footer-contenido">
@@ -64,6 +71,5 @@
 
     <script src="js/animaciones.js"></script>
     <script src="js/proteger_admin.js"></script>
-    <!-- <script src="js/notificacion.js"></script> -->
 </body>
 </html>
