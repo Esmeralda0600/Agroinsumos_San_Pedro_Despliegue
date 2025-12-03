@@ -13,7 +13,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     idProducto = params.get("id");
 
     if (!idProducto) {
-        alert("No se recibió el id del producto en la URL.");
+        showToast("No se recibió el id del producto en la URL.","error");
         return;
     }
 
@@ -31,7 +31,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
         if (!resp.ok) {
             console.error("[ERROR] al obtener producto:", resp.status);
-            alert("No se pudo cargar la información del producto.");
+            showToast("No se pudo cargar la información del producto.","error");
             return;
         }
 
@@ -50,15 +50,15 @@ document.addEventListener("DOMContentLoaded", async () => {
         precioActualEl.textContent = `$${precioActual.toFixed(2)}`;
         nuevoPrecioInput.value = precioActual.toFixed(2);
 
-        if (producto.direccion_img) {
-            imgProductoEl.src = `imgs/${producto.direccion_img}`;
+        if (producto.direccion_img.startsWith("http")) {
+            imgProductoEl.src = producto.direccion_img;
         } else {
-            imgProductoEl.src = "imgs/agrex_abc.png";
+            imgProductoEl.src = "../" + producto.direccion_img;
         }
 
     } catch (error) {
         console.error("[ERROR] Error de red al obtener producto:", error);
-        alert("No se pudo conectar con el servidor para obtener el producto.");
+        showToast("No se pudo conectar con el servidor para obtener el producto.","error");
         return;
     }
 
@@ -92,7 +92,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     document.querySelector(".guardar").onclick = async () => {
         const cantidadFinal = Number(resultado.textContent);
         if (isNaN(cantidadFinal) || cantidadFinal < 0) {
-            alert("La cantidad resultante no es válida.");
+            showToast("La cantidad resultante no es válida.","error");
             return;
         }
 
@@ -104,7 +104,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         }
 
         if (isNaN(nuevoPrecio) || nuevoPrecio < 0) {
-            alert("El precio ingresado no es válido.");
+            showToast("El precio ingresado no es válido.","error");
             return;
         }
 
@@ -116,6 +116,9 @@ document.addEventListener("DOMContentLoaded", async () => {
         console.log("[DEBUG] Enviando actualización:", body);
 
         try {
+            const loader = document.getElementById("loader");
+            loader.classList.remove("oculto");
+
             const resp = await fetch(`${API_PRODUCTOS_BASE}/${encodeURIComponent(idProducto)}`, {
                 method: "PUT",
                 headers: {
@@ -127,19 +130,21 @@ document.addEventListener("DOMContentLoaded", async () => {
             if (!resp.ok) {
                 const errData = await resp.json().catch(() => ({}));
                 console.error("[ERROR] al actualizar:", errData);
-                alert("Ocurrió un error al guardar los cambios.");
+                showToast("Ocurrió un error al guardar los cambios.","error");
                 return;
             }
+
+            loader.classList.add("oculto");
 
             const data = await resp.json();
             console.log("[DEBUG] Producto actualizado:", data);
 
-            alert("Cambios guardados correctamente.");
+            showToast("Cambios guardados correctamente.","success");
             window.location.href = "inventario.html";
 
         } catch (error) {
             console.error("[ERROR] Error de red al actualizar producto:", error);
-            alert("No se pudo conectar con el servidor para guardar los cambios.");
+            showToast("No se pudo conectar con el servidor para guardar los cambios.","error");
         }
     };
 });

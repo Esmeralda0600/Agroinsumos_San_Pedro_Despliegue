@@ -196,7 +196,9 @@ main {
 }
 
 .volver {
-    position: sticky;
+
+    /* position: absolute; */
+
     /* se posiciona relativo a .contenido */
     /*margin-top: -85.7px;*/
     margin-top: 20px;
@@ -205,6 +207,7 @@ main {
     padding: 10px 16px;
     border: none;
     background: #0f684b;
+    margin: 10px auto;
     /* mismo color que guardar */
     color: white;
     font-size: 14px;

@@ -178,10 +178,14 @@ footer {
 }
 
 .volver {
-    position: sticky;
-    left: 90%;
-    margin-top: 20px;
-    bottom: 20px;
+
+    /* position: absolute; */
+    margin: 10px auto;
+    /* se posiciona relativo a .contenido */
+    /*margin-top: -85.7px;*/
+    right: 20px;
+    /* alineado a la derecha */
+
     padding: 10px 16px;
     border: none;
     background: #0f684b;
