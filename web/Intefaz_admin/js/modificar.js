@@ -130,6 +130,7 @@ document.addEventListener("DOMContentLoaded", async () => {
             if (!resp.ok) {
                 const errData = await resp.json().catch(() => ({}));
                 console.error("[ERROR] al actualizar:", errData);
+                loader.classList.add("oculto");
                 showToast("Ocurrió un error al guardar los cambios.","error");
                 return;
             }
@@ -144,6 +145,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
         } catch (error) {
             console.error("[ERROR] Error de red al actualizar producto:", error);
+            loader.classList.add("oculto");
             showToast("No se pudo conectar con el servidor para guardar los cambios.","error");
         }
     };

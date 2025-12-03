@@ -98,9 +98,9 @@ document.addEventListener("DOMContentLoaded", async () => {
     if (!confirm(`¿Seguro que deseas eliminar el producto "${nombre}" del inventario?`)) {
       return;
     }
-
+    const loader = document.getElementById("loader");
     try {
-      const loader = document.getElementById("loader");
+      
       loader.classList.remove("oculto");
       
       const resp = await fetch(`${API_PRODUCTOS_BASE}/${encodeURIComponent(idProducto)}`, {
@@ -111,6 +111,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         const dataErr = await resp.json().catch(() => ({}));
         console.error("[ERROR] al eliminar:", dataErr);
         showToast("Hubo un problema al eliminar el producto.","error");
+        loader.classList.add("oculto");
         return;
       }
 
@@ -129,6 +130,7 @@ document.addEventListener("DOMContentLoaded", async () => {
       // window.location.href = "inventario.html";
     } catch (error) {
       console.error("[ERROR] Error de red al eliminar producto:", error);
+      loader.classList.add("oculto");
       showToast("No se pudo conectar con el servidor para eliminar el producto.","error");
     }
   });

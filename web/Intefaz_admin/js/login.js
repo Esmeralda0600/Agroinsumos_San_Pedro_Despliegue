@@ -9,11 +9,13 @@ document.addEventListener("DOMContentLoaded", () => {
     const contraseña = document.getElementById("contraseña").value.trim();
 
     if (!usuario || !contraseña) {
-      alert("Ingresa usuario y contraseña.");
+      showToast("Ingresa usuario y contraseña.");
       return;
     }
-
+    const loader = document.getElementById("loader");
     try {
+      
+      loader.classList.remove("oculto");
       // 🔹 Usa la URL de tu backend: local o Render
       const resp = await fetch(
         "https://agroinsumos-san-pedro-despliegue.onrender.com/administradores/login",
@@ -23,7 +25,7 @@ document.addEventListener("DOMContentLoaded", () => {
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
             nombre_admin: usuario,
-            contraseña_admin: contraseña,
+            contraseña_admin: contraseña
           }),
         }
       );
@@ -32,10 +34,11 @@ document.addEventListener("DOMContentLoaded", () => {
       console.log("Respuesta login admin:", data);
 
       if (!resp.ok || !data.ok) {
-        alert(data.message || "Usuario o contraseña incorrectos");
+        showToast("Usuario o contraseña incorrectos","error");
+        loader.classList.add("oculto");
         return;
       }
-
+      loader.classList.add("oculto");
       // Guardar "sesión" en localStorage
       localStorage.setItem(
         "adminAuth",
@@ -46,11 +49,12 @@ document.addEventListener("DOMContentLoaded", () => {
         })
       );
 
-      alert("Acceso permitido");
-      window.location.href = "index.html"; // tu panel admin
+      showToast("Acceso permitido","success");
+      window.location.href = "principal.html"; // tu panel admin
     } catch (error) {
       console.error("Error al hacer login:", error);
-      alert("Error de conexión con el servidor.");
+      showToast("Error de conexión con el servidor.","error");
+      loader.classList.add("oculto");
     }
   });
 });

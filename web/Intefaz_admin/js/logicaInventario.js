@@ -14,7 +14,9 @@ async function cargarInventario() {
     const resp = await fetch(API_INVENTARIO_URL);
 
     if (!resp.ok) {
+      loader.classList.add("oculto");
       throw new Error("Error al consultar la API: " + resp.status);
+      
     }
     loader.classList.add("oculto");
     const data = await resp.json();
