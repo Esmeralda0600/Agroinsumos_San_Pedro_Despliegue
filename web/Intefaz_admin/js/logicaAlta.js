@@ -121,6 +121,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
             if (!resp.ok) {
                 showToast("No se pudo guardar el producto.","error");
+                loader.classList.add("oculto");
                 return;
             }
 
@@ -134,6 +135,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
         } catch (error) {
             console.error("[ERROR] Error de red al crear producto:", error);
+            loader.classList.add("oculto");
             showToast("No se pudo guardar el producto.","error");
         }
     });
