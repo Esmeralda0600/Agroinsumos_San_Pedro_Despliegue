@@ -409,7 +409,7 @@ async function interpretarBusqueda() {
     if (!categoria) {
       showToast("No se pudo identificar la categoría.","error");
       return;
-    }
+    } 
 
     const URL_BASE = "https://agroinsumos-san-pedro-despliegue-ebon.vercel.app";
 
