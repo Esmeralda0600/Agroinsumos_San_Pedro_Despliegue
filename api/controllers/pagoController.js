@@ -1,6 +1,7 @@
 // api/controllers/pagoController.js
 import { MercadoPagoConfig, Preference } from "mercadopago";
 import Venta from "../models/Venta.js";
+import { UsuarioMongo } from "../models/mongoModels.js";
 
 // Detectar si el token es de PRUEBA (TEST-) o PRODUCCIÓN (APP_USR-)
 const isSandbox = String(process.env.MP_ACCESS_TOKEN || "").startsWith("TEST-");
@@ -12,6 +13,10 @@ const client = new MercadoPagoConfig({
 
 // Instancia para manejar preferencias
 const preference = new Preference(client);
+
+const FRONT_URL_USER =
+  process.env.FRONT_URL_USER ||
+  "https://agroinsumos-san-pedro-despliegue-ebon.vercel.app";
 
 /**
  * Crea una preferencia de pago en Mercado Pago
@@ -52,12 +57,13 @@ export const crearPreferencia = async (req, res) => {
         ambiente: isSandbox ? "sandbox" : "production",
       },
       back_urls: {
-        success: "http://localhost:8181/Interfaz_user/confirmacion.html",
-        failure: "http://localhost:8181/Interfaz_user/pago.html",
-        pending: "http://localhost:8181/Interfaz_user/pago.html",
+        // Siempre regresamos a la página de confirmación del FRONT
+        success: `${FRONT_URL_USER}/confirmacion.html`,
+        failure: `${FRONT_URL_USER}/confirmacion.html`,
+        pending: `${FRONT_URL_USER}/confirmacion.html`,
       },
       // en producción es útil para que regrese solo al success
-      //auto_return: "approved",
+      auto_return: "approved",
     };
 
     const result = await preference.create({ body });
@@ -111,15 +117,34 @@ export const confirmarPago = async (req, res) => {
       return res.status(400).json({ message: "Falta estado del pago (mpStatus)" });
     }
 
-    // Solo registramos como venta si el pago fue aprobado
+    // Solo guardamos si el pago está aprobado
     if (mpStatus.toLowerCase() !== "approved") {
       return res.status(400).json({
         message: "El pago no está aprobado, no se registrará la venta",
       });
     }
 
+    //  Buscar nombre y correo del usuario (si viene usuarioId)
+    let nombreCliente = null;
+    let correoCliente = null;
+
+    if (usuarioId) {
+      try {
+        const usuario = await UsuarioMongo.findById(usuarioId).lean();
+        if (usuario) {
+          nombreCliente = usuario.nombre_usuario;
+          correoCliente = usuario.correo;
+        }
+      } catch (e) {
+        console.error("Error buscando usuario para la venta:", e);
+      }
+    }
+
+    // Crear la venta con toda la info
     const venta = new Venta({
       usuarioId: usuarioId || null,
+      nombreCliente,
+      correoCliente,
       items,
       total: Number(total) || 0,
       metodoPago: metodoPago || "no_especificado",
@@ -142,3 +167,4 @@ export const confirmarPago = async (req, res) => {
     });
   }
 };
+
