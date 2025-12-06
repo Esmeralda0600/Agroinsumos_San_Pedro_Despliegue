@@ -7,9 +7,19 @@ const ItemSchema = new mongoose.Schema({
   cantidad: Number,
 });
 
+
 const VentaSchema = new mongoose.Schema(
   {
-    usuarioId: { type: mongoose.Schema.Types.ObjectId, ref: "UsuarioMongo", required: false },
+    usuarioId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "UsuarioMongo",
+      required: false,
+    },
+    
+    //  Snapshot de los datos del cliente al momento de la compra
+    nombreCliente: { type: String },
+    correoCliente: { type: String },
+
     items: [ItemSchema],
     total: { type: Number, required: true },
     metodoPago: { type: String, default: "no_especificado" },
@@ -20,9 +30,10 @@ const VentaSchema = new mongoose.Schema(
     mpPreferenceId: String,
   },
   {
-    timestamps: true, // createdAt, updatedAt
+    timestamps: true,
   }
 );
+
 
 const Venta = mongoose.model("Venta", VentaSchema);
 export default Venta;

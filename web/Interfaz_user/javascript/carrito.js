@@ -81,7 +81,7 @@ function actualizarResumen(subtotal) {
 // ==========================
 function agregarEventos() {
 
-    // 🔥 ELIMINAR PRODUCTO
+    //  ELIMINAR PRODUCTO
     document.querySelectorAll(".btn-eliminar").forEach(btn => {
         btn.addEventListener("click", () => {
             const index = btn.dataset.index;
@@ -92,7 +92,7 @@ function agregarEventos() {
         });
     });
 
-    // 🔥 CAMBIAR CANTIDAD
+    //  CAMBIAR CANTIDAD
     document.querySelectorAll(".input-cantidad").forEach(input => {
         input.addEventListener("change", () => {
 
