@@ -1,4 +1,13 @@
 // ===============================
+// CONFIG
+// ===============================
+
+// PON AQUÍ LA URL DE TU API EN RENDER (IMPORTANTE)
+const API_URL = "https://agroinsumos-san-pedro-despliegue.onrender.com";
+
+
+
+// ===============================
 // Utilidades
 // ===============================
 
@@ -54,67 +63,63 @@ function mostrarResumenLocal() {
   metodoSpan.textContent = metodo;
 }
 
-// Enviar la info de la compra al backend para registrar la venta
-async function registrarVentaEnServidor(mpStatus, paymentId, preferenceId) {
-  const usuarioId = localStorage.getItem("usuarioId") || null;
-  const itemsStr = localStorage.getItem("pago_items");
-  const totalStr = localStorage.getItem("pago_total");
-  const metodo = localStorage.getItem("pago_metodo") || "no_especificado";
 
-  let items = [];
+// ===============================
+// Registrar venta en el servidor
+// ===============================
+
+async function registrarVentaEnServidor({ status, paymentId, preferenceId }) {
   try {
-    items = JSON.parse(itemsStr || "[]");
-  } catch (e) {
-    console.error("Error leyendo pago_items para enviar a servidor:", e);
-  }
+    const usuarioId = localStorage.getItem("usuario_id") || null;
+    const items = JSON.parse(localStorage.getItem("pago_items") || "[]");
+    const total = Number(localStorage.getItem("pago_total") || 0);
+    const metodoPago = localStorage.getItem("pago_metodo") || "-";
 
-  if (!items.length) {
-    console.warn("No hay items para registrar en la venta.");
-    return;
-  }
-
-  // Evitar mandar la venta dos veces (por refrescar la página)
-  const ventaYaReportada = localStorage.getItem("venta_reportada_mp");
-  if (ventaYaReportada === paymentId && paymentId) {
-    console.log("Esta venta ya fue registrada anteriormente, no se envía de nuevo.");
-    return;
-  }
-
-  try {
-    const resp = await fetch("https://agroinsumos-san-pedro-despliegue.onrender.com/pagos/confirmar", {
+    const resp = await fetch(`${API_URL}/pagos/confirmar`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
         usuarioId,
         items,
-        total: totalStr,
-        metodoPago: metodo,
-        mpStatus,
+        total,
+        metodoPago,
+        mpStatus: status,          
         mpPaymentId: paymentId,
         mpPreferenceId: preferenceId,
       }),
     });
 
     const data = await resp.json();
-    console.log("Respuesta de /pagos/confirmar:", data);
 
-    if (resp.ok) {
-      // Guardamos que ya reportamos esta venta
-      if (paymentId) {
-        localStorage.setItem("venta_reportada_mp", paymentId);
-      }
-    } else {
-      console.warn("No se pudo registrar la venta en la BD:", data);
+    if (!resp.ok) {
+      console.error("Error al registrar venta:", data);
+      return; // no actualices el resumen si falló
     }
-  } catch (error) {
-    console.error("Error al registrar venta en el servidor:", error);
+
+    // Actualizar el resumen con la info que regresó el backend
+    document.getElementById("total-pagado").textContent =
+      `$${data.venta.total.toFixed(2)}`;
+    document.getElementById("metodo-pago").textContent =
+      data.venta.metodoPago || "-";
+    document.getElementById("mp-payment-id").textContent =
+      data.venta.mpPaymentId || "-";
+    document.getElementById("mp-status").textContent =
+      data.venta.mpStatus || "-";
+    document.getElementById("mp-preference-id").textContent =
+      data.venta.mpPreferenceId || "-";
+
+    console.log("Venta registrada correctamente:", data.venta);
+  } catch (err) {
+    console.error("Error en fetch /pagos/confirmar:", err);
   }
 }
+
 
 // ===============================
 // Flujo principal
 // ===============================
 document.addEventListener("DOMContentLoaded", async () => {
+  // Pintar lo que teníamos guardado en localStorage
   mostrarResumenLocal();
 
   // Leer datos que Mercado Pago manda por query string
@@ -159,8 +164,11 @@ document.addEventListener("DOMContentLoaded", async () => {
       "No pudimos determinar el estado del pago. Revisa tu actividad en Mercado Pago o contacta soporte.";
   }
 
-  // Si el pago fue aprobado, avisamos al backend para registrar la venta
   if (mpStatus === "approved") {
-    await registrarVentaEnServidor(mpStatus, paymentId, preferenceId);
+    await registrarVentaEnServidor({
+      status: mpStatus,
+      paymentId,
+      preferenceId,
+    });
   }
 });
