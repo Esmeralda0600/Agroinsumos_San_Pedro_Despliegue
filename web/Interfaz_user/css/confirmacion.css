@@ -1,0 +1,116 @@
+<style>
+    /* ======== ESTILOS GENERALES ======== */
+    body {
+        margin: 0;
+        font-family: "Poppins", Arial, sans-serif;
+        background: #f6f6f6;
+        color: #333;
+    }
+
+    header.Header {
+        background: #2b7a0b;
+        color: white;
+        padding: 15px;
+        text-align: center;
+        font-size: 1.4rem;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+    }
+
+    main.contenedor-confirmacion {
+        max-width: 900px;
+        margin: 30px auto;
+        padding: 20px;
+        display: flex;
+        flex-direction: column;
+        gap: 25px;
+    }
+
+    h2, h3 {
+        margin-bottom: 10px;
+        color: #2b7a0b;
+    }
+
+    /* ======== TARJETAS ======== */
+    section {
+        background: white;
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0 3px 6px rgba(0,0,0,0.1);
+        animation: fadeIn 0.4s ease;
+    }
+
+    @keyframes fadeIn {
+        from { opacity: 0; transform: translateY(10px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ======== LISTA DE PRODUCTOS ======== */
+    #lista-productos .item-confirmacion {
+        padding: 12px;
+        margin-bottom: 12px;
+        border-bottom: 1px solid #ddd;
+    }
+
+    #lista-productos .item-confirmacion:last-child {
+        border-bottom: none;
+    }
+
+    .item-confirmacion p {
+        margin: 3px 0;
+    }
+
+    .total strong {
+        color: #2b7a0b;
+        font-size: 1.2rem;
+    }
+
+    /* ======== BOTONES ======== */
+    .acciones {
+        display: flex;
+        gap: 15px;
+        justify-content: center;
+        margin-top: 10px;
+    }
+
+    .btn {
+        display: inline-block;
+        padding: 12px 20px;
+        background: #2b7a0b;
+        color: white;
+        border-radius: 8px;
+        text-decoration: none;
+        font-weight: bold;
+        transition: 0.3s ease;
+        box-shadow: 0 3px 6px rgba(0,0,0,0.15);
+    }
+
+    .btn:hover {
+        background: #256708;
+        transform: translateY(-2px);
+    }
+
+    /* ======== FOOTER ======== */
+    footer.footer {
+        text-align: center;
+        padding: 20px;
+        background: #2b7a0b;
+        margin-top: 40px;
+        color: white;
+    }
+
+    /* ======== RESPONSIVE ======== */
+    @media (max-width: 600px) {
+        main.contenedor-confirmacion {
+            padding: 10px;
+        }
+
+        .acciones {
+            flex-direction: column;
+        }
+
+        .btn {
+            width: 100%;
+            text-align: center;
+        }
+    }
+</style>
