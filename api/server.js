@@ -30,7 +30,7 @@ dotenv.config();
 const app = express();
 
 // =============================
-// 🎯 CORS CONFIG
+//  CORS CONFIG
 // =============================
 const allowedOrigins = [
   "http://localhost:3000",
@@ -65,23 +65,23 @@ app.use(cors({
 app.use(express.json());
 
 // =============================
-// 📡 Conexión a Mongo
+//  Conexión a Mongo
 // =============================
 await connectMongo();
 
 // =============================
-// 📌 Rutas API
+//  Rutas API
 // =============================
 app.use("/usuarios", agro_spa_routes);
 app.use("/administradores", agro_spa_routes_admin);
 app.use("/favoritos", favoritoRoutes);
 app.use("/productos", producto_routes);
 app.use("/api/ia", geminiRoutes);
-app.use("/pagos", pagoRoutes);
+app.use("/api/pagos", pagoRoutes);
 app.use("/ventas", ventaRoutes);
 
 // =============================
-// 📘 Swagger
+//  Swagger
 // =============================
 const swaggerDocs = swaggerJSDoc({
   definition: {
@@ -94,7 +94,7 @@ const swaggerDocs = swaggerJSDoc({
 app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocs));
 
 // =============================
-// 📁 Multer configurado
+// Multer configurado
 // =============================
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
@@ -117,7 +117,7 @@ app.post("/subir", upload.single("foto"), (req, res) => {
 });
 
 // =============================
-// 🚀 Iniciar servidor
+// 🚀Iniciar servidor
 // =============================
 const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => console.log(`🔥 Servidor en puerto ${PORT}`));
+app.listen(PORT, () => console.log(`Servidor en puerto ${PORT}`));

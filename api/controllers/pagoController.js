@@ -152,7 +152,9 @@ export const confirmarPago = async (req, res) => {
       mpPaymentId: mpPaymentId || null,
       mpPreferenceId: mpPreferenceId || null,
     });
-
+   
+    console.log(" LLEGO A /pagos/confirmar CON BODY:", req.body);
+   
     const ventaGuardada = await venta.save();
 
     return res.status(201).json({
