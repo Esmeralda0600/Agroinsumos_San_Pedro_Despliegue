@@ -75,7 +75,7 @@ async function registrarVentaEnServidor({ status, paymentId, preferenceId }) {
     const total = Number(localStorage.getItem("pago_total") || 0);
     const metodoPago = localStorage.getItem("pago_metodo") || "-";
 
-    const resp = await fetch(`${API_URL}/pagos/confirmar`, {
+    const resp = await fetch(`${API_URL}/api/pagos/confirmar`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
