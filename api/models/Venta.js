@@ -15,7 +15,7 @@ const VentaSchema = new mongoose.Schema(
       ref: "UsuarioMongo",
       required: false,
     },
-    
+
     //  Snapshot de los datos del cliente al momento de la compra
     nombreCliente: { type: String },
     correoCliente: { type: String },
@@ -35,5 +35,5 @@ const VentaSchema = new mongoose.Schema(
 );
 
 
-const Venta = mongoose.model("Venta", VentaSchema);
+const Venta = mongoose.model("Venta", VentaSchema ,"ventas");
 export default Venta;
