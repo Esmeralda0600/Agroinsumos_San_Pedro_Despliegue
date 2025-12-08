@@ -99,6 +99,7 @@ export const crearPreferencia = async (req, res) => {
  */
 export const confirmarPago = async (req, res) => {
   try {
+     console.log(" [confirmarPago] Body recibido:", req.body);
     const {
       usuarioId,
       items,
@@ -110,15 +111,18 @@ export const confirmarPago = async (req, res) => {
     } = req.body;
 
     if (!items || !Array.isArray(items) || items.length === 0) {
+      console.log(" [confirmarPago] No hay items en la venta");
       return res.status(400).json({ message: "No hay items en la venta" });
     }
 
     if (!mpStatus) {
+      console.log("❌ [confirmarPago] Falta mpStatus");
       return res.status(400).json({ message: "Falta estado del pago (mpStatus)" });
     }
 
     // Solo guardamos si el pago está aprobado
     if (mpStatus.toLowerCase() !== "approved") {
+      console.log("❌ [confirmarPago] Pago no aprobado:", mpStatus);
       return res.status(400).json({
         message: "El pago no está aprobado, no se registrará la venta",
       });
@@ -153,9 +157,21 @@ export const confirmarPago = async (req, res) => {
       mpPreferenceId: mpPreferenceId || null,
     });
    
-    console.log(" LLEGO A /pagos/confirmar CON BODY:", req.body);
+    console.log("🧾 [confirmarPago] Intentando guardar venta:", {
+      usuarioId,
+      nombreCliente,
+      correoCliente,
+      total,
+      metodoPago,
+      mpStatus,
+      mpPaymentId,
+      mpPreferenceId,
+      itemsLength: items.length,
+    });
    
     const ventaGuardada = await venta.save();
+    
+    console.log("✅ [confirmarPago] Venta guardada con _id:", ventaGuardada._id);
 
     return res.status(201).json({
       message: "Venta registrada correctamente",

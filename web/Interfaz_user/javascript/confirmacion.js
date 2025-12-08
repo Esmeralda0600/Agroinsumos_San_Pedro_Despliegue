@@ -74,6 +74,17 @@ async function registrarVentaEnServidor({ status, paymentId, preferenceId }) {
     const items = JSON.parse(localStorage.getItem("pago_items") || "[]");
     const total = Number(localStorage.getItem("pago_total") || 0);
     const metodoPago = localStorage.getItem("pago_metodo") || "-";
+    
+    console.log("🚀 Enviando venta a:", `${API_URL}/pagos/confirmar`);
+    console.log("📦 Body enviado:", {
+      usuarioId,
+      items,
+      total,
+      metodoPago,
+      mpStatus: status,
+      mpPaymentId: paymentId,
+      mpPreferenceId: preferenceId,
+    });
 
     const resp = await fetch(`${API_URL}/pagos/confirmar`, {
       method: "POST",
@@ -89,7 +100,9 @@ async function registrarVentaEnServidor({ status, paymentId, preferenceId }) {
       }),
     });
 
+    console.log("📡 Respuesta HTTP:", resp.status);
     const data = await resp.json();
+    console.log("📡 Respuesta JSON:", data);
 
     if (!resp.ok) {
       console.error("Error al registrar venta:", data);
