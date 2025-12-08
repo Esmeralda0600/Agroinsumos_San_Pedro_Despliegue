@@ -77,7 +77,7 @@ app.use("/administradores", agro_spa_routes_admin);
 app.use("/favoritos", favoritoRoutes);
 app.use("/productos", producto_routes);
 app.use("/api/ia", geminiRoutes);
-app.use("/api/pagos", pagoRoutes);
+app.use("/pagos", pagoRoutes);
 app.use("/ventas", ventaRoutes);
 
 // =============================
