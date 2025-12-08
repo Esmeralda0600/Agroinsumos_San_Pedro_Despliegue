@@ -74,7 +74,7 @@ router.post("/interpretar", async (req, res) => {
     `;
 
     // === Nueva forma correcta de leer ===
-    const result = await model.generateContent(prompt);
+    const result = await model.generateContent([prompt]);
     const rawText = result.response.text();  // 👈 ESTA ES LA FORMA CORRECTA
 
     console.log("🔍 Respuesta cruda IA:", rawText);
