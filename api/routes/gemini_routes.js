@@ -1,5 +1,6 @@
 import express from "express";
-import { GoogleGenerativeAI } from "@google/generative-ai/server";
+import { GoogleGenerativeAI } from "@google/generative-ai";
+
 
 const router = express.Router();
 
