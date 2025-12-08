@@ -1,7 +1,6 @@
 import express from "express";
 import { GoogleGenerativeAI } from "@google/generative-ai";
 
-
 const router = express.Router();
 
 router.post("/interpretar", async (req, res) => {
@@ -13,41 +12,118 @@ router.post("/interpretar", async (req, res) => {
     }
 
     if (!process.env.GEMINI_KEY) {
+      console.error("❌ No existe GEMINI_KEY en Render");
       return res.status(500).json({ error: "API KEY faltante" });
     }
 
-    // NUEVA API
     const genAI = new GoogleGenerativeAI(process.env.GEMINI_KEY);
 
     const model = genAI.getGenerativeModel({
-      model: "gemini-1.5-flash"
+      model: "models/gemini-1.5-flash",
     });
 
     const prompt = `
-    Eres un sistema de búsqueda de una tienda de agroinsumos.
-    El usuario escribió: "${texto}".
+      Eres un sistema de búsqueda de una tienda de agroinsumos.
+      El usuario escribió: "${texto}".
 
-    Responde SOLO en JSON:
-    { "categoria": "..." }
+      Estas son las únicas categorías válidas:
+      - FERTILIZANTES
+      - HERBICIDAS
+      - FUNGICIDAS
+      - ADHERENTES
+      - INSECTICIDAS
+      - BACTERICIDAS
+      - ENRAIZADOR
+      - SYGENTA
+      - FORMUVEG
+      - ALIAGRO
+      - ULTRASOL
+      - BAYER
+      - AGROENZYMAS
+      - UPL
+      - DRAGON
+      - ULTRAQUIMIA
+      - ABAMECTINA
+      - ESTREPTOMICINA
+      - PEROXIDO DE HIDROGENO
+      - FLONICAMID
+      - COBRE
+      - IMIDACLOPRID
+      - PARAQUAT
+      - BORO
+      - ZINC
+      - CALCIO
+      - 6-BENCILAMINOPURINA
+      - NITROGENO
+      - CITOCINA
+      - FOSFORO
+      - AGENTES TENSOACTIVOS
+      - ACIDO GIBERELICO
+      - SUSTANCIAS HUMICAS
+      - TIOCYCLAM
+      - BUPROFEZIN
+      - PROPAMOCARB
+      - HIDROXIDO CUPRICO
+      - ATRAZINA
+      - DIMETOATO
+      - CLORPIRIFOS
+      - FOMESAFEN
+      - AMINA
+      - CARBENDAZIM
+      - TIOFANATO DE METILO
+
+      Responde SOLO en JSON:
+      { "categoria": "..." }
     `;
 
-    // NUEVO MÉTODO
-    const result = await model.generateContent(prompt);
+    console.log("📌 Usando GEMINI_KEY:", process.env.GEMINI_KEY ? "Cargada" : "NO CARGADA");
+    console.log("📌 Texto recibido:", texto);
+    console.log("📌 Modelo:", "models/gemini-1.5-flash");
+    console.log("📌 Enviando prompt a Gemini...");
 
-    const rawText = result.response.text();
+    const result = await model.generateContent([prompt]);
+
+    console.log("📌 RAW RESULT COMPLETO:", JSON.stringify(result, null, 2));
+
+    let rawText;
+
+    if (result?.response?.text) {
+      rawText = result.response.text();
+    } else if (result?.response?.candidates) {
+      rawText = result.response.candidates[0].content[0].text;
+    } else {
+      throw new Error("Formato inesperado de respuesta de Gemini.");
+    }
+
+    console.log("🔍 Respuesta cruda IA:", rawText);
+
+    // Limpiar formato
     const clean = rawText.trim().replace(/```json|```/g, "");
 
-    const jsonStr = clean.substring(clean.indexOf("{"), clean.lastIndexOf("}") + 1);
-    const data = JSON.parse(jsonStr);
+    const first = clean.indexOf("{");
+    const last = clean.lastIndexOf("}");
+
+    if (first === -1 || last === -1) {
+      console.error("❌ No se encontró JSON válido en la respuesta.");
+      return res.status(500).json({ error: "Respuesta IA inválida." });
+    }
+
+    const jsonString = clean.substring(first, last + 1);
+
+    console.log("🧪 JSON detectado:", jsonString);
+
+    const data = JSON.parse(jsonString);
 
     return res.json({ categoria: data.categoria });
 
   } catch (error) {
-    console.error("❌ ERROR IA:", error);
+    console.error("❌ ERROR IA COMPLETO:", error);
 
     return res.status(500).json({
       error: "Fallo IA",
-      mensaje: error?.message
+      mensaje: error?.message,
+      nombre: error?.name,
+      stack: error?.stack
     });
   }
 });
