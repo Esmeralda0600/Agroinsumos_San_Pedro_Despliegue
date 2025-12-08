@@ -18,6 +18,7 @@ router.post("/interpretar", async (req, res) => {
 
     const genAI = new GoogleGenerativeAI(process.env.GEMINI_KEY);
 
+    // MODELO CORRECTO
     const model = genAI.getGenerativeModel({
       model: "models/gemini-1.5-flash",
     });
@@ -76,57 +77,51 @@ router.post("/interpretar", async (req, res) => {
       { "categoria": "..." }
     `;
 
-    // 🚨 FORMA CORRECTA DE EJECUTAR GEMINI
-    console.log("📌 Usando GEMINI_KEY:", process.env.GEMINI_KEY ? "Cargada" : "NO CARGADA");
-console.log("📌 Texto recibido:", texto);
-console.log("📌 Modelo:", "models/gemini-2.0-flash");
-    console.log("📌 Enviando prompt a Gemini...");
+    console.log("📌 Texto recibido:", texto);
+    console.log("📌 GEMINI usando modelo:", "models/gemini-1.5-flash");
 
+    // 🚨 LLAMADA CORRECTA → NO ENVÍES ARRAY
+    const result = await model.generateContent(prompt);
 
-    const result = await model.generateContent([prompt]);
+    console.log("📌 RAW RESULT:", JSON.stringify(result, null, 2));
 
-    console.log("📌 RAW RESULT COMPLETO:", JSON.stringify(result, null, 2));
-
-    // 🚨 La respuesta de Gemini puede venir en diferentes formatos
-    let rawText;
+    let rawText = "";
 
     if (result?.response?.text) {
       rawText = result.response.text();
     } else if (result?.response?.candidates) {
       rawText = result.response.candidates[0].content[0].text;
     } else {
-      throw new Error("Formato inesperado de respuesta de Gemini.");
+      throw new Error("Formato inesperado de respuesta de Gemini");
     }
 
-    console.log("🔍 Respuesta cruda IA:", rawText);
+    console.log("🔍 Texto IA:", rawText);
 
-    // === LIMPIEZA ===
     const clean = rawText.trim().replace(/```json|```/g, "");
 
     const first = clean.indexOf("{");
     const last = clean.lastIndexOf("}");
 
     if (first === -1 || last === -1) {
-      console.error("❌ No se encontró JSON válido en la respuesta.");
-      return res.status(500).json({ error: "Respuesta IA inválida." });
+      return res.status(500).json({ error: "JSON no encontrado en respuesta IA" });
     }
 
     const jsonString = clean.substring(first, last + 1);
 
-    console.log("🧪 JSON detectado:", jsonString);
+    console.log("🧪 JSON Detectado:", jsonString);
 
     const data = JSON.parse(jsonString);
 
     return res.json({ categoria: data.categoria });
 
   } catch (error) {
-   console.error("❌ ERROR IA COMPLETO:", error);
+    console.error("❌ ERROR IA COMPLETO:", error);
 
-  return res.status(500).json({
-    error: "Fallo IA",
-    mensaje: error?.message,
-    nombre: error?.name,
-    stack: error?.stack
+    return res.status(500).json({
+      error: "Fallo IA",
+      mensaje: error?.message,
+      nombre: error?.name,
+      stack: error?.stack
     });
   }
 });
