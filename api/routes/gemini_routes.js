@@ -77,6 +77,12 @@ router.post("/interpretar", async (req, res) => {
     `;
 
     // 🚨 FORMA CORRECTA DE EJECUTAR GEMINI
+    console.log("📌 Usando GEMINI_KEY:", process.env.GEMINI_KEY ? "Cargada" : "NO CARGADA");
+console.log("📌 Texto recibido:", texto);
+console.log("📌 Modelo:", "models/gemini-2.0-flash");
+    console.log("📌 Enviando prompt a Gemini...");
+
+
     const result = await model.generateContent([prompt]);
 
     console.log("📌 RAW RESULT COMPLETO:", JSON.stringify(result, null, 2));
@@ -114,10 +120,13 @@ router.post("/interpretar", async (req, res) => {
     return res.json({ categoria: data.categoria });
 
   } catch (error) {
-    console.error("❌ ERROR IA:", error);
-    return res.status(500).json({
-      error: "Fallo IA",
-      detalle: error.message
+   console.error("❌ ERROR IA COMPLETO:", error);
+
+  return res.status(500).json({
+    error: "Fallo IA",
+    mensaje: error?.message,
+    nombre: error?.name,
+    stack: error?.stack
     });
   }
 });
