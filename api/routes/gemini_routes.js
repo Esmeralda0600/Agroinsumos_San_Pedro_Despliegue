@@ -11,15 +11,10 @@ router.post("/interpretar", async (req, res) => {
       return res.status(400).json({ error: "No enviaste texto." });
     }
 
-    if (!process.env.GEMINI_KEY) {
-      console.error("❌ No existe GEMINI_KEY en Render");
-      return res.status(500).json({ error: "API KEY faltante" });
-    }
-
     const genAI = new GoogleGenerativeAI(process.env.GEMINI_KEY);
 
     const model = genAI.getGenerativeModel({
-      model: "models/gemini-1.5-flash",
+      model: "models/gemini-2.0-flash"
     });
 
     const prompt = `
@@ -73,42 +68,30 @@ router.post("/interpretar", async (req, res) => {
       - TIOFANATO DE METILO
 
       Responde SOLO en JSON:
-      { "categoria": "..." }
+      {
+        "categoria": "..."
+      }
     `;
 
-    console.log("📌 Usando GEMINI_KEY:", process.env.GEMINI_KEY ? "Cargada" : "NO CARGADA");
-    console.log("📌 Texto recibido:", texto);
-    console.log("📌 Modelo:", "models/gemini-1.5-flash");
-    console.log("📌 Enviando prompt a Gemini...");
-
-    const result = await model.generateContent([prompt]);
-
-    console.log("📌 RAW RESULT COMPLETO:", JSON.stringify(result, null, 2));
-
-    let rawText;
-
-    if (result?.response?.text) {
-      rawText = result.response.text();
-    } else if (result?.response?.candidates) {
-      rawText = result.response.candidates[0].content[0].text;
-    } else {
-      throw new Error("Formato inesperado de respuesta de Gemini.");
-    }
+    // === Nueva forma correcta de leer ===
+    const result = await model.generateContent(prompt);
+    const rawText = result.response.text();  // 👈 ESTA ES LA FORMA CORRECTA
 
     console.log("🔍 Respuesta cruda IA:", rawText);
 
-    // Limpiar formato
-    const clean = rawText.trim().replace(/```json|```/g, "");
+    // === LIMPIEZA ===
+    const clean = rawText.trim();
+    const withoutTicks = clean.replace(/```json/g, "").replace(/```/g, "");
 
-    const first = clean.indexOf("{");
-    const last = clean.lastIndexOf("}");
+    const first = withoutTicks.indexOf("{");
+    const last = withoutTicks.lastIndexOf("}");
 
     if (first === -1 || last === -1) {
       console.error("❌ No se encontró JSON válido en la respuesta.");
       return res.status(500).json({ error: "Respuesta IA inválida." });
     }
 
-    const jsonString = clean.substring(first, last + 1);
+    const jsonString = withoutTicks.substring(first, last + 1);
 
     console.log("🧪 JSON detectado:", jsonString);
 
@@ -117,14 +100,8 @@ router.post("/interpretar", async (req, res) => {
     return res.json({ categoria: data.categoria });
 
   } catch (error) {
-    console.error("❌ ERROR IA COMPLETO:", error);
-
-    return res.status(500).json({
-      error: "Fallo IA",
-      mensaje: error?.message,
-      nombre: error?.name,
-      stack: error?.stack
-    });
+    console.error("❌ Error IA:", error);
+    return res.status(500).json({ error: "Fallo IA" });
   }
 });
 
