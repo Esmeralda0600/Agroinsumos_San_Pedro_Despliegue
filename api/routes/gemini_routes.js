@@ -19,7 +19,7 @@ router.post("/interpretar", async (req, res) => {
     const genAI = new GoogleGenerativeAI(process.env.GEMINI_KEY);
 
     const model = genAI.getGenerativeModel({
-      model: "models/gemini-2.0-flash",
+      model: "models/gemini-1.5-flash",
     });
 
     const prompt = `
