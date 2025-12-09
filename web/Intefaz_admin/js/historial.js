@@ -1,6 +1,8 @@
 // js/historial.js
 // Llena la tabla de HISTORIAL USUARIOS con las ventas guardadas en la BD
 
+const API_URL = "https://agroinsumos-san-pedro-despliegue.onrender.com";
+
 async function cargarHistorial() {
   const tbody = document.getElementById("tbody-historial");
   if (!tbody) return;
@@ -10,8 +12,11 @@ async function cargarHistorial() {
   `;
 
   try {
-    const resp = await fetch("https://agroinsumos-san-pedro-despliegue.onrender.com/ventas");
-    const ventas = await resp.json();
+    const resp = await fetch(`${API_URL}/ventas`);
+    const data = await resp.json();
+
+    // Por si el back regresa { ventas: [...] } o directamente [...]
+    const ventas = Array.isArray(data) ? data : data.ventas || [];
 
     tbody.innerHTML = "";
 
@@ -24,12 +29,16 @@ async function cargarHistorial() {
 
     // Por cada venta y por cada item de esa venta creamos una fila
     ventas.forEach((venta) => {
+      // 👇 Usamos lo que guardaste al confirmar el pago
       const nombreUsuario =
+        venta.nombreCliente ||
         (venta.usuarioId && (venta.usuarioId.nombre_usuario || venta.usuarioId.nombre)) ||
         "Usuario sin nombre";
 
       const correoUsuario =
-        (venta.usuarioId && venta.usuarioId.correo) || "Sin correo";
+        venta.correoCliente ||
+        (venta.usuarioId && (venta.usuarioId.correo || venta.usuarioId.email)) ||
+        "Sin correo";
 
       (venta.items || []).forEach((item) => {
         const cantidad = Number(item.cantidad || 1);
