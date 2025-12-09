@@ -1,7 +1,7 @@
 // js/historial.js
 // Llena la tabla de HISTORIAL USUARIOS con las ventas guardadas en la BD
 
-const API_URL = "https://agroinsumos-san-pedro-despliegue.onrender.com";
+const API_URL = "https://agroinsumos-san-pedro-despliegue-1.onrender.com";
 
 async function cargarHistorial() {
   const tbody = document.getElementById("tbody-historial");
