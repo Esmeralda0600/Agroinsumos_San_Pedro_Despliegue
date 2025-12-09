@@ -180,7 +180,7 @@ export const confirmarPago = async (req, res) => {
    
     const ventaGuardada = await venta.save();
 
-    console.log("✅ [confirmarPago] Venta guardada con _id:", ventaGuardada._id);
+    console.log("[confirmarPago] Venta guardada con _id:", ventaGuardada._id);
 
     return res.status(201).json({
       message: "Venta registrada correctamente",
