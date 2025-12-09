@@ -75,9 +75,26 @@ async function registrarVentaEnServidor({ status, paymentId, preferenceId }) {
     const total = Number(localStorage.getItem("pago_total") || 0);
     const metodoPago = localStorage.getItem("pago_metodo") || "-";
     
+    let nombreCliente = null;
+    let correoCliente = null;
+
+    try {
+      const usuarioStr = localStorage.getItem("usuario_autenticado");
+      if (usuarioStr) {
+        const usuario = JSON.parse(usuarioStr);
+        // Ajusta estos nombres según tu modelo real
+        nombreCliente = usuario.nombre_usuario || usuario.nombre || null;
+        correoCliente = usuario.correo || usuario.email || null;
+      }
+    } catch (e) {
+      console.error("Error leyendo usuario_autenticado de localStorage:", e);
+    }
+
     console.log("🚀 Enviando venta a:", `${API_URL}/pagos/confirmar`);
     console.log("📦 Body enviado:", {
       usuarioId,
+      nombreCliente,
+      correoCliente,
       items,
       total,
       metodoPago,
@@ -91,6 +108,8 @@ async function registrarVentaEnServidor({ status, paymentId, preferenceId }) {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
         usuarioId,
+        nombreCliente,
+        correoCliente,
         items,
         total,
         metodoPago,
