@@ -102,6 +102,8 @@ export const confirmarPago = async (req, res) => {
      console.log(" [confirmarPago] Body recibido:", req.body);
     const {
       usuarioId,
+      nombreCliente: nombreDesdeFront,
+      correoCliente: correoDesdeFront,
       items,
       total,
       metodoPago,
@@ -129,15 +131,22 @@ export const confirmarPago = async (req, res) => {
     }
 
     //  Buscar nombre y correo del usuario (si viene usuarioId)
-    let nombreCliente = null;
-    let correoCliente = null;
+    let nombreCliente = nombreDesdeFront || null;
+    let correoCliente = correoDesdeFront || null;
 
-    if (usuarioId) {
+    if (usuarioId && (!nombreCliente || !correoCliente)) {
       try {
         const usuario = await UsuarioMongo.findById(usuarioId).lean();
-        if (usuario) {
-          nombreCliente = usuario.nombre_usuario;
-          correoCliente = usuario.correo;
+         if (usuario) {
+          // Ajusta nombres de campos según tu modelo real:
+          if (!nombreCliente) {
+            nombreCliente = usuario.nombre_usuario || usuario.nombre || null;
+          }
+          if (!correoCliente) {
+            correoCliente = usuario.correo || usuario.email || null;
+          }
+        } else {
+          console.log("⚠️ [confirmarPago] Usuario no encontrado para usuarioId:", usuarioId);
         }
       } catch (e) {
         console.error("Error buscando usuario para la venta:", e);
@@ -170,7 +179,7 @@ export const confirmarPago = async (req, res) => {
     });
    
     const ventaGuardada = await venta.save();
-    
+
     console.log("✅ [confirmarPago] Venta guardada con _id:", ventaGuardada._id);
 
     return res.status(201).json({
